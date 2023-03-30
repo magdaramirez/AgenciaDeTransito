@@ -1,0 +1,16 @@
+org\itson\dominio\VehiculoAutomovil.class
+org\itson\GUI\DlgTramiteLicencia$1$1.class
+org\itson\dominio\Tramite.class
+org\itson\dominio\Vehiculo.class
+org\itson\GUI\DlgTramiteLicencia.class
+org\itson\implementaciones\ConstantesGUI.class
+org\itson\dominio\TipoLicencia.class
+org\itson\dominio\EstadoTramite.class
+org\itson\dominio\Persona.class
+org\itson\dominio\TramitePlaca.class
+org\itson\dominio\TramiteLicencia.class
+org\itson\dominio\TipoPlaca.class
+org\itson\excepciones\PersistenciaException.class
+org\itson\agenciatransito\AgenciaTransito.class
+org\itson\GUI\DlgTramiteLicencia$1.class
+org\itson\dominio\Pago.class

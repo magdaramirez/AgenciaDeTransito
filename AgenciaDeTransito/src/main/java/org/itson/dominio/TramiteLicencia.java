@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -21,17 +23,40 @@ import javax.persistence.Table;
 @Table(name = "tramiteLicencias")
 public class TramiteLicencia extends Tramite implements Serializable {
 
-    @Column(name = "tipo", nullable = true)
-    private LicenciaTipo tipo;
+    @Column(name = "tipoLicencia", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoLicencia tipo;
 
     @Column(name = "vigencia", nullable = false)
     private Integer vigencia;
 
-    public LicenciaTipo getTipo() {
+    public TramiteLicencia() {
+    }
+
+    public TramiteLicencia(TipoLicencia tipo, Integer vigencia, EstadoTramite estado, float costo) {
+        super(estado, costo);
+        this.tipo = tipo;
+        this.vigencia = vigencia;
+    }
+
+    public TramiteLicencia(Integer vigencia, EstadoTramite estado, float costo) {
+        super(estado, costo);
+        this.vigencia = vigencia;
+    }
+
+    public TramiteLicencia(TipoLicencia tipo, Integer vigencia, EstadoTramite estado, float costo, Persona persona) {
+        super(estado, costo, persona);
+        this.tipo = tipo;
+        this.vigencia = vigencia;
+    }
+
+    
+    
+    public TipoLicencia getTipo() {
         return tipo;
     }
 
-    public void setTipo(LicenciaTipo tipo) {
+    public void setTipo(TipoLicencia tipo) {
         this.tipo = tipo;
     }
 

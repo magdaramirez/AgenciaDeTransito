@@ -6,10 +6,13 @@ package org.itson.dominio;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,14 +36,15 @@ public abstract class Tramite implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @Column(name = "estado", nullable = false)
+    @Enumerated(EnumType.STRING)
     private EstadoTramite estado;
 
     @Column(name = "costo", nullable = false)
     private float costo;
 
-    @ManyToOne()
+    @ManyToOne(cascade={CascadeType.PERSIST})
     @JoinColumn(name = "idPersona", nullable = false)
     private Persona persona;
 
@@ -52,8 +56,7 @@ public abstract class Tramite implements Serializable {
         this.costo = costo;
     }
 
-    public Tramite(Long id, EstadoTramite estado, float costo, Persona persona) {
-        this.id = id;
+    public Tramite(EstadoTramite estado, float costo, Persona persona) {
         this.estado = estado;
         this.costo = costo;
         this.persona = persona;

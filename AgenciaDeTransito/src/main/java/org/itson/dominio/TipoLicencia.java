@@ -8,6 +8,6 @@ package org.itson.dominio;
  *
  * @author magda
  */
-public enum LicenciaTipo {
-    NORMAL, INCAPACITADO
+public enum TipoLicencia {
+    NORMAL, DISCAPACITADO
 }

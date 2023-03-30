@@ -37,9 +37,9 @@ public abstract class Vehiculo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne()
-    @JoinColumn(name = "idPlaca", nullable = false) // LLAVE FORÁNEA
-    private TramitePlaca placa;
+//    @ManyToOne()
+//    @JoinColumn(name = "idPlaca", nullable = false) // LLAVE FORÁNEA
+//    private TramitePlaca placa;
 
     @Column(name = "noSerie", nullable = false, length = 7)
     private String noSerie;
@@ -56,15 +56,13 @@ public abstract class Vehiculo implements Serializable {
     @Column(name = "linea", nullable = false, length = 50)
     private String linea;
 
-    @OneToMany(mappedBy = "vehiculo", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "vehiculo", cascade = {CascadeType.PERSIST})
     private List<TramitePlaca> placas;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(Long id, TramitePlaca placa, String noSerie, String marca, String modelo, String color, String linea) {
-        this.id = id;
-        this.placa = placa;
+    public Vehiculo( String noSerie, String marca, String modelo, String color, String linea) {
         this.noSerie = noSerie;
         this.marca = marca;
         this.modelo = modelo;
@@ -72,8 +70,7 @@ public abstract class Vehiculo implements Serializable {
         this.linea = linea;
     }
 
-    public Vehiculo(TramitePlaca placa, String noSerie, String marca, String modelo, String color, String linea, List<TramitePlaca> placas) {
-        this.placa = placa;
+    public Vehiculo(String noSerie, String marca, String modelo, String color, String linea, List<TramitePlaca> placas) {
         this.noSerie = noSerie;
         this.marca = marca;
         this.modelo = modelo;
@@ -88,14 +85,6 @@ public abstract class Vehiculo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public TramitePlaca getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(TramitePlaca placa) {
-        this.placa = placa;
     }
 
     public String getNoSerie() {

@@ -9,6 +9,8 @@ import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -29,20 +31,51 @@ public class TramitePlaca extends Tramite implements Serializable {
     @Column(name = "placa", nullable = true)
     private String placa;
 
-    @Column(name = "numero", nullable = true)
-    private Long numero;
-
     @Column(name = "fechaEmision", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar fechaEmision;
 
-    @Column(name = "fechaRecepcion", nullable = false)
+    @Column(name = "fechaRecepcion", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar fechaRecepcion;
 
     @ManyToOne()
     @JoinColumn(name = "idVehiculo", nullable = false)
     private Vehiculo vehiculo;
+    
+    @Column(name = "tipoPlaca", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoPlaca tipoPlaca;
+
+    public TramitePlaca() {
+    }
+
+    public TramitePlaca(String placa, Calendar fechaEmision, Vehiculo vehiculo, TipoPlaca tipoPlaca, EstadoTramite estado, float costo, Persona persona) {
+        super(estado, costo, persona);
+        this.placa = placa;
+        this.fechaEmision = fechaEmision;
+        this.vehiculo = vehiculo;
+        this.tipoPlaca = tipoPlaca;
+    }
+
+    public TramitePlaca(String placa, Calendar fechaEmision, Calendar fechaRecepcion, Vehiculo vehiculo, TipoPlaca tipoPlaca, EstadoTramite estado, float costo, Persona persona) {
+        super(estado, costo, persona);
+        this.placa = placa;
+        this.fechaEmision = fechaEmision;
+        this.fechaRecepcion = fechaRecepcion;
+        this.vehiculo = vehiculo;
+        this.tipoPlaca = tipoPlaca;
+    }
+    
+    
+    
+    public TipoPlaca getTipoPlaca() {
+        return tipoPlaca;
+    }
+
+    public void setTipoPlaca(TipoPlaca tipoPlaca) {
+        this.tipoPlaca = tipoPlaca;
+    }
 
     public String getPlaca() {
         return placa;
@@ -52,13 +85,6 @@ public class TramitePlaca extends Tramite implements Serializable {
         this.placa = placa;
     }
 
-    public Long getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Long numero) {
-        this.numero = numero;
-    }
 
     public Calendar getFechaEmision() {
         return fechaEmision;
@@ -86,7 +112,7 @@ public class TramitePlaca extends Tramite implements Serializable {
 
     @Override
     public String toString() {
-        return "TramitePlaca{ id=" + this.getId() + "placa=" + placa + ", numero=" + numero + ", fechaEmision=" + fechaEmision + ", fechaRecepcion=" + fechaRecepcion + '}';
+        return "TramitePlaca{ id=" + this.getId() + "placa=" + placa + ", numero=" + ", fechaEmision=" + fechaEmision + ", fechaRecepcion=" + fechaRecepcion + '}';
     }
 
 }

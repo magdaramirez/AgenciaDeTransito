@@ -30,14 +30,26 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        lblRfc = new javax.swing.JLabel();
+        lblNombreC = new javax.swing.JLabel();
+        lbltipoLicencia = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        cbxVigencia = new javax.swing.JComboBox<>();
+        cbxTipo = new javax.swing.JComboBox<>();
+        txtRfc = new javax.swing.JTextField();
+        txtNombreCom = new javax.swing.JTextField();
+        lblCosto = new javax.swing.JLabel();
+        txtCosto = new javax.swing.JTextField();
+        btnRegresar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        lblVaciar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -47,40 +59,77 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Tramite de licencia");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 370, -1));
+        lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lblTitulo.setText("Tramite de licencia");
+        jPanel2.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 370, -1));
 
-        jPanel3.setBackground(new java.awt.Color(249, 163, 163));
+        jPanel3.setBackground(new java.awt.Color(251, 183, 183));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setText("Datos del solicitante");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 560, 220));
+        lblRfc.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblRfc.setText("RFC:");
+        jPanel3.add(lblRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setText("Regresar");
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 140, 50));
+        lblNombreC.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNombreC.setText("Nombre completo:");
+        jPanel3.add(lblNombreC, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton2.setText("Aceptar");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, 150, 50));
+        lbltipoLicencia.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbltipoLicencia.setText("Seleccione el tipo de licencia");
+        jPanel3.add(lbltipoLicencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Vaciar");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 330, -1, -1));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Seleccione la vigencia");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 580, 390));
+        cbxVigencia.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cbxVigencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 año", "2 años", "3 años" }));
+        jPanel3.add(cbxVigencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 110, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
+        cbxTipo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Discapacitado" }));
+        jPanel3.add(cbxTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 110, 30));
+
+        txtRfc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 260, 40));
+
+        txtNombreCom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel3.add(txtNombreCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 160, 40));
+
+        lblCosto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblCosto.setText("Costo:");
+        jPanel3.add(lblCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 200, -1, -1));
+
+        txtCosto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel3.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 190, 90, 30));
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 560, 230));
+
+        btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
+        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 140, 50));
+
+        btnAceptar.setBackground(new java.awt.Color(212, 100, 107));
+        btnAceptar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAceptar.setForeground(new java.awt.Color(255, 255, 255));
+        btnAceptar.setText("Aceptar");
+        jPanel2.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 330, 150, 50));
+
+        lblVaciar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblVaciar.setForeground(new java.awt.Color(156, 51, 57));
+        lblVaciar.setText("Vaciar");
+        jPanel2.add(lblVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 350, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 600, 400));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 440));
 
         pack();
         setLocationRelativeTo(null);
@@ -129,12 +178,23 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> cbxTipo;
+    private javax.swing.JComboBox<String> cbxVigencia;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblCosto;
+    private javax.swing.JLabel lblNombreC;
+    private javax.swing.JLabel lblRfc;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblVaciar;
+    private javax.swing.JLabel lbltipoLicencia;
+    private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtNombreCom;
+    private javax.swing.JTextField txtRfc;
     // End of variables declaration//GEN-END:variables
 }

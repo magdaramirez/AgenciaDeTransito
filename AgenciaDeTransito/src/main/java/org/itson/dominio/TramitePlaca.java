@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
 @Table(name = "tramitePlacas")
 public class TramitePlaca extends Tramite implements Serializable {
 
-    @Column(name = "placa", nullable = true)
+    @Column(name = "placa", nullable = true, length = 7)
     private String placa;
 
     @Column(name = "fechaEmision", nullable = false)

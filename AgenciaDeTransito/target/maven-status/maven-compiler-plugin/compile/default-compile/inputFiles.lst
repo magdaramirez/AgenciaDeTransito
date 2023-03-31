@@ -5,10 +5,15 @@ D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\sr
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\Persona.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\VehiculoAutomovil.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\agenciatransito\AgenciaTransito.java
+D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\GUI\DlgPlacaVehiculoUsado.java
+D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\GUI\DlgRegistroVehiculo.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\TipoPlaca.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\GUI\DlgTramiteLicencia.java
+D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\GUI\DlgReporteTramites.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\TipoLicencia.java
+D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\GUI\DlgConsultaTramites.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\TramiteLicencia.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\Tramite.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\TramitePlaca.java
 D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\dominio\Vehiculo.java
+D:\Galería\Documentos_2\AgenciaDeTransito\AgenciaDeTransito\AgenciaDeTransito\src\main\java\org\itson\GUI\DlgPlacaVehiculoNuevo.java

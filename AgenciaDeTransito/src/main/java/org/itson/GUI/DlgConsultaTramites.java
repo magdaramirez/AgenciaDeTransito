@@ -12,11 +12,14 @@ package org.itson.GUI;
 public class DlgConsultaTramites extends javax.swing.JDialog {
 
     /**
-     * Creates new form DlgConsultaTramites
+     * Crea el JDialog DlgConsultaTramites.
+     * @param parent
+     * @param modal 
      */
     public DlgConsultaTramites(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("CONSULTAS");
     }
 
     /**
@@ -30,6 +33,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        btnRegresar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -37,14 +41,17 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         txtAnioNacimiento = new javax.swing.JTextField();
         txtRfc = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
+        lblBuscarRFC = new javax.swing.JLabel();
         pnlPlacas = new javax.swing.JScrollPane();
         tblPlacas = new javax.swing.JTable();
         pnlLicencias = new javax.swing.JScrollPane();
         tblLicencias = new javax.swing.JTable();
         lblConsultasTramites = new javax.swing.JLabel();
-        btnRegresar = new javax.swing.JButton();
         lblPlacas = new javax.swing.JLabel();
         lblLicencias = new javax.swing.JLabel();
+        btnConsultlar = new javax.swing.JButton();
+        jSpinner2 = new javax.swing.JSpinner();
+        jSpinner1 = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -57,132 +64,132 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
+        btnRegresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/volver.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 540, 130, 40));
+
         jPanel3.setBackground(new java.awt.Color(251, 183, 183));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("RFC:");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, -1));
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Nombre:");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Año nacimiento:");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, -1, -1));
-        jPanel3.add(txtAnioNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, 200, 40));
-        jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 220, 40));
-        jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 220, 40));
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 40, -1, -1));
+        jPanel3.add(txtAnioNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 30, 200, 40));
+        jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 220, 40));
+        jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 100, 280, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 800, 180));
+        lblBuscarRFC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        jPanel3.add(lblBuscarRFC, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 30, -1, -1));
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 1000, 170));
 
         pnlPlacas.setBackground(new java.awt.Color(255, 255, 255));
         pnlPlacas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         tblPlacas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "RFC", "Placa", "Estado", "Fecha Emisión", "Fecha Recepción"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         pnlPlacas.setViewportView(tblPlacas);
 
-        jPanel2.add(pnlPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 390, 240));
+        jPanel2.add(pnlPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 480, 240));
 
         pnlLicencias.setBackground(new java.awt.Color(255, 255, 255));
         pnlLicencias.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         tblLicencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "RFC", "Licencia", "Vigencia", "Estado", "Tipo"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         pnlLicencias.setViewportView(tblLicencias);
 
-        jPanel2.add(pnlLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, 380, 240));
+        jPanel2.add(pnlLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 480, 240));
 
         lblConsultasTramites.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        lblConsultasTramites.setText("Consultas tramites");
-        jPanel2.add(lblConsultasTramites, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, -1, -1));
-
-        btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegresar.setText("Regresar");
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 160, 50));
+        lblConsultasTramites.setText("Consulta Trámites");
+        jPanel2.add(lblConsultasTramites, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, -1, -1));
 
         lblPlacas.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblPlacas.setText("Placas:");
-        jPanel2.add(lblPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, -1, -1));
+        jPanel2.add(lblPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         lblLicencias.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblLicencias.setText("Licencias:");
-        jPanel2.add(lblLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 40, -1, -1));
+        jPanel2.add(lblLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 840, 580));
+        btnConsultlar.setBackground(new java.awt.Color(212, 100, 107));
+        btnConsultlar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConsultlar.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultlar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        btnConsultlar.setText("Consultar");
+        jPanel2.add(btnConsultlar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 540, 130, 40));
+        jPanel2.add(jSpinner2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, -1, -1));
+        jPanel2.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 330, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 880, 630));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 1060, 590));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 630));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgConsultaTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgConsultaTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgConsultaTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgConsultaTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgConsultaTramites dialog = new DlgConsultaTramites(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        FrmMenu menu = new FrmMenu();
+        menu.setVisible(true);
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConsultlar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -190,6 +197,9 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JLabel lblBuscarRFC;
     private javax.swing.JLabel lblConsultasTramites;
     private javax.swing.JLabel lblLicencias;
     private javax.swing.JLabel lblPlacas;

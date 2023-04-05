@@ -36,7 +36,7 @@ public class Pago implements Serializable {
     private float monto;
 
     @Column(name = "fechaRealizacion", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Calendar fechaRealizacion;
 
     @OneToOne(cascade = CascadeType.PERSIST)

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="844ad6e3-a5a2-45ee-b3ca-053c40bc2154">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     tramites.`id` AS tramites_id,
+     tramites.`id` AS tramites_id,
+     tramites.`tipo` AS tramites_tipo,
+     tramites.`tipo` AS tramites_tipo,
+     tramites.`costo` AS tramites_costo,
+     tramites.`costo` AS tramites_costo,
+     tramites.`estado` AS tramites_estado,
+     tramites.`estado` AS tramites_estado,
+     tramites.`idPersona` AS tramites_idPersona,
+     tramites.`idPersona` AS tramites_idPersona,
+     personas.`id` AS personas_id,
+     personas.`id` AS personas_id,
+     personas.`curp` AS personas_curp,
+     personas.`curp` AS personas_curp,
+     personas.`fechaNacimiento` AS personas_fechaNacimiento,
+     personas.`fechaNacimiento` AS personas_fechaNacimiento,
+     personas.`nombre` AS personas_nombre,
+     personas.`nombre` AS personas_nombre,
+     personas.`rfc` AS personas_rfc,
+     personas.`rfc` AS personas_rfc,
+     personas.`telefono` AS personas_telefono,
+     personas.`telefono` AS personas_telefono
+FROM
+     `personas` personas INNER JOIN `tramites` tramites ON personas.`id` = tramites.`idPersona`]]>
+	</queryString>
+	<field name="tramites_tipo" class="java.lang.String"/>
+	<field name="personas_nombre" class="java.lang.String"/>
+	<field name="tramites_costo" class="java.lang.Float"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="81" y="17" width="399" height="33" uuid="b62eb4ce-5199-456f-b982-7f70b6cceac3"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Reporte de Trámites Realizados]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="a1eb1544-882c-47c2-9b7c-423f3dedf614"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="111" height="15" uuid="3a96ee10-192f-4e31-b926-e3345785c061"/>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="111" y="19" width="132" height="15" uuid="e07303bb-c62d-46de-beee-58068bdb15d8"/>
+				<text><![CDATA[Nombre del Solicitante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="444" y="19" width="111" height="15" uuid="854e87d0-0829-40d6-8207-ca749ac6fe1c"/>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="f0f6b1b9-29f5-48c2-80ed-4cbc0ac4f1f9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="111" height="15" uuid="07665c39-bac4-42f8-9ceb-9bfed3b7628b"/>
+				<textFieldExpression><![CDATA[$F{tramites_tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="111" y="0" width="333" height="15" uuid="ce515e1f-eebb-44d6-951e-5994e4ef3833"/>
+				<textFieldExpression><![CDATA[$F{personas_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="444" y="0" width="111" height="15" uuid="56200c4f-a57f-4673-a8b4-11ff72d6f445"/>
+				<textFieldExpression><![CDATA[$F{tramites_costo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="16" width="100" height="20" uuid="c862ac2f-98dd-4b81-8311-685e8ab9d73a"/>
+				<textFieldExpression><![CDATA[$F{field}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="97258f32-d2d3-482c-b716-8f7efe8a82c4"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="7dbdc9cc-cee3-4669-8d84-188bc3cfb8ab"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="bc167c3d-fa96-403b-9415-2f409f7e3361"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="66ec5d18-add8-429f-b911-526c6548b791"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

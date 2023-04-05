@@ -5,6 +5,8 @@
  */
 package org.itson.GUI;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author koine
@@ -12,11 +14,14 @@ package org.itson.GUI;
 public class DlgReporteTramites extends javax.swing.JDialog {
 
     /**
-     * Creates new form DlgReporteTramites
+     * Método que crea el JDialos DlgReporteTramites.
+     * @param parent
+     * @param modal 
      */
     public DlgReporteTramites(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("REPORTES");
     }
 
     /**
@@ -38,12 +43,15 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         txtNombre = new javax.swing.JTextField();
         lblTramite = new javax.swing.JLabel();
         cbxTramite = new javax.swing.JComboBox<>();
+        txtFechaInicio = new com.toedter.calendar.JDateChooser();
+        txtFechaFin = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        btnRegresar = new javax.swing.JButton();
+        btnVisualizacionPrevia = new javax.swing.JButton();
         btnDescargarPdf = new javax.swing.JButton();
         lblReporteTramite = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        btnRegresar = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -66,11 +74,11 @@ public class DlgReporteTramites extends javax.swing.JDialog {
 
         lblInicioPeriodo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblInicioPeriodo.setText("Inicio:");
-        jPanel3.add(lblInicioPeriodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
+        jPanel3.add(lblInicioPeriodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, -1, -1));
 
         lblPeriodoTiempo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblPeriodoTiempo.setText("Periodo de tiempo");
-        jPanel3.add(lblPeriodoTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1, -1));
+        jPanel3.add(lblPeriodoTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, -1, -1));
 
         lblFinPeriodo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblFinPeriodo.setText("Fin:");
@@ -83,9 +91,30 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         lblTramite.setText("Tramite:");
         jPanel3.add(lblTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, -1));
 
-        cbxTramite.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cbxTramite.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cbxTramite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Expedición de licencia", "Expedición de placa" }));
+        cbxTramite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTramiteActionPerformed(evt);
+            }
+        });
         jPanel3.add(cbxTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 190, 40));
+
+        txtFechaInicio.setDateFormatString("yyyy-MM-dd");
+        txtFechaInicio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFechaInicioKeyPressed(evt);
+            }
+        });
+        jPanel3.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 120, -1));
+
+        txtFechaFin.setDateFormatString("yyyy-MM-dd");
+        txtFechaFin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFechaFinKeyPressed(evt);
+            }
+        });
+        jPanel3.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 120, -1));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 720, 170));
 
@@ -98,33 +127,55 @@ public class DlgReporteTramites extends javax.swing.JDialog {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Fecha Realización", "Tipo", "Nombre", "Costo"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 690, 210));
 
-        btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegresar.setText("Regresar");
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 490, 134, 49));
+        btnVisualizacionPrevia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVisualizacionPrevia.setForeground(new java.awt.Color(212, 100, 107));
+        btnVisualizacionPrevia.setText("Visualización previa");
+        btnVisualizacionPrevia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(212, 100, 107)));
+        btnVisualizacionPrevia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVisualizacionPreviaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnVisualizacionPrevia, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, 170, 30));
 
         btnDescargarPdf.setBackground(new java.awt.Color(212, 100, 107));
-        btnDescargarPdf.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnDescargarPdf.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDescargarPdf.setForeground(new java.awt.Color(255, 255, 255));
+        btnDescargarPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/descargar-pdf.png"))); // NOI18N
         btnDescargarPdf.setText("Descargar PDF");
-        jPanel2.add(btnDescargarPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 490, 139, 48));
+        jPanel2.add(btnDescargarPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 500, 170, 40));
 
         lblReporteTramite.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblReporteTramite.setText("Reportes de trámites");
         jPanel2.add(lblReporteTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, -1, -1));
 
-        jPanel4.setBackground(new java.awt.Color(251, 183, 183));
-        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 470, 240, 60));
+        btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
+        btnRegresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/volver.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 500, 130, 40));
+        jPanel2.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, -1, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 830, 550));
 
@@ -134,57 +185,45 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgReporteTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgReporteTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgReporteTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgReporteTramites.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void txtFechaInicioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaInicioKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtFechaInicio.transferFocus();
         }
-        //</editor-fold>
+    }//GEN-LAST:event_txtFechaInicioKeyPressed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgReporteTramites dialog = new DlgReporteTramites(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void txtFechaFinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaFinKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtFechaFin.transferFocus();
+        }
+    }//GEN-LAST:event_txtFechaFinKeyPressed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        FrmMenu menu = new FrmMenu();
+        menu.setVisible(true);
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void cbxTramiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTramiteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxTramiteActionPerformed
+
+    private void btnVisualizacionPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizacionPreviaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVisualizacionPreviaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDescargarPdf;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton btnVisualizacionPrevia;
     private javax.swing.JComboBox<String> cbxTramite;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblFinPeriodo;
     private javax.swing.JLabel lblInicioPeriodo;
@@ -192,6 +231,8 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     private javax.swing.JLabel lblPeriodoTiempo;
     private javax.swing.JLabel lblReporteTramite;
     private javax.swing.JLabel lblTramite;
+    private com.toedter.calendar.JDateChooser txtFechaFin;
+    private com.toedter.calendar.JDateChooser txtFechaInicio;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

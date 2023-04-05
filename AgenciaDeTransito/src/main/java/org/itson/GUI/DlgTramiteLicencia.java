@@ -5,6 +5,12 @@
  */
 package org.itson.GUI;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.itson.utils.Validadores;
+
 /**
  *
  * @author koine
@@ -12,11 +18,128 @@ package org.itson.GUI;
 public class DlgTramiteLicencia extends javax.swing.JDialog {
 
     /**
-     * Creates new form DlgTramiteLicencia
+     * Método que crea el JDialog DlgTramiteLicencia.
+     *
+     * @param parent
+     * @param modal
      */
     public DlgTramiteLicencia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("LICENCIA");
+        txtCosto.setText("$0.00");
+    }
+
+    /**
+     * Método que extrae los datos del JDialog.
+     *
+     * @return datos.
+     */
+    private HashMap<String, String> extraerDatos() {
+        String rfc = this.txtRfc.getText();
+        String tipo = this.cbxTipo.getSelectedItem().toString();
+        String vigencia = this.cbxVigencia.getSelectedItem().toString();
+
+        HashMap<String, String> datos = new HashMap<>();
+        datos.put("rfc", rfc);
+        datos.put("tipo", tipo);
+        datos.put("vigencia", vigencia);
+
+        return datos;
+    }
+
+    /**
+     * Método que valida los datos del JDialog.
+     *
+     * @param datos Datos a validar.
+     * @return errores encontrados al momento de validar.
+     */
+    private List<String> validarDatos(HashMap<String, String> datos) {
+        List<String> erroresValidacion = new LinkedList<>();
+        String rfc = datos.get("rfc");
+        String tipo = datos.get("tipo");
+        String vigencia = datos.get("vigencia");
+
+        if (Validadores.esTextoVacio(rfc)) {
+            erroresValidacion.add("Datos vacíos");
+        }
+        if (!Validadores.esRFC(rfc)) {
+            erroresValidacion.add("Formato de RFC incorrecto");
+        }
+        if (Validadores.excedeLimite(rfc, 13)) {
+            erroresValidacion.add("El RFC excede el límite de caracteres");
+        }
+
+        return erroresValidacion;
+    }
+
+    /**
+     * Método que muestra los errores de validación.
+     *
+     * @param erroresValidacion Lista con los errores de validación.
+     */
+    private void mostrarErroresValidacion(List<String> erroresValidacion) {
+        String mensaje = String.join("\n", erroresValidacion);
+
+        JOptionPane.showMessageDialog(
+                this,
+                mensaje,
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Método que lleva a cabo el trámite de licencia.
+     */
+    private void tramitarLicencia() {
+        //NO TERMINADO, SÓLO VALIDA.
+        HashMap<String, String> datos = this.extraerDatos();
+
+        List<String> erroresValidacion = this.validarDatos(datos);
+        if (!erroresValidacion.isEmpty()) {
+            this.mostrarErroresValidacion(erroresValidacion);
+        }
+
+    }
+
+    /**
+     * Método que calcula los costos de las licencias dependiendo el tipo y la
+     * vigencia seleccionada.
+     */
+    private void calcularCosto() {
+        Double costo;
+        if (cbxTipo.getSelectedIndex() == 1 && cbxVigencia.getSelectedIndex() == 1) {
+            costo = 600.00;
+            txtCosto.setText("$" + costo);
+        } else if (cbxTipo.getSelectedIndex() == 1 && cbxVigencia.getSelectedIndex() == 2) {
+            costo = 900.00;
+            txtCosto.setText("$" + costo);
+        } else if (cbxTipo.getSelectedIndex() == 1 && cbxVigencia.getSelectedIndex() == 3) {
+            costo = 1100.00;
+            txtCosto.setText("$" + costo);
+        } else if (cbxTipo.getSelectedIndex() == 2 && cbxVigencia.getSelectedIndex() == 1) {
+            costo = 200.00;
+            txtCosto.setText("$" + costo);
+        } else if (cbxTipo.getSelectedIndex() == 2 && cbxVigencia.getSelectedIndex() == 2) {
+            costo = 500.00;
+            txtCosto.setText("$" + costo);
+        } else if (cbxTipo.getSelectedIndex() == 2 && cbxVigencia.getSelectedIndex() == 3) {
+            costo = 700.00;
+            txtCosto.setText("$" + costo);
+        } else {
+            txtCosto.setText("$0.00");
+        }
+    }
+
+    /**
+     * Método que vacía los datos del JDialog.
+     */
+    private void vaciarDatos() {
+        txtRfc.setText(null);
+        txtNombreCom.setText(null);
+        txtCosto.setText("$0.00");
+        cbxTipo.setSelectedIndex(0);
+        cbxVigencia.setSelectedIndex(0);
     }
 
     /**
@@ -41,11 +164,12 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         cbxTipo = new javax.swing.JComboBox<>();
         txtRfc = new javax.swing.JTextField();
         txtNombreCom = new javax.swing.JTextField();
-        lblCosto = new javax.swing.JLabel();
         txtCosto = new javax.swing.JTextField();
+        btnCalcularCosto = new javax.swing.JButton();
+        lblBuscarRFC = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
-        btnAceptar = new javax.swing.JButton();
-        lblVaciar = new javax.swing.JLabel();
+        btnVaciar = new javax.swing.JButton();
+        btnTramitar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -69,63 +193,109 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("Datos del solicitante");
-        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, -1, -1));
 
         lblRfc.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblRfc.setText("RFC:");
-        jPanel3.add(lblRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+        jPanel3.add(lblRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         lblNombreC.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblNombreC.setText("Nombre completo:");
-        jPanel3.add(lblNombreC, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jPanel3.add(lblNombreC, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
         lbltipoLicencia.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbltipoLicencia.setText("Seleccione el tipo de licencia");
-        jPanel3.add(lbltipoLicencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
+        lbltipoLicencia.setText("Tipo de licencia");
+        jPanel3.add(lbltipoLicencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Seleccione la vigencia");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, -1, -1));
+        jLabel2.setText("Vigencia");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, -1, -1));
 
-        cbxVigencia.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        cbxVigencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 año", "2 años", "3 años" }));
-        jPanel3.add(cbxVigencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 110, 30));
+        cbxVigencia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxVigencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "1 año", "2 años", "3 años" }));
+        jPanel3.add(cbxVigencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 110, 30));
 
-        cbxTipo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Discapacitado" }));
-        jPanel3.add(cbxTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 110, 30));
+        cbxTipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Normal", "Discapacitado" }));
+        cbxTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTipoActionPerformed(evt);
+            }
+        });
+        jPanel3.add(cbxTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, 110, 30));
 
         txtRfc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 260, 40));
+        jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, 230, 40));
 
+        txtNombreCom.setEditable(false);
         txtNombreCom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel3.add(txtNombreCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 160, 40));
+        jPanel3.add(txtNombreCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 270, 40));
 
-        lblCosto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblCosto.setText("Costo:");
-        jPanel3.add(lblCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 200, -1, -1));
-
+        txtCosto.setEditable(false);
         txtCosto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel3.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 190, 90, 30));
+        txtCosto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCostoActionPerformed(evt);
+            }
+        });
+        jPanel3.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 90, 30));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 560, 230));
+        btnCalcularCosto.setBackground(new java.awt.Color(212, 100, 107));
+        btnCalcularCosto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCalcularCosto.setForeground(new java.awt.Color(255, 255, 255));
+        btnCalcularCosto.setText("Calcular Costo");
+        btnCalcularCosto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularCostoActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnCalcularCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, 120, 30));
+
+        lblBuscarRFC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        lblBuscarRFC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblBuscarRFCMouseClicked(evt);
+            }
+        });
+        jPanel3.add(lblBuscarRFC, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, -1, -1));
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 560, 270));
 
         btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRegresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/volver.png"))); // NOI18N
         btnRegresar.setText("Regresar");
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 140, 50));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 130, 40));
 
-        btnAceptar.setBackground(new java.awt.Color(212, 100, 107));
-        btnAceptar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnAceptar.setForeground(new java.awt.Color(255, 255, 255));
-        btnAceptar.setText("Aceptar");
-        jPanel2.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 330, 150, 50));
+        btnVaciar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVaciar.setForeground(new java.awt.Color(212, 100, 107));
+        btnVaciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vaciar.png"))); // NOI18N
+        btnVaciar.setText("Vaciar");
+        btnVaciar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(212, 100, 107)));
+        btnVaciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVaciarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 100, 30));
 
-        lblVaciar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblVaciar.setForeground(new java.awt.Color(156, 51, 57));
-        lblVaciar.setText("Vaciar");
-        jPanel2.add(lblVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 350, -1, -1));
+        btnTramitar.setBackground(new java.awt.Color(212, 100, 107));
+        btnTramitar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTramitar.setForeground(new java.awt.Color(255, 255, 255));
+        btnTramitar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Aceptar.png"))); // NOI18N
+        btnTramitar.setText("Tramitar");
+        btnTramitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTramitarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnTramitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 130, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 600, 400));
 
@@ -135,51 +305,46 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgTramiteLicencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgTramiteLicencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgTramiteLicencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgTramiteLicencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
+        // TODO add your handling code here:
+        tramitarLicencia();
+    }//GEN-LAST:event_btnTramitarActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgTramiteLicencia dialog = new DlgTramiteLicencia(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        FrmRealizarTramite realizarTramite = new FrmRealizarTramite();
+        realizarTramite.setVisible(true);
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
+        // TODO add your handling code here:
+        vaciarDatos();
+    }//GEN-LAST:event_btnVaciarActionPerformed
+
+    private void cbxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxTipoActionPerformed
+
+    private void btnCalcularCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularCostoActionPerformed
+        // TODO add your handling code here:
+        calcularCosto();
+    }//GEN-LAST:event_btnCalcularCostoActionPerformed
+
+    private void txtCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCostoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCostoActionPerformed
+
+    private void lblBuscarRFCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarRFCMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_lblBuscarRFCMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnCalcularCosto;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton btnTramitar;
+    private javax.swing.JButton btnVaciar;
     private javax.swing.JComboBox<String> cbxTipo;
     private javax.swing.JComboBox<String> cbxVigencia;
     private javax.swing.JLabel jLabel2;
@@ -187,11 +352,10 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JLabel lblCosto;
+    private javax.swing.JLabel lblBuscarRFC;
     private javax.swing.JLabel lblNombreC;
     private javax.swing.JLabel lblRfc;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblVaciar;
     private javax.swing.JLabel lbltipoLicencia;
     private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtNombreCom;

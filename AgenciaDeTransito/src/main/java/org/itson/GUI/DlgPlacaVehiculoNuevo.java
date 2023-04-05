@@ -5,18 +5,133 @@
  */
 package org.itson.GUI;
 
+import java.awt.event.KeyEvent;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.itson.implementaciones.PlacasDAO;
+import org.itson.utils.Validadores;
+
 /**
  *
  * @author koine
  */
 public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DlgPlacaVehiculoNuevo
-     */
+   /**
+    * Crea el JDialog DlgPlacaVehiculoNuevo
+    * @param parent
+    * @param modal 
+    */
     public DlgPlacaVehiculoNuevo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("VEHÍCULO NUEVO");
+        txtCosto.setText("$1500.00");
+        establecerFechaRecepcion();
+        PlacasDAO placaDAO = new PlacasDAO();
+        txtPlaca.setText(placaDAO.generarPlaca());
+    }
+
+    /**
+     * Método que establece la fecha de recepción para la fecha en la que se
+     * solicite la placa para un vehículo nuevo.
+     */
+    private void establecerFechaRecepcion() {
+        jdcFechaRecepcion.setDate(new Date());
+        jdcFechaRecepcion.setMinSelectableDate(new Date());
+        jdcFechaRecepcion.setMaxSelectableDate(new Date());
+    }
+
+    /**
+     * Método que extrae los datos del JDialog.
+     *
+     * @return datos.
+     */
+    private HashMap<String, String> extraerDatos() {
+        String rfc = this.txtRfc.getText();
+        String noSerie = this.txtNoSerie.getText();
+
+        HashMap<String, String> datos = new HashMap<>();
+        datos.put("rfc", rfc);
+        datos.put("noSerie", noSerie);
+
+        return datos;
+    }
+
+    /**
+     * Método que valida los datos del JDialog.
+     *
+     * @param datos Datos a validar.
+     * @return errores encontrados al momento de validar.
+     */
+    private List<String> validarDatos(HashMap<String, String> datos) {
+        List<String> erroresValidacion = new LinkedList<>();
+        String rfc = datos.get("rfc");
+        String noSerie = datos.get("noSerie");
+
+        if (Validadores.esTextoVacio(rfc) || Validadores.esTextoVacio(noSerie)) {
+            erroresValidacion.add("Datos vacíos");
+        }
+        if (!Validadores.esRFC(rfc)) {
+            erroresValidacion.add("Formato de RFC incorrecto");
+        }
+        if (!Validadores.esNoSerie(noSerie)) {
+            erroresValidacion.add("Formato de no. Serie incorrecto");
+        }
+        if (Validadores.excedeLimite(rfc, 13)) {
+            erroresValidacion.add("El RFC excede el límite de caracteres");
+        }
+        if (Validadores.excedeLimite(noSerie, 7)) {
+            erroresValidacion.add("El no. Serie excede el límite de caracteres");
+        }
+
+        return erroresValidacion;
+
+    }
+
+    /**
+     * Método que muestra los errores de validación.
+     *
+     * @param erroresValidacion Lista con los errores de validación.
+     */
+    private void mostrarErroresValidacion(List<String> erroresValidacion) {
+        String mensaje = String.join("\n", erroresValidacion);
+
+        JOptionPane.showMessageDialog(
+                this,
+                mensaje,
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Método que lleva a cabo el trámite de placa de vehículo nuevo.
+     */
+    private void tramitarPlacaVehiculoNuevo() {
+        //NO TERMINADO, SÓLO VALIDA.
+        HashMap<String, String> datos = this.extraerDatos();
+
+        List<String> erroresValidacion = this.validarDatos(datos);
+        if (!erroresValidacion.isEmpty()) {
+            this.mostrarErroresValidacion(erroresValidacion);
+        }
+    }
+
+    /**
+     * Método que vacía los textFields del JDialog.
+     */
+    private void vaciarDatos() {
+        txtRfc.setText(null);
+        txtNombre.setText(null);
+        txtLicencia.setText(null);
+        txtNoSerie.setText(null);
+        txtMarca.setText(null);
+        txtLinea.setText(null);
+        txtColor.setText(null);
+        txtModelo.setText(null);
     }
 
     /**
@@ -40,15 +155,14 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         lblPlaca = new javax.swing.JLabel();
         lblFechaRecepcion = new javax.swing.JLabel();
         txtPlaca = new javax.swing.JTextField();
+        jdcFechaRecepcion = new com.toedter.calendar.JDateChooser();
         lblVehiculo = new javax.swing.JLabel();
         cbxVehiculo = new javax.swing.JComboBox<>();
         lblCosto = new javax.swing.JLabel();
         txtCosto = new javax.swing.JTextField();
         lblNoSerie = new javax.swing.JLabel();
         txtNoSerie = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         txtRfc = new javax.swing.JTextField();
-        btnValidar = new javax.swing.JButton();
         txtNombre = new javax.swing.JTextField();
         txtLicencia = new javax.swing.JTextField();
         lblMarca = new javax.swing.JLabel();
@@ -59,11 +173,13 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         txtLinea = new javax.swing.JTextField();
         txtColor = new javax.swing.JTextField();
         txtModelo = new javax.swing.JTextField();
+        lblBuscarRFC = new javax.swing.JLabel();
+        lblBuscarNoSerie = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnTramitar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
-        btnAceptar = new javax.swing.JButton();
-        lblVaciar = new javax.swing.JLabel();
+        btnVaciar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -111,10 +227,19 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         lblFechaRecepcion.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFechaRecepcion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblFechaRecepcion.setText("Fecha de recepción:");
-        jPanel4.add(lblFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 120, 30));
+        jPanel4.add(lblFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 120, 20));
 
+        txtPlaca.setEditable(false);
         txtPlaca.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jPanel4.add(txtPlaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 120, 30));
+        jPanel4.add(txtPlaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 120, 30));
+
+        jdcFechaRecepcion.setDateFormatString("yyyy-MM-dd");
+        jdcFechaRecepcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jdcFechaRecepcionKeyPressed(evt);
+            }
+        });
+        jPanel4.add(jdcFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 110, 30));
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 250, 90));
 
@@ -135,26 +260,14 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         jPanel3.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, 90, 30));
 
         lblNoSerie.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblNoSerie.setText("No.Serie:");
+        lblNoSerie.setText("No. Serie:");
         jPanel3.add(lblNoSerie, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, -1, -1));
 
         txtNoSerie.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel3.add(txtNoSerie, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 200, 40));
 
-        jButton1.setBackground(new java.awt.Color(212, 100, 107));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("?");
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, -1, 40));
-
         txtRfc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 130, 40));
-
-        btnValidar.setBackground(new java.awt.Color(212, 100, 107));
-        btnValidar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnValidar.setForeground(new java.awt.Color(255, 255, 255));
-        btnValidar.setText("?");
-        jPanel3.add(btnValidar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, 40, 40));
 
         txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -196,10 +309,16 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         txtModelo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel3.add(txtModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 200, 110, 30));
 
+        lblBuscarRFC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        jPanel3.add(lblBuscarRFC, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, -1, -1));
+
+        lblBuscarNoSerie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        jPanel3.add(lblBuscarNoSerie, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, -1, -1));
+
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 670, 330));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Tramite de placa:");
+        jLabel1.setText("Trámite de placa:");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -207,22 +326,41 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         jLabel2.setText("Vehículo nuevo");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, -1, -1));
 
+        btnTramitar.setBackground(new java.awt.Color(212, 100, 107));
+        btnTramitar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTramitar.setForeground(new java.awt.Color(255, 255, 255));
+        btnTramitar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Aceptar.png"))); // NOI18N
+        btnTramitar.setText("Tramitar");
+        btnTramitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTramitarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnTramitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 420, 130, 40));
+
         btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRegresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/volver.png"))); // NOI18N
         btnRegresar.setText("Regresar");
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 140, 40));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 130, 40));
 
-        btnAceptar.setBackground(new java.awt.Color(212, 100, 107));
-        btnAceptar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAceptar.setForeground(new java.awt.Color(255, 255, 255));
-        btnAceptar.setText("Aceptar");
-        jPanel2.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 410, 140, 40));
-
-        lblVaciar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblVaciar.setForeground(new java.awt.Color(156, 51, 57));
-        lblVaciar.setText("Vaciar");
-        jPanel2.add(lblVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, -1, -1));
+        btnVaciar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVaciar.setForeground(new java.awt.Color(212, 100, 107));
+        btnVaciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vaciar.png"))); // NOI18N
+        btnVaciar.setText("Vaciar");
+        btnVaciar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(212, 100, 107)));
+        btnVaciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVaciarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 430, 100, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 710, 470));
 
@@ -232,60 +370,44 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jdcFechaRecepcionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jdcFechaRecepcionKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jdcFechaRecepcion.transferFocus();
         }
-        //</editor-fold>
+    }//GEN-LAST:event_jdcFechaRecepcionKeyPressed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgPlacaVehiculoNuevo dialog = new DlgPlacaVehiculoNuevo(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        DlgRegistroVehiculo registroVehiculo = new DlgRegistroVehiculo(new javax.swing.JFrame(), true);
+        registroVehiculo.setVisible(true);
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
+        // TODO add your handling code here:
+        tramitarPlacaVehiculoNuevo();
+    }//GEN-LAST:event_btnTramitarActionPerformed
+
+    private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
+        // TODO add your handling code here:
+        vaciarDatos();
+    }//GEN-LAST:event_btnVaciarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton btnValidar;
+    private javax.swing.JButton btnTramitar;
+    private javax.swing.JButton btnVaciar;
     private javax.swing.JComboBox<String> cbxVehiculo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private com.toedter.calendar.JDateChooser jdcFechaRecepcion;
+    private javax.swing.JLabel lblBuscarNoSerie;
+    private javax.swing.JLabel lblBuscarRFC;
     private javax.swing.JLabel lblColor;
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblDatosSolicitante;
@@ -299,7 +421,6 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPlaca;
     private javax.swing.JLabel lblRfc;
-    private javax.swing.JLabel lblVaciar;
     private javax.swing.JLabel lblVehiculo;
     private javax.swing.JTextField txtColor;
     private javax.swing.JTextField txtCosto;

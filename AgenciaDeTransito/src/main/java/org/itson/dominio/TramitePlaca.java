@@ -32,11 +32,11 @@ public class TramitePlaca extends Tramite implements Serializable {
     private String placa;
 
     @Column(name = "fechaEmision", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Calendar fechaEmision;
 
     @Column(name = "fechaRecepcion", nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Calendar fechaRecepcion;
 
     @ManyToOne()

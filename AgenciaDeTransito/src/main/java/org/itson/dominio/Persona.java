@@ -32,7 +32,7 @@ public class Persona implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
     @Column(name = "apellidoPaterno", nullable = false, length = 100)
@@ -42,14 +42,11 @@ public class Persona implements Serializable {
     private String apellidoMaterno;
 
     @Column(name = "fechaNacimiento", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Calendar fechaNacimiento;
 
     @Column(name = "telefono", nullable = false, length = 10)
     private String telefono;
-
-    @Column(name = "curp", nullable = false, length = 18)
-    private String curp;
 
     @Column(name = "rfc", nullable = false, length = 13)
     private String rfc;
@@ -75,31 +72,29 @@ public class Persona implements Serializable {
      * @param fechaNacimiento Fecha de nacimiento de la persona con el formato
      * yyyy-MM-dd.
      * @param telefono Cadena de texto con el número telefónico de la persona.
-     * @param curp Cadena de texto con la Clave Única de Registro de Población
-     * de la persona.
      * @param rfc Cadena de texto con el Registro Federal de Contribuyentes de
      * la persona.
      */
-    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono, String curp, String rfc) {
+    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono,String rfc) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
         this.telefono = telefono;
-        this.curp = curp;
         this.rfc = rfc;
     }
 
-    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono, String curp, String rfc, List<Tramite> tramites) {
+    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono, String rfc, List<Tramite> tramites) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
         this.telefono = telefono;
-        this.curp = curp;
         this.rfc = rfc;
         this.tramites = tramites;
     }
+    
+    
 
     /**
      * Método que obtiene el id de la persona.
@@ -210,26 +205,6 @@ public class Persona implements Serializable {
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    /**
-     * Método que obtiene la Clave Única de Registro Pública de la persona.
-     *
-     * @return Cadena de texto con la Clave Única de Registro Pública de la
-     * persona.
-     */
-    public String getCurp() {
-        return curp;
-    }
-
-    /**
-     * Método que establece la Clave Única de Registro Pública de la persona.
-     *
-     * @param curp Cadena de texto con la Clave Única de Registro Pública de la
-     * persona.
-     */
-    public void setCurp(String curp) {
-        this.curp = curp;
     }
 
     /**

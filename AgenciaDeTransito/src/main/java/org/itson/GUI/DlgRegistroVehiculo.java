@@ -5,6 +5,12 @@
  */
 package org.itson.GUI;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.itson.utils.Validadores;
+
 /**
  *
  * @author koine
@@ -12,11 +18,114 @@ package org.itson.GUI;
 public class DlgRegistroVehiculo extends javax.swing.JDialog {
 
     /**
-     * Creates new form DlgRegistroVehiculo
+     * Método que crea el JDialog DlgRegistroVehiculo.
+     *
+     * @param parent
+     * @param modal
      */
     public DlgRegistroVehiculo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("REGISTRO");
+    }
+
+    /**
+     * Método que extrae los datos del JDialog.
+     *
+     * @return datos.
+     */
+    private HashMap<String, String> extraerDatos() {
+        String noSerie = this.txtNoSerie.getText();
+        String marca = this.txtMarca.getText();
+        String linea = this.txtLinea.getText();
+        String color = this.txtColor.getText();
+        String modelo = this.txtModelo.getText();
+
+        HashMap<String, String> datos = new HashMap<>();
+        datos.put("noSerie", noSerie);
+        datos.put("marca", marca);
+        datos.put("linea", linea);
+        datos.put("color", color);
+        datos.put("modelo", modelo);
+
+        return datos;
+    }
+
+    /**
+     * Método que valida los datos del JDialog.
+     *
+     * @param datos Datos a validar.
+     * @return errores encontrados al momento de validar.
+     */
+    private List<String> validarDatos(HashMap<String, String> datos) {
+        List<String> erroresValidacion = new LinkedList<>();
+        String noSerie = datos.get("noSerie");
+        String marca = datos.get("marca");
+        String linea = datos.get("linea");
+        String color = datos.get("color");
+        String modelo = datos.get("modelo");
+
+        if (Validadores.esTextoVacio(noSerie) || Validadores.esTextoVacio(marca) || Validadores.esTextoVacio(linea) || Validadores.esTextoVacio(color) || Validadores.esTextoVacio(modelo)) {
+            erroresValidacion.add("Datos vacíos");
+        }
+        if (!Validadores.esNoSerie(noSerie)) {
+            erroresValidacion.add("Formato de no. Serie incorrecto");
+        }
+        if (Validadores.excedeLimite(noSerie, 7)) {
+            erroresValidacion.add("El no. Serie excede el límite de caracteres");
+        }
+
+        return erroresValidacion;
+    }
+
+    /**
+     * Método que muestra los errores de validación.
+     *
+     * @param erroresValidacion Lista con los errores de validación.
+     */
+    private void mostrarErroresValidacion(List<String> erroresValidacion) {
+        String mensaje = String.join("\n", erroresValidacion);
+
+        JOptionPane.showMessageDialog(
+                this,
+                mensaje,
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Método que lleva a cabo el registro del vehículo.
+     */
+    private void registrarVehiculo() {
+        //NO TERMINADO, SÓLO VALIDA.
+        HashMap<String, String> datos = this.extraerDatos();
+
+        List<String> erroresValidacion = this.validarDatos(datos);
+        if (!erroresValidacion.isEmpty()) {
+            this.mostrarErroresValidacion(erroresValidacion);
+        } else {
+            mostrarPantallaPlacaVehiculoNuevo();
+        }
+    }
+
+    /**
+     * Método que vacía los textFields del JDialog.
+     */
+    private void vaciarDatos() {
+        txtNoSerie.setText(null);
+        txtMarca.setText(null);
+        txtLinea.setText(null);
+        txtColor.setText(null);
+        txtModelo.setText(null);
+    }
+
+    /**
+     * Método que muestra la pantalla del trámite de placa para vehículo nuevo.
+     */
+    private void mostrarPantallaPlacaVehiculoNuevo() {
+        this.dispose();
+        DlgPlacaVehiculoNuevo placaVehiculoNuevo = new DlgPlacaVehiculoNuevo(new javax.swing.JFrame(), true);
+        placaVehiculoNuevo.setVisible(true);
     }
 
     /**
@@ -46,8 +155,8 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         cbxVehiculo = new javax.swing.JComboBox<>();
         lblRegistroVehiculo = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
+        btnVaciar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
-        lblVaciar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -73,7 +182,7 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         jPanel3.add(lblVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
 
         lblNoSerie.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblNoSerie.setText("No.Serie:");
+        lblNoSerie.setText("No. Serie:");
         jPanel3.add(lblNoSerie, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
         lblMarca.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -107,8 +216,8 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         txtModelo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(txtModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 190, 160, 30));
 
-        cbxVehiculo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        cbxVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Automovil" }));
+        cbxVehiculo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Automóvil" }));
         jPanel3.add(cbxVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 120, 30));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 580, 270));
@@ -118,21 +227,40 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         jPanel2.add(lblRegistroVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
 
         btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRegresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/volver.png"))); // NOI18N
         btnRegresar.setText("Regresar");
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 140, 50));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 130, 40));
+
+        btnVaciar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVaciar.setForeground(new java.awt.Color(212, 100, 107));
+        btnVaciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vaciar.png"))); // NOI18N
+        btnVaciar.setText("Vaciar");
+        btnVaciar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(212, 100, 107)));
+        btnVaciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVaciarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 390, 100, 30));
 
         btnRegistrar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegistrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Aceptar.png"))); // NOI18N
         btnRegistrar.setText("Registrar");
-        jPanel2.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 370, 150, 50));
-
-        lblVaciar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblVaciar.setForeground(new java.awt.Color(156, 51, 57));
-        lblVaciar.setText("Vaciar");
-        jPanel2.add(lblVaciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, -1, -1));
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 130, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 640, 440));
 
@@ -142,51 +270,27 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+        registrarVehiculo();
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgRegistroVehiculo dialog = new DlgRegistroVehiculo(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        FrmTramitePlaca tramitePlaca = new FrmTramitePlaca();
+        tramitePlaca.setVisible(true);
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
+        // TODO add your handling code here:
+        vaciarDatos();
+    }//GEN-LAST:event_btnVaciarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton btnVaciar;
     private javax.swing.JComboBox<String> cbxVehiculo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -198,7 +302,6 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblNoSerie;
     private javax.swing.JLabel lblRegistroVehiculo;
-    private javax.swing.JLabel lblVaciar;
     private javax.swing.JLabel lblVehiculo;
     private javax.swing.JTextField txtColor;
     private javax.swing.JTextField txtLinea;

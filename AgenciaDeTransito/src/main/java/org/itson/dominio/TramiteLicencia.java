@@ -5,6 +5,7 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -29,7 +32,11 @@ public class TramiteLicencia extends Tramite implements Serializable {
 
     @Column(name = "vigencia", nullable = false)
     private Integer vigencia;
-
+    
+    @Column(name = "fechaEmision", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Calendar fechaEmision ;
+    
     public TramiteLicencia() {
     }
 
@@ -50,7 +57,13 @@ public class TramiteLicencia extends Tramite implements Serializable {
         this.vigencia = vigencia;
     }
 
-    
+    public Calendar getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(Calendar fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
     
     public TipoLicencia getTipo() {
         return tipo;

@@ -6,12 +6,35 @@
 package org.itson.GUI;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.itson.dominio.EstadoTramite;
+import org.itson.dominio.Pago;
+import org.itson.dominio.Persona;
+import org.itson.dominio.TipoPlaca;
+import org.itson.dominio.TramiteLicencia;
+import org.itson.dominio.TramitePlaca;
+import org.itson.dominio.VehiculoAutomovil;
+import org.itson.excepciones.PersistenciaException;
+import org.itson.implementaciones.ConstantesGUI;
+import org.itson.implementaciones.LicenciasDAO;
+import org.itson.implementaciones.PagosDAO;
+import org.itson.implementaciones.PersonasDAO;
 import org.itson.implementaciones.PlacasDAO;
+import org.itson.implementaciones.VehiculoAutomovilDAO;
+import org.itson.interfaces.ILicenciasDAO;
+import org.itson.interfaces.IPagosDAO;
+import org.itson.interfaces.IPersonasDAO;
+import org.itson.interfaces.IPlacasDAO;
+import org.itson.interfaces.IVehiculoDAO;
+import org.itson.utils.Encriptador;
 import org.itson.utils.Validadores;
 
 /**
@@ -19,7 +42,12 @@ import org.itson.utils.Validadores;
  * @author koine
  */
 public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
-
+    IPersonasDAO personas = new PersonasDAO();
+    ILicenciasDAO licencias = new LicenciasDAO();
+    IPlacasDAO placas = new PlacasDAO();
+    IVehiculoDAO automoviles = new VehiculoAutomovilDAO();
+    IPagosDAO pagos = new PagosDAO();
+    Encriptador encriptador = new Encriptador();
     /**
      * Método que crea el JDialog DlgPlacaVehiculoUsado.
      * @param parent
@@ -111,12 +139,111 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
      * Método que lleva a cabo el trámite de placa de vehículo usado.
      */
     private void tramitarPlacaVehiculoUsado() {
-     //NO TERMINADO, SÓLO VALIDA.
         HashMap<String, String> datos = this.extraerDatos();
 
         List<String> erroresValidacion = this.validarDatos(datos);
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
+        }
+        
+        try{
+            VehiculoAutomovil auto = new VehiculoAutomovil();
+            String placa = datos.get("placa");
+            String rfc = datos.get("rfc");
+            TramitePlaca plac = placas.buscarPlacaPorNumero(placa);
+            
+            String noSerie = plac.getVehiculo().getNoSerie();
+            auto = automoviles.buscarAutomovil(noSerie);
+            
+            if(buscarPersonaRFC().getId().equals(plac.getPersona().getId())){
+                
+                TramitePlaca placaNvo = new TramitePlaca();
+
+                float costo = ConstantesGUI.COSTOVEHICULO_USADO;
+
+                placaNvo.setCosto(costo);
+                placaNvo.setEstado(EstadoTramite.ACTIVO);
+                placaNvo.setFechaEmision(this.jdcFechaEmision.getCalendar());
+                placaNvo.setPersona(buscarPersonaRFC());
+                placaNvo.setPlaca(this.txtPlacaNueva.getText());
+                placaNvo.setTipoPlaca(TipoPlaca.USADO);
+                placaNvo.setVehiculo(auto);
+
+                
+
+                placas.registrarPlaca(placaNvo);
+                registroPagoRealizado(placaNvo);
+
+                registrarPlacaAutomovil();         
+                JOptionPane.showMessageDialog(
+                            this,
+                            "Placa registrada con exito",
+                            "INFORMACION",
+                            JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(
+                this,
+                "ERROR: La placa ingresada no pertence a la persona del rfc ingresado",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+            }
+
+        }catch (PersistenciaException ex){
+            Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                this,
+                "ERROR: No se ha podido registrar la placa nueva, error en algun dato",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
+    /**
+     * Metodo que registra una placa nueva a la lista de placas de un automovil
+     * @throws En caso de que no sea posible agregarla a la lista
+     */
+    private void registrarPlacaAutomovil() throws PersistenciaException{
+        HashMap<String, String> datos = this.extraerDatos();
+        List<TramitePlaca> placasA = new ArrayList<>();
+        VehiculoAutomovil auto = new VehiculoAutomovil();
+        String placa = datos.get("placa");
+        
+        TramitePlaca placaNvo = placas.buscarPlacaPorNumero(placa);
+        String noSerie = placaNvo.getVehiculo().getNoSerie();
+        
+        placaNvo = placas.buscarPlacaPorNumero(this.txtPlacaNueva.getText());
+        auto = automoviles.buscarAutomovil(noSerie);
+        
+        placasA = auto.getPlacas();
+        
+        placasA.add(placaNvo);
+        
+        auto.setPlacas(placasA);
+        automoviles.cambiarListaPlacas(auto);
+    }
+    /**
+     * Metodo que convierte las placas anteriores a inactivas para usar la nueva a registrar
+     * @throws PersistenciaException en caso de que no sea posible cambiar el estado de alguna placa
+     */
+    private void cambiarEstadoPlacaAnterior() throws PersistenciaException {
+        HashMap<String, String> datos = this.extraerDatos();
+        List<TramitePlaca> placasA = new ArrayList<>();
+        VehiculoAutomovil auto = new VehiculoAutomovil();
+        String placa = datos.get("placa");
+        
+        TramitePlaca placaNvo = placas.buscarPlacaPorNumero(placa);
+        String noSerie = placaNvo.getVehiculo().getNoSerie();
+
+        auto = automoviles.buscarAutomovil(noSerie);
+
+        placasA = auto.getPlacas();
+
+        for (int i = 0; i < placasA.size(); i++) {
+            if (placasA.get(i).getEstado().equals(EstadoTramite.ACTIVO)) {
+                placasA.get(i).setEstado(EstadoTramite.INACTIVO);
+                placasA.get(i).setFechaRecepcion(this.jdcFechaRecepcion.getCalendar());
+                placas.cambiarEstadoPlaca(placasA.get(i));
+            }  
         }
     }
 
@@ -125,7 +252,7 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
      */
     private void vaciarDatos() {
         txtRfc.setText(null);
-        txtNombre.setText(null);
+        txtNombreCom.setText(null);
         txtLicencia.setText(null);
         txtPlaca.setText(null);
         txtMarca.setText(null);
@@ -133,7 +260,157 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         txtColor.setText(null);
         txtModelo.setText(null);
     }
+    
+    /**
+     * Metodo que desencripta el nombre de la persona para mostrarlo en los campos de apoyo
+     * @param persona1 la persona que se desencriptara
+     * @return el nombre completo de la persona
+     */
+     private String DesencriptarNombreCompleto(Persona persona1) {
+        
+        String nombre = persona1.getNombre();
+        String apellidoPat = persona1.getApellidoPaterno();
+        String apellidoMat = persona1.getApellidoMaterno();
+        
+        String nomDes = encriptador.desencriptar(nombre);
+        String apellidoPatDes = encriptador.desencriptar(apellidoPat);
+        String apellidoMatDes = encriptador.desencriptar(apellidoMat);
+        
+        String nombreCompleto = nomDes+" "+apellidoPatDes+" "+apellidoMatDes;
+        
+        return nombreCompleto;
+    }
+    /**
+     * Metodo que busca una persona por el rfc ingresado en la interfaz
+     * @return la persona con el rfc ingresado
+     */
+    private Persona buscarPersonaRFC() {
+        HashMap<String, String> datos = extraerDatos();
+        String rfc = datos.get("rfc");
+        try{
+            Persona persona1 = personas.buscarPersona(rfc);
+        
+            return persona1;
+        }catch (PersistenciaException ex){
+            Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                this,
+                "ERROR: No se ha encontrado una persona con el rfc ingresado",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+    /**
+     * Metodo que comprueba que una persona consultada tenga una licencia activa en el momento
+     * @return un verdadero si tiene una activa, falso si no tiene ninguna activa al momento
+     * @throws PersistenciaException en caso de que no haya sido posible encontrar alguna licencia
+     */
+    private boolean comprobarLicenciaPersonaActiva() throws PersistenciaException{
+        Persona persona = buscarPersonaRFC();
+        
+        try{
+            List<TramiteLicencia> licencia = licencias.consultarLicenciasPersona(persona.getRfc());
+            for(int i = 0; i<licencia.size();i++){
+                if(licencia.get(i).getEstado().equals(EstadoTramite.ACTIVO)){
+                    JOptionPane.showMessageDialog(
+                    this,
+                    "Licencia activa para la persona con el rfc ingresado",
+                    "INFORMACION",
+                    JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                }
+                
+            }     
+        }catch (PersistenciaException ex){
+            Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                this,
+                "ERROR: No se ha encontrado una licencia activa para la persona con el rfc ingresado",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return false;
+        
+    }
+    /**
+     * Metodo que escribe vigente o caducado segun el estado de la licencia de la persona consultada
+     */
+    public void buscarDatosPersonaLicencia(){
+        Persona persona1 = buscarPersonaRFC();
 
+        String nombreCompleto = DesencriptarNombreCompleto(persona1);
+        String textoEstado = "";
+        
+        try {
+            if(comprobarLicenciaPersonaActiva()==true){
+                textoEstado = "Vigente";
+            }else{
+                textoEstado = "Caducada";
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        this.txtNombreCom.setText(nombreCompleto);
+
+        this.txtLicencia.setText(textoEstado);
+    }
+    /**
+     * Metodo que busca los datos del automovil a registrarle una placa
+     * @throws PersistenciaException en caso de que no haya sido posible conseguir sus datos
+     */
+    private void buscarDatosAutomovil() throws PersistenciaException{
+        HashMap<String, String> datos = extraerDatos();
+        String placa = datos.get("placa");
+        VehiculoAutomovil auto = new VehiculoAutomovil();
+        try {
+            TramitePlaca plac = placas.buscarPlacaPorNumero(placa);
+            auto = automoviles.buscarAutomovil(plac.getVehiculo().getNoSerie());
+            if (!(auto.getPlacas().isEmpty())) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Automovil encontrado con el numero de serie ingresado",
+                        "INFORMACION",
+                        JOptionPane.INFORMATION_MESSAGE);
+                this.txtPlaca.setText(plac.getPlaca());
+                this.txtColor.setText(auto.getColor());
+                this.txtLinea.setText(auto.getLinea());
+                this.txtMarca.setText(auto.getMarca());
+                this.txtModelo.setText(auto.getModelo());
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "ERROR: El automovil se ha encontrado, pero no cuenta con alguna placa registrada",
+                        "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(
+                this,
+                "ERROR: No se ha encontrado un automovil registrado con el numero de serie ingresado en el sistema",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
+    /**
+     * Metodo que registra el pago realizado del tramite recien realizado
+     * @param placa el tramite a registrar el pago
+     */
+    private void registroPagoRealizado(TramitePlaca placa){
+        Pago pago = new Pago();
+        pago.setMonto(placa.getCosto());
+        pago.setTramite(placa);
+        
+        Calendar fecha1 = Calendar.getInstance();
+        pago.setFechaRealizacion(fecha1);
+        
+        pagos.registarPago(pago);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,7 +442,7 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         lblNoSerie = new javax.swing.JLabel();
         txtPlaca = new javax.swing.JTextField();
         txtRfc = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
+        txtNombreCom = new javax.swing.JTextField();
         txtLicencia = new javax.swing.JTextField();
         lblMarca = new javax.swing.JLabel();
         lblLinea = new javax.swing.JLabel();
@@ -225,7 +502,7 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         lblFechaRecepcion.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFechaRecepcion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblFechaRecepcion.setText("Fecha de recepción:");
-        jPanel4.add(lblFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 120, 20));
+        jPanel4.add(lblFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 120, 20));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Fecha Emision:");
@@ -238,22 +515,8 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         txtPlacaNueva.setEditable(false);
         txtPlacaNueva.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel4.add(txtPlacaNueva, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 110, 30));
-
-        jdcFechaEmision.setDateFormatString("yyyy-MM-dd");
-        jdcFechaEmision.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jdcFechaEmisionKeyPressed(evt);
-            }
-        });
-        jPanel4.add(jdcFechaEmision, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 120, 30));
-
-        jdcFechaRecepcion.setDateFormatString("yyyy-MM-dd");
-        jdcFechaRecepcion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jdcFechaRecepcionKeyPressed(evt);
-            }
-        });
-        jPanel4.add(jdcFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 120, 30));
+        jPanel4.add(jdcFechaEmision, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, 120, 30));
+        jPanel4.add(jdcFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 120, 30));
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 490, 90));
 
@@ -283,9 +546,9 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         txtRfc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 130, 40));
 
-        txtNombre.setEditable(false);
-        txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 180, 40));
+        txtNombreCom.setEditable(false);
+        txtNombreCom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel3.add(txtNombreCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 180, 40));
 
         txtLicencia.setEditable(false);
         txtLicencia.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -324,9 +587,19 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         jPanel3.add(txtModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 200, 110, 30));
 
         lblBuscarRFC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        lblBuscarRFC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblBuscarRFCMouseClicked(evt);
+            }
+        });
         jPanel3.add(lblBuscarRFC, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, -1, -1));
 
         lblBuscarNoSerie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        lblBuscarNoSerie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblBuscarNoSerieMouseClicked(evt);
+            }
+        });
         jPanel3.add(lblBuscarNoSerie, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 110, -1, -1));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 710, 360));
@@ -408,9 +681,29 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
-        // TODO add your handling code here:
-        tramitarPlacaVehiculoUsado();
+        try {
+            // TODO add your handling code here:
+            cambiarEstadoPlacaAnterior();
+            tramitarPlacaVehiculoUsado();
+            vaciarDatos();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(DlgPlacaVehiculoUsado.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }//GEN-LAST:event_btnTramitarActionPerformed
+
+    private void lblBuscarRFCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarRFCMouseClicked
+        // TODO add your handling code here:
+        buscarDatosPersonaLicencia();
+    }//GEN-LAST:event_lblBuscarRFCMouseClicked
+
+    private void lblBuscarNoSerieMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarNoSerieMouseClicked
+        try {
+            // TODO add your handling code here:
+            buscarDatosAutomovil();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(DlgPlacaVehiculoUsado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblBuscarNoSerieMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegresar;
@@ -448,7 +741,7 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
     private javax.swing.JTextField txtLinea;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtModelo;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNombreCom;
     private javax.swing.JTextField txtPlaca;
     private javax.swing.JTextField txtPlacaNueva;
     private javax.swing.JTextField txtRfc;

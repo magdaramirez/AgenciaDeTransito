@@ -28,12 +28,12 @@ import javax.persistence.TemporalType;
 @Table(name = "tramitePlacas")
 public class TramitePlaca extends Tramite implements Serializable {
 
-    @Column(name = "placa", nullable = true, length = 7)
+    @Column(name = "placa", nullable = true)
     private String placa;
 
     @Column(name = "fechaEmision", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Calendar fechaEmision;
+    private Calendar fechaEmision ;
 
     @Column(name = "fechaRecepcion", nullable = true)
     @Temporal(TemporalType.DATE)

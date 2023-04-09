@@ -8,15 +8,21 @@ package org.itson.GUI;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.itson.dominio.VehiculoAutomovil;
+import org.itson.excepciones.PersistenciaException;
+import org.itson.implementaciones.VehiculoAutomovilDAO;
 import org.itson.utils.Validadores;
+import org.itson.interfaces.IVehiculoDAO;
 
 /**
  *
  * @author koine
  */
 public class DlgRegistroVehiculo extends javax.swing.JDialog {
-
+    IVehiculoDAO autos = new VehiculoAutomovilDAO();
     /**
      * Método que crea el JDialog DlgRegistroVehiculo.
      *
@@ -92,20 +98,62 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
                 "ERROR",
                 JOptionPane.ERROR_MESSAGE);
     }
-
+    /**
+     * Metodo que crea el automovil a registrar en el sistema
+     * @return el objeto automovil a registrar
+     */
+    private VehiculoAutomovil crearAutomovil(){
+        HashMap<String, String> datos = extraerDatos();
+        
+        String noSerie = datos.get("noSerie");
+        String marca = datos.get("marca");
+        String linea = datos.get("linea");
+        String color = datos.get("color");
+        String modelo = datos.get("modelo");
+        
+       VehiculoAutomovil automovil = new VehiculoAutomovil();
+       
+       automovil.setNoSerie(noSerie);
+       automovil.setMarca(marca);
+       automovil.setLinea(linea);
+       automovil.setColor(color);
+       automovil.setModelo(modelo);
+   
+       return automovil;
+    }
+    
     /**
      * Método que lleva a cabo el registro del vehículo.
      */
-    private void registrarVehiculo() {
-        //NO TERMINADO, SÓLO VALIDA.
+    private void registrarVehiculo() throws PersistenciaException{
+        
         HashMap<String, String> datos = this.extraerDatos();
-
+        
         List<String> erroresValidacion = this.validarDatos(datos);
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
         } else {
+            VehiculoAutomovil automovil;
+        try {
+            automovil = crearAutomovil();
+        
+            autos.registrarAutomovil(automovil);
+            JOptionPane.showMessageDialog(
+                this,
+                "El registro del automovil se ha realizado correctamente",
+                "INFORMACIÓN",
+                JOptionPane.INFORMATION_MESSAGE);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                this,
+                "ERROR: Algun dato no ha sido ingresado correctamente",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE);
+        }
             mostrarPantallaPlacaVehiculoNuevo();
         }
+   
     }
 
     /**
@@ -271,8 +319,12 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
-        registrarVehiculo();
+        try {
+            // TODO add your handling code here:
+            registrarVehiculo();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed

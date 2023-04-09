@@ -207,12 +207,6 @@
                       </Constraints>
                     </Component>
                     <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaRecepcion">
-                      <Properties>
-                        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jdcFechaRecepcionKeyPressed"/>
-                      </Events>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                           <AbsoluteConstraints x="130" y="50" width="110" height="30"/>
@@ -317,7 +311,7 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtNombre">
+                <Component class="javax.swing.JTextField" name="txtNombreCom">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -453,6 +447,9 @@
                       <Image iconType="3" name="/img/buscar.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblBuscarRFCMouseClicked"/>
+                  </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                       <AbsoluteConstraints x="210" y="60" width="-1" height="-1"/>
@@ -465,6 +462,9 @@
                       <Image iconType="3" name="/img/buscar.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblBuscarNoSerieMouseClicked"/>
+                  </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                       <AbsoluteConstraints x="600" y="100" width="-1" height="-1"/>

@@ -4,7 +4,12 @@
  */
 package org.itson.GUI;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.itson.dominio.Persona;
+import org.itson.excepciones.PersistenciaException;
 import org.itson.implementaciones.PersonasDAO;
 
 /**
@@ -198,8 +203,23 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModuloConsultasActionPerformed
 
     private void btnInsercionMasivaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionMasivaActionPerformed
-        // TODO add your handling code here:
-        realizarInsercionMasiva();
+        try {
+            // TODO add your handling code here:
+            List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
+            if(personasActivas.isEmpty()){
+                realizarInsercionMasiva();
+                this.btnInsercionMasiva.setEnabled(false);
+            }else{
+                JOptionPane.showMessageDialog(
+                this,
+                "Las personas ya han sido ingresadas anteriormente, borra la base de datos antes de internarlo nuevamente",
+                "INFORMACIÓN",
+                JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
     }//GEN-LAST:event_btnInsercionMasivaActionPerformed
 
     private void btnRealizarTramiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarTramiteActionPerformed

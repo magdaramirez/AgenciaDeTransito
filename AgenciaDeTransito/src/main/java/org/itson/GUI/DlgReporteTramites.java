@@ -5,14 +5,43 @@
  */
 package org.itson.GUI;
 
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import org.itson.dominio.LicenciaDTO;
+import org.itson.dominio.PlacaDTO;
+import org.itson.dominio.TramiteLicencia;
+import org.itson.dominio.TramitePlaca;
+import org.itson.excepciones.PersistenciaException;
+import org.itson.implementaciones.LicenciasDAO;
+import org.itson.implementaciones.PersonasDAO;
+import org.itson.implementaciones.PlacasDAO;
+import org.itson.interfaces.ILicenciasDAO;
+import org.itson.interfaces.IPersonasDAO;
+import org.itson.interfaces.IPlacasDAO;
+import org.itson.utils.ConfiguracionPaginado;
+import org.itson.utils.Encriptador;
 
 /**
  *
  * @author koine
  */
 public class DlgReporteTramites extends javax.swing.JDialog {
-
+    private static final Logger LOG = Logger.getLogger(DlgConsultaTramites.class.getName());
+    IPersonasDAO personas = new PersonasDAO();
+    ILicenciasDAO licencias = new LicenciasDAO();
+    IPlacasDAO placas = new PlacasDAO();
+    Encriptador encriptador = new Encriptador();
+    private int tamañoLista;
+//    private List<Cuenta> listaCuentas;
+    private ConfiguracionPaginado paginado;
     /**
      * Método que crea el JDialos DlgReporteTramites.
      * @param parent
@@ -22,8 +51,150 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setTitle("REPORTES");
+        this.paginado = new ConfiguracionPaginado(0, 3);
+        if(this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")){
+                this.llenarTablaPlacas();
+            }else{
+                this.llenarTablaLicencias();
+        } 
+    }
+    
+    /**
+     * Método que llena la tabla de placas
+     */
+    private void llenarTablaPlacas() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date fecha1;
+            String fechaEmision;
+            List<TramitePlaca> listaTramitesPlacas = placas.consultarPlacas(paginado, obtenerDatosTramitePlaca());
+            DefaultTableModel modeloTabla = (DefaultTableModel) this.tblTramites.getModel();
+            
+            String nombDes = null, apellidoPDes = null, apellidoMDes = null, nomCompDes = null;
+            String tipo = "Expedición de placa";
+            
+            modeloTabla.setRowCount(0);
+            for (TramitePlaca trans : listaTramitesPlacas) {
+                fecha1 = trans.getFechaEmision().getTime();
+                fechaEmision = dateFormat.format(fecha1); 
+                nombDes = encriptador.desencriptar(trans.getPersona().getNombre());
+                apellidoPDes = encriptador.desencriptar(trans.getPersona().getApellidoPaterno());
+                apellidoMDes = encriptador.desencriptar(trans.getPersona().getApellidoMaterno());
+                nomCompDes = nombDes+" "+apellidoPDes+" "+apellidoMDes;
+                
+                Object[] fila = {
+                    fechaEmision,
+                    tipo,
+                    nomCompDes,
+                    trans.getCosto()
+                };
+                modeloTabla.addRow(fila);
+            }
+        } catch (PersistenciaException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage());
+        }
     }
 
+    /**
+     * Método que llena la tabla de licencias
+     */
+    private void llenarTablaLicencias() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date fecha1;
+            String fechaEmision;
+            List<TramiteLicencia> listaLicencias = this.licencias.consultarLicencias(paginado, obtenerDatosTramiteLicencia());
+            DefaultTableModel modeloTabla = (DefaultTableModel) this.tblTramites.getModel();
+            String nombDes = null, apellidoPDes = null, apellidoMDes = null, nomCompDes = null;
+            String tipo = "Expedición de licencia";
+            
+            modeloTabla.setRowCount(0);
+            for (TramiteLicencia licencia : listaLicencias) {
+                fecha1 = licencia.getFechaEmision().getTime();
+                fechaEmision = dateFormat.format(fecha1); 
+                nombDes = encriptador.desencriptar(licencia.getPersona().getNombre());
+                apellidoPDes = encriptador.desencriptar(licencia.getPersona().getApellidoPaterno());
+                apellidoMDes = encriptador.desencriptar(licencia.getPersona().getApellidoMaterno());
+                nomCompDes = nombDes+" "+apellidoPDes+" "+apellidoMDes;
+                
+                Object[] fila = {
+                    fechaEmision,
+                    tipo,
+                    nomCompDes,
+                    licencia.getCosto()
+                };
+                modeloTabla.addRow(fila);
+            }
+        } catch (PersistenciaException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage());
+        }
+    }
+     
+     /**
+     * Metodo que obtiene los datos para la placa de la interfaz grafica para la consutla en caso de haber sido ingresados
+     * @return 
+     */
+    private PlacaDTO obtenerDatosTramitePlaca(){
+        PlacaDTO placaD = new PlacaDTO();
+        String nomEncriptado = encriptador.encriptar(this.txtNombre.getText());
+        
+        placaD.setFechaInicio(this.jdcFechaInicio.getCalendar());
+        placaD.setFechaFin(this.jdcFechaFin.getCalendar());
+        
+        if(this.txtNombre.getText().equals("")){
+            placaD.setNombre(null); 
+        }else{
+            placaD.setNombre(nomEncriptado); 
+        }
+
+        return placaD;
+        
+    }
+    /**
+     * Metodo que obtiene los datos para la licencia de la interfaz grafica para la consutla en caso de haber sido ingresados
+     * @return 
+     */
+    private LicenciaDTO obtenerDatosTramiteLicencia(){
+        LicenciaDTO licenciaD = new LicenciaDTO();
+        String nomEncriptado = encriptador.encriptar(this.txtNombre.getText());
+        
+        licenciaD.setFechaInicio(this.jdcFechaInicio.getCalendar());
+        licenciaD.setFechaFin(this.jdcFechaFin.getCalendar());
+            
+        if(this.txtNombre.getText().equals("")){
+            licenciaD.setNombre(null); 
+        }else{
+            licenciaD.setNombre(nomEncriptado); 
+        }
+        
+       
+        return licenciaD;
+    }
+    
+    /**
+     * Método que avanza de página de transferencias
+     */
+    private void avanzarPaginaTramites() {
+        this.paginado.avanzarPagina();
+        if(this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")){
+                this.llenarTablaPlacas();
+            }else{
+                this.llenarTablaLicencias();
+            }  
+    }
+
+    /**
+     * Método que retrocede de página de transferencias
+     */
+    private void retrocederPaginaTramites() {
+        this.paginado.retrocederPagina();
+        if(this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")){
+                this.llenarTablaPlacas();
+            }else{
+                this.llenarTablaLicencias();
+            }  
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,15 +214,17 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         txtNombre = new javax.swing.JTextField();
         lblTramite = new javax.swing.JLabel();
         cbxTramite = new javax.swing.JComboBox<>();
-        txtFechaInicio = new com.toedter.calendar.JDateChooser();
-        txtFechaFin = new com.toedter.calendar.JDateChooser();
+        jdcFechaInicio = new com.toedter.calendar.JDateChooser();
+        jdcFechaFin = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblTramites = new javax.swing.JTable();
         btnVisualizacionPrevia = new javax.swing.JButton();
         btnDescargarPdf = new javax.swing.JButton();
         lblReporteTramite = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
+        cbxElementosPagina = new javax.swing.JComboBox<>();
+        btnRetroceder = new javax.swing.JButton();
+        btnAvanzar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -92,34 +265,20 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         jPanel3.add(lblTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, -1));
 
         cbxTramite.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxTramite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Expedición de licencia", "Expedición de placa" }));
+        cbxTramite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Expedicion de licencia", "Expedicion de placa" }));
         cbxTramite.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxTramiteActionPerformed(evt);
             }
         });
         jPanel3.add(cbxTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 190, 40));
-
-        txtFechaInicio.setDateFormatString("yyyy-MM-dd");
-        txtFechaInicio.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaInicioKeyPressed(evt);
-            }
-        });
-        jPanel3.add(txtFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 120, -1));
-
-        txtFechaFin.setDateFormatString("yyyy-MM-dd");
-        txtFechaFin.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaFinKeyPressed(evt);
-            }
-        });
-        jPanel3.add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 120, -1));
+        jPanel3.add(jdcFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 110, 110, 30));
+        jPanel3.add(jdcFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 140, 30));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 720, 170));
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTramites.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tblTramites.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -138,7 +297,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblTramites);
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 690, 210));
 
@@ -175,7 +334,37 @@ public class DlgReporteTramites extends javax.swing.JDialog {
             }
         });
         jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 500, 130, 40));
-        jPanel2.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, -1, -1));
+
+        cbxElementosPagina.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
+        cbxElementosPagina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
+        cbxElementosPagina.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxElementosPaginaItemStateChanged(evt);
+            }
+        });
+        jPanel2.add(cbxElementosPagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 460, 60, 30));
+
+        btnRetroceder.setBackground(new java.awt.Color(212, 100, 107));
+        btnRetroceder.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
+        btnRetroceder.setForeground(new java.awt.Color(255, 255, 255));
+        btnRetroceder.setText("<--");
+        btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetrocederActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRetroceder, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 460, 70, -1));
+
+        btnAvanzar.setBackground(new java.awt.Color(212, 100, 107));
+        btnAvanzar.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
+        btnAvanzar.setForeground(new java.awt.Color(255, 255, 255));
+        btnAvanzar.setText("-->");
+        btnAvanzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvanzarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnAvanzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 460, 70, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 830, 550));
 
@@ -188,14 +377,14 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     private void txtFechaInicioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaInicioKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            txtFechaInicio.transferFocus();
+            jdcFechaInicio.transferFocus();
         }
     }//GEN-LAST:event_txtFechaInicioKeyPressed
 
     private void txtFechaFinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaFinKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            txtFechaFin.transferFocus();
+            jdcFechaFin.transferFocus();
         }
     }//GEN-LAST:event_txtFechaFinKeyPressed
 
@@ -211,28 +400,54 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     }//GEN-LAST:event_cbxTramiteActionPerformed
 
     private void btnVisualizacionPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizacionPreviaActionPerformed
-        // TODO add your handling code here:
+        if(this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")){
+                this.llenarTablaPlacas();
+            }else{
+                this.llenarTablaLicencias();
+            }  
     }//GEN-LAST:event_btnVisualizacionPreviaActionPerformed
 
+    private void cbxElementosPaginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED) {
+            int elementosMostrados = Integer.parseInt(evt.getItem().toString());
+            this.paginado.setElementosPagina(elementosMostrados);
+            if(this.cbxTramite.getSelectedItem().equals("Expedicion de placa")){
+                this.llenarTablaPlacas();
+            }else{
+                this.llenarTablaLicencias();
+            }  
+        }
+    }//GEN-LAST:event_cbxElementosPaginaItemStateChanged
+
+    private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
+        retrocederPaginaTramites();
+    }//GEN-LAST:event_btnRetrocederActionPerformed
+
+    private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
+        avanzarPaginaTramites();
+    }//GEN-LAST:event_btnAvanzarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvanzar;
     private javax.swing.JButton btnDescargarPdf;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton btnRetroceder;
     private javax.swing.JButton btnVisualizacionPrevia;
+    private javax.swing.JComboBox<String> cbxElementosPagina;
     private javax.swing.JComboBox<String> cbxTramite;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
+    private com.toedter.calendar.JDateChooser jdcFechaFin;
+    private com.toedter.calendar.JDateChooser jdcFechaInicio;
     private javax.swing.JLabel lblFinPeriodo;
     private javax.swing.JLabel lblInicioPeriodo;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPeriodoTiempo;
     private javax.swing.JLabel lblReporteTramite;
     private javax.swing.JLabel lblTramite;
-    private com.toedter.calendar.JDateChooser txtFechaFin;
-    private com.toedter.calendar.JDateChooser txtFechaInicio;
+    private javax.swing.JTable tblTramites;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

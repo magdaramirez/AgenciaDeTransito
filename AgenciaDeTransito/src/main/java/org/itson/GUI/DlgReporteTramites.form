@@ -164,8 +164,8 @@
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
-                        <StringItem index="0" value="Expedici&#xf3;n de licencia"/>
-                        <StringItem index="1" value="Expedici&#xf3;n de placa"/>
+                        <StringItem index="0" value="Expedicion de licencia"/>
+                        <StringItem index="1" value="Expedicion de placa"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -181,29 +181,17 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="com.toedter.calendar.JDateChooser" name="txtFechaInicio">
-                  <Properties>
-                    <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFechaInicioKeyPressed"/>
-                  </Events>
+                <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaInicio">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="240" y="120" width="120" height="-1"/>
+                      <AbsoluteConstraints x="250" y="110" width="110" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="com.toedter.calendar.JDateChooser" name="txtFechaFin">
-                  <Properties>
-                    <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFechaFinKeyPressed"/>
-                  </Events>
+                <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaFin">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="420" y="120" width="120" height="-1"/>
+                      <AbsoluteConstraints x="430" y="110" width="140" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -218,7 +206,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="tblTramites">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="14" style="1"/>
@@ -348,10 +336,72 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner1">
+            <Component class="javax.swing.JComboBox" name="cbxElementosPagina">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft YaHei" size="12" style="1"/>
+                </Property>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="3">
+                    <StringItem index="0" value="3"/>
+                    <StringItem index="1" value="5"/>
+                    <StringItem index="2" value="10"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cbxElementosPaginaItemStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="380" y="460" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="290" y="460" width="60" height="30"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnRetroceder">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="6b" green="64" red="d4" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft YaHei UI" size="15" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;--"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRetrocederActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="370" y="460" width="70" height="-1"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnAvanzar">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="6b" green="64" red="d4" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft YaHei UI" size="15" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="--&gt;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAvanzarActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="450" y="460" width="70" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>

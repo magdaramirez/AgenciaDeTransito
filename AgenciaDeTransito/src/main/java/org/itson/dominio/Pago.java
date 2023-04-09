@@ -35,11 +35,11 @@ public class Pago implements Serializable {
     @Column(name = "monto", nullable = false)
     private float monto;
 
-    @Column(name = "fechaRealizacion", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "fechaRealizacion", nullable = false, columnDefinition = "timestamp default current_timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar fechaRealizacion;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "idTramite", nullable = false)
     private Tramite tramite;
 

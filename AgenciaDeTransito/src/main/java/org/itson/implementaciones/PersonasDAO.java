@@ -6,9 +6,17 @@ package org.itson.implementaciones;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import org.itson.dominio.Persona;
+import org.itson.dominio.TramitePlaca;
+import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonasDAO;
 import org.itson.persistencia.ControlPersistencia;
+import org.itson.persistencia.TramiteLicenciaJpaController;
 import org.itson.utils.Encriptador;
 
 /**
@@ -16,6 +24,8 @@ import org.itson.utils.Encriptador;
  * @author magda
  */
 public class PersonasDAO implements IPersonasDAO {
+    private static final Logger LOG = Logger.getLogger(PersonasDAO.class.getName());
+    TramiteLicenciaJpaController jpaCont = new TramiteLicenciaJpaController();
     ControlPersistencia controlPersistencia = new ControlPersistencia();
     Encriptador encriptador = new Encriptador();
     
@@ -83,6 +93,52 @@ public class PersonasDAO implements IPersonasDAO {
 
         Persona persona20 = new Persona(encriptador.encriptar("Federico"),encriptador.encriptar("Rivas"), encriptador.encriptar("Chávez"), new GregorianCalendar(1985, 14, Calendar.AUGUST), "6645874562", "RICF850814BFJ");
         controlPersistencia.guardar(persona20);    
+    }
+    /**
+     * Metodo que busca a una persona por su numero de rfc
+     * @param rfc el rfc de la persona consutlada
+     * @return la persona que se busca
+     * @throws PersistenciaException en caso de que no se haya encontrado ninguna persona con el rfc consultado
+     */
+    @Override
+    public Persona buscarPersona(String rfc) throws PersistenciaException{
+        EntityManager entityManager = jpaCont.getEntityManager();
+      
+        String jpqlQuery2 = "SELECT v FROM Persona v WHERE v.rfc = :rfc";
+        TypedQuery<Persona> query2 = entityManager.createQuery(jpqlQuery2,Persona.class);
+        query2.setParameter("rfc", rfc);
+        
+        Persona persona = query2.getSingleResult();
+        
+        if(persona == null){
+            throw new PersistenciaException("No se encontraron personas con el rfc ingresado");
+        }
+        
+        return persona;
+
+    }
+    
+    /**
+     * Metodo que busca a una persona por su numero de rfc
+     * @param rfc el rfc de la persona consutlada
+     * @return la persona que se busca
+     * @throws PersistenciaException en caso de que no se haya encontrado ninguna persona con el rfc consultado
+     */
+    @Override
+    public List<Persona> buscarPersonasActivas() throws PersistenciaException{
+        EntityManager entityManager = jpaCont.getEntityManager();
+      
+        String jpqlQuery2 = "SELECT v FROM Persona v";
+        TypedQuery<Persona> query2 = entityManager.createQuery(jpqlQuery2,Persona.class);
+        
+        List<Persona> personas = query2.getResultList();
+        
+        if(personas == null){
+            throw new PersistenciaException("No se encontraron personasen el sistema");
+        }
+        
+        return personas;
+
     }
 
 }

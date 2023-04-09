@@ -4,6 +4,10 @@
  */
 package org.itson.interfaces;
 
+import java.util.List;
+import org.itson.dominio.Persona;
+import org.itson.excepciones.PersistenciaException;
+
 /**
  *
  * @author magda
@@ -11,5 +15,9 @@ package org.itson.interfaces;
 public interface IPersonasDAO {
 
     public void insertarPersonas();
+    
+    public Persona buscarPersona(String rfc) throws PersistenciaException;
+    
+    public List<Persona> buscarPersonasActivas() throws PersistenciaException;
 
 }

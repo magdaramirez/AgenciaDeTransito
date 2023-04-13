@@ -9,7 +9,7 @@ package org.itson.excepciones;
  *
  * @author Magda - Michell
  */
-public class PersistenciaException extends Exception{
+public class PersistenciaException extends Exception {
 
     public PersistenciaException() {
     }

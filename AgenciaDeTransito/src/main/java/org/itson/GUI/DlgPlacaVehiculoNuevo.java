@@ -6,7 +6,6 @@
 package org.itson.GUI;
 
 import java.awt.event.KeyEvent;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,14 +19,12 @@ import org.itson.dominio.EstadoTramite;
 import org.itson.dominio.Pago;
 import org.itson.dominio.Persona;
 import org.itson.dominio.TipoPlaca;
-import org.itson.dominio.Tramite;
 import org.itson.dominio.TramiteLicencia;
 import org.itson.dominio.TramitePlaca;
 import org.itson.dominio.VehiculoAutomovil;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.implementaciones.*;
 import org.itson.interfaces.*;
-import org.itson.utils.Encriptador;
 import org.itson.utils.Validadores;
 
 /**
@@ -35,18 +32,19 @@ import org.itson.utils.Validadores;
  * @author koine
  */
 public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
+
     IPersonasDAO personas = new PersonasDAO();
     ILicenciasDAO licencias = new LicenciasDAO();
     IPlacasDAO placas = new PlacasDAO();
     IVehiculoDAO automoviles = new VehiculoAutomovilDAO();
     IPagosDAO pagos = new PagosDAO();
-    Encriptador encriptador = new Encriptador();
-    
-   /**
-    * Crea el JDialog DlgPlacaVehiculoNuevo
-    * @param parent
-    * @param modal 
-    */
+
+    /**
+     * Crea el JDialog DlgPlacaVehiculoNuevo
+     *
+     * @param parent Clase padre de la ventana.
+     * @param modal Foco de la aplicación.
+     */
     public DlgPlacaVehiculoNuevo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -97,10 +95,10 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         if (Validadores.esTextoVacio(rfc) || Validadores.esTextoVacio(noSerie)) {
             erroresValidacion.add("Datos vacíos");
         }
-        if (!Validadores.esRFC(rfc)) {
+        if (!Validadores.esRFC(rfc.toUpperCase())) {
             erroresValidacion.add("Formato de RFC incorrecto");
         }
-        if (!Validadores.esNoSerie(noSerie)) {
+        if (!Validadores.esNoSerie(noSerie.toUpperCase())) {
             erroresValidacion.add("Formato de no. Serie incorrecto");
         }
         if (Validadores.excedeLimite(rfc, 13)) {
@@ -132,16 +130,16 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
     /**
      * Método que lleva a cabo el trámite de placa de vehículo nuevo.
      */
-    private void tramitarPlacaVehiculoNuevo() throws PersistenciaException{
-        
+    private void tramitarPlacaVehiculoNuevo() throws PersistenciaException {
+
         HashMap<String, String> datos = this.extraerDatos();
 
         List<String> erroresValidacion = this.validarDatos(datos);
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
         }
-        
-        try{
+
+        try {
             VehiculoAutomovil auto = new VehiculoAutomovil();
             String noSerie = datos.get("noSerie");
             auto = automoviles.buscarAutomovil(noSerie);
@@ -160,57 +158,71 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
 
             placas.registrarPlaca(placaNvo);
             registroPagoRealizado(placaNvo);
-            
-            registrarPlacaAutomovil();         
-            JOptionPane.showMessageDialog(
-                        this,
-                        "Placa registrada con exito",
-                        "INFORMACION",
-                        JOptionPane.INFORMATION_MESSAGE);
-        }catch (PersistenciaException ex){
+
+            registrarPlacaAutomovil();
+
+            int respuesta = JOptionPane.showConfirmDialog(
+                    this,
+                    "El trámite de la placa se ha realizado correctamente." + "\n¿Desea regresar al menú?",
+                    "INFORMACIÓN",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+                FrmMenu menu = new FrmMenu();
+                menu.setVisible(true);
+                this.dispose();
+            }
+
+            vaciarDatos();
+        } catch (PersistenciaException ex) {
             Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
-                this,
-                "ERROR: No se ha podido registrar la placa nueva, error en algun dato",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
+                    this,
+                    "No se ha podido realizar el trámite de la placa. \nFavor de proporcionar datos correctos.",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }
+
     /**
      * Metodo que registra las placa de una automovil a su lista de placas
-     * @throws PersistenciaException en caso de que no haya sido posible registrar la placa nueva
+     *
+     * @throws PersistenciaException en caso de que no haya sido posible
+     * registrar la placa nueva
      */
-    private void registrarPlacaAutomovil() throws PersistenciaException{
+    private void registrarPlacaAutomovil() throws PersistenciaException {
         HashMap<String, String> datos = this.extraerDatos();
         List<TramitePlaca> placasA = new ArrayList<>();
         TramitePlaca placaNvo = new TramitePlaca();
-        
+
         VehiculoAutomovil auto = new VehiculoAutomovil();
         String noSerie = datos.get("noSerie");
-        
+
         placaNvo = placas.buscarPlacaPorNumero(this.txtPlaca.getText());
         auto = automoviles.buscarAutomovil(noSerie);
-        
+
         placasA.add(placaNvo);
         auto.setPlacas(placasA);
         automoviles.cambiarListaPlacas(auto);
     }
+
     /**
      * Metodo que registra el pago realizado para un tramite de una placa
+     *
      * @param placa la placa a registrar su pago
      */
-    private void registroPagoRealizado(TramitePlaca placa){
+    private void registroPagoRealizado(TramitePlaca placa) {
         Pago pago = new Pago();
         pago.setMonto(placa.getCosto());
         pago.setTramite(placa);
-        
+
         Calendar fecha1 = Calendar.getInstance();
         pago.setFechaRealizacion(fecha1);
-        
+
         pagos.registarPago(pago);
     }
-    
+
     /**
      * Método que vacía los textFields del JDialog.
      */
@@ -224,108 +236,97 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         txtColor.setText(null);
         txtModelo.setText(null);
     }
-    /**
-     * Metodo que desencripta el nombre de la persona a registrar su placa
-     * @param persona1 la persona a consultar
-     * @return el nombre completo de la persona ya desencriptado
-     */
-    private String DesencriptarNombreCompleto(Persona persona1) {
-        
-        String nombre = persona1.getNombre();
-        String apellidoPat = persona1.getApellidoPaterno();
-        String apellidoMat = persona1.getApellidoMaterno();
-        
-        String nomDes = encriptador.desencriptar(nombre);
-        String apellidoPatDes = encriptador.desencriptar(apellidoPat);
-        String apellidoMatDes = encriptador.desencriptar(apellidoMat);
-        
-        String nombreCompleto = nomDes+" "+apellidoPatDes+" "+apellidoMatDes;
-        
-        return nombreCompleto;
-    }
+
     /**
      * Metodo que busca una persona por su rfc en el sistema
+     *
      * @return la persona registrada en el sistema con el rfc ingresado
      */
     private Persona buscarPersonaRFC() {
         HashMap<String, String> datos = extraerDatos();
         String rfc = datos.get("rfc");
-        try{
+        try {
             Persona persona1 = personas.buscarPersona(rfc);
-        
+
             return persona1;
-        }catch (PersistenciaException ex){
+        } catch (Exception ex) {
             Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
-                this,
-                "ERROR: No se ha encontrado una persona con el rfc ingresado",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
+                    this,
+                    "No se ha encontrado una persona con el rfc ingresado",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }
+
     /**
-     * Metodo que comprueba si se tiene una licencia activa en el momento del registro
-     * @return true en caso de que se encuentre una activa, false en caso contrario
-     * @throws PersistenciaException en caso de que no se haya podido encontrar licencias en el sistema para la persona
+     * Metodo que comprueba si se tiene una licencia activa en el momento del
+     * registro
+     *
+     * @return true en caso de que se encuentre una activa, false en caso
+     * contrario
+     * @throws PersistenciaException en caso de que no se haya podido encontrar
+     * licencias en el sistema para la persona
      */
-    private boolean comprobarLicenciaPersonaActiva() throws PersistenciaException{
+    private boolean comprobarLicenciaPersonaActiva() throws PersistenciaException {
         Persona persona = buscarPersonaRFC();
-        
-        try{
-            List<TramiteLicencia> licencia = licencias.consultarLicenciasPersona(persona.getRfc());
-            for(int i = 0; i<licencia.size();i++){
-                if(licencia.get(i).getEstado().equals(EstadoTramite.ACTIVO)){
-                    JOptionPane.showMessageDialog(
-                    this,
-                    "Licencia activa para la persona con el rfc ingresado",
-                    "INFORMACION",
-                    JOptionPane.INFORMATION_MESSAGE);
-                    return true;
-                }
-                
-            }     
-        }catch (PersistenciaException ex){
-            Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(
-                this,
-                "ERROR: No se ha encontrado una licencia activa para la persona con el rfc ingresado",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
-        }
-        
-        return false;
-        
-    }
-    /**
-     * Metodo que ingresa en la interfaz grafica Vigente si se encuentra una licencia activa, Caducada en caso de que no encuentre una licencia activa
-     */
-    public void buscarDatosPersonaLicencia(){
-        Persona persona1 = buscarPersonaRFC();
 
-        String nombreCompleto = DesencriptarNombreCompleto(persona1);
-        String textoEstado = "";
-        
-        try {
-            if(comprobarLicenciaPersonaActiva()==true){
-                textoEstado = "Vigente";
-            }else{
-                textoEstado = "Caducada";
+        List<TramiteLicencia> listaLicencias = licencias.consultarLicenciasPersona(persona.getRfc());
+        for (int i = 0; i < listaLicencias.size(); i++) {
+            if (listaLicencias.get(i).getEstado().equals(EstadoTramite.ACTIVO)) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Licencia activa para la persona con el rfc ingresado",
+                        "INFORMACION",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
-        } catch (PersistenciaException ex) {
+        }
+        return false;
+
+    }
+
+    /**
+     * Metodo que busca los datos de la persona e ingresa en la interfaz grafica
+     * Vigente si se encuentra una licencia activa, Caducada en caso de que no
+     * encuentre una licencia activa
+     */
+    public void buscarDatosPersonaLicencia() {
+        Persona persona;
+
+        try {
+            PersonasDAO dao = new PersonasDAO();
+            persona = buscarPersonaRFC();
+            String nombreCompleto = dao.DesencriptarNombreCompleto(persona);
+            String textoEstado = "";
+
+            if (comprobarLicenciaPersonaActiva() == true) {
+                textoEstado = "Vigente";
+                this.txtRfc.setText(persona.getRfc());
+                this.txtNombreCom.setText(nombreCompleto);
+                this.txtLicencia.setText(textoEstado);
+            } else {
+                textoEstado = "No vigente";
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No se ha encontrado una licencia activa para: \n" + dao.DesencriptarNombreCompleto(persona),
+                        "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
             Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        this.txtNombreCom.setText(nombreCompleto);
-
-        this.txtLicencia.setText(textoEstado);
     }
+
     /**
-     * Metodo que busca los datos de un automovil por medio de su numero de serie ingresado en la interfaz grafica
-     * @throws PersistenciaException en caso de que no se haya encontrado un automovil en el sistema
+     * Metodo que busca los datos de un automovil por medio de su numero de
+     * serie ingresado en la interfaz grafica
+     *
+     * @throws PersistenciaException en caso de que no se haya encontrado un
+     * automovil en el sistema
      */
-    private void buscarDatosAutomovil() throws PersistenciaException{
+    private void buscarDatosAutomovil() throws PersistenciaException {
         HashMap<String, String> datos = extraerDatos();
         String noSerie = datos.get("noSerie");
         VehiculoAutomovil auto = new VehiculoAutomovil();
@@ -334,7 +335,7 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
             if (auto.getPlacas().isEmpty()) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Automovil encontrado con el numero de serie ingresado",
+                        "Automovil encontrado con el no. Serie ingresado",
                         "INFORMACION",
                         JOptionPane.INFORMATION_MESSAGE);
                 this.txtNoSerie.setText(auto.getNoSerie());
@@ -345,19 +346,20 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
             } else {
                 JOptionPane.showMessageDialog(
                         this,
-                        "ERROR: El automovil se ha encontrado, pero ya cuenta con alguna placa registrada",
+                        "El automovil se ha encontrado, pero ya cuenta con alguna placa registrada",
                         "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             }
         } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(
-                this,
-                "ERROR: No se ha encontrado un automovil registrado con el numero de serie ingresado en el sistema",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
+                    this,
+                    "No se ha encontrado un automovil registrado con el numero de serie ingresado en el sistema",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -488,7 +490,7 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
 
         txtNombreCom.setEditable(false);
         txtNombreCom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel3.add(txtNombreCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 180, 40));
+        jPanel3.add(txtNombreCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 220, 40));
 
         txtLicencia.setEditable(false);
         txtLicencia.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -607,8 +609,8 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        DlgRegistroVehiculo registroVehiculo = new DlgRegistroVehiculo(new javax.swing.JFrame(), true);
-        registroVehiculo.setVisible(true);
+        FrmTramitePlaca tramitePlaca = new FrmTramitePlaca();
+        tramitePlaca.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed

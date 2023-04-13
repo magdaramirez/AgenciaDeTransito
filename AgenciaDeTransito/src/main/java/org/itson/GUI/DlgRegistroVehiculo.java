@@ -22,12 +22,14 @@ import org.itson.interfaces.IVehiculoDAO;
  * @author koine
  */
 public class DlgRegistroVehiculo extends javax.swing.JDialog {
+
     IVehiculoDAO autos = new VehiculoAutomovilDAO();
+
     /**
      * Método que crea el JDialog DlgRegistroVehiculo.
      *
-     * @param parent
-     * @param modal
+     * @param parent Clase padre de la ventana.
+     * @param modal Foco de la aplicación.
      */
     public DlgRegistroVehiculo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -98,62 +100,64 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
                 "ERROR",
                 JOptionPane.ERROR_MESSAGE);
     }
+
     /**
      * Metodo que crea el automovil a registrar en el sistema
+     *
      * @return el objeto automovil a registrar
      */
-    private VehiculoAutomovil crearAutomovil(){
+    private VehiculoAutomovil crearAutomovil() {
         HashMap<String, String> datos = extraerDatos();
-        
+
         String noSerie = datos.get("noSerie");
         String marca = datos.get("marca");
         String linea = datos.get("linea");
         String color = datos.get("color");
         String modelo = datos.get("modelo");
-        
-       VehiculoAutomovil automovil = new VehiculoAutomovil();
-       
-       automovil.setNoSerie(noSerie);
-       automovil.setMarca(marca);
-       automovil.setLinea(linea);
-       automovil.setColor(color);
-       automovil.setModelo(modelo);
-   
-       return automovil;
+
+        VehiculoAutomovil automovil = new VehiculoAutomovil();
+
+        automovil.setNoSerie(noSerie);
+        automovil.setMarca(marca);
+        automovil.setLinea(linea);
+        automovil.setColor(color);
+        automovil.setModelo(modelo);
+
+        return automovil;
     }
-    
+
     /**
      * Método que lleva a cabo el registro del vehículo.
      */
-    private void registrarVehiculo() throws PersistenciaException{
-        
+    private void registrarVehiculo() throws PersistenciaException {
+
         HashMap<String, String> datos = this.extraerDatos();
-        
+
         List<String> erroresValidacion = this.validarDatos(datos);
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
         } else {
             VehiculoAutomovil automovil;
-        try {
-            automovil = crearAutomovil();
-        
-            autos.registrarAutomovil(automovil);
-            JOptionPane.showMessageDialog(
-                this,
-                "El registro del automovil se ha realizado correctamente",
-                "INFORMACIÓN",
-                JOptionPane.INFORMATION_MESSAGE);
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(
-                this,
-                "ERROR: Algun dato no ha sido ingresado correctamente",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
-        }
+            try {
+                automovil = crearAutomovil();
+
+                autos.registrarAutomovil(automovil);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El registro del automovil se ha realizado correctamente",
+                        "INFORMACIÓN",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Algún dato no ha sido ingresado correctamente",
+                        "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
             mostrarPantallaPlacaVehiculoNuevo();
         }
-   
+
     }
 
     /**
@@ -320,7 +324,6 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         try {
-            // TODO add your handling code here:
             registrarVehiculo();
         } catch (PersistenciaException ex) {
             Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(Level.SEVERE, null, ex);

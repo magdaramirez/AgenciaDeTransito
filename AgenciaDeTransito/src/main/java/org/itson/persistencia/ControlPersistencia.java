@@ -5,7 +5,6 @@
 package org.itson.persistencia;
 
 import org.itson.dominio.Persona;
-import org.itson.dominio.TramiteLicencia;
 
 /**
  *

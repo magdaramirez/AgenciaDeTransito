@@ -16,8 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.itson.dominio.Persona;
-import org.itson.persistencia.exceptions.IllegalOrphanException;
-import org.itson.persistencia.exceptions.NonexistentEntityException;
+import org.itson.excepciones.*;
 
 /**
  *

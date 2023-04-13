@@ -16,8 +16,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.itson.dominio.Vehiculo;
-import org.itson.utils.exceptions.IllegalOrphanException;
-import org.itson.utils.exceptions.NonexistentEntityException;
+import org.itson.excepciones.IllegalOrphanException;
+import org.itson.excepciones.NonexistentEntityException;
 
 /**
  *

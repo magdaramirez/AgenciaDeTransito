@@ -15,9 +15,10 @@ import org.itson.excepciones.PersistenciaException;
 public interface IPersonasDAO {
 
     public void insertarPersonas();
-    
+
     public Persona buscarPersona(String rfc) throws PersistenciaException;
-    
+
     public List<Persona> buscarPersonasActivas() throws PersistenciaException;
 
+    public String DesencriptarNombreCompleto(Persona persona1);
 }

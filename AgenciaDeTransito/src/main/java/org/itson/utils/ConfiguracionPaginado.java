@@ -25,8 +25,8 @@ public class ConfiguracionPaginado {
     /**
      * Constructor que inicializa los atributos al valor de sus parámetros
      *
-     * @param numPagina
-     * @param elementosPagina
+     * @param numPagina número de página.
+     * @param elementosPagina número de elementos por página.
      */
     public ConfiguracionPaginado(int numPagina, int elementosPagina) {
         this.numPagina = numPagina;
@@ -45,7 +45,7 @@ public class ConfiguracionPaginado {
     /**
      * Método que setea el número de página
      *
-     * @param numPagina
+     * @param numPagina número de página.
      */
     public void setNumPagina(int numPagina) {
         this.numPagina = numPagina;
@@ -63,33 +63,33 @@ public class ConfiguracionPaginado {
     /**
      * Método que setea el número de elementos por página
      *
-     * @param elementosPagina
+     * @param elementosPagina número de elementos por página.
      */
     public void setElementosPagina(int elementosPagina) {
         this.elementosPagina = elementosPagina;
     }
 
     /**
-     * Método que regresa el OFFSET
+     * Método que regresa el OFFSET, el número de elementos a saltar.
      *
-     * @return
+     * @return número de elementos a saltar.
      */
-    public int getOffset() {
+    public int getElementosASaltar() {
         return this.numPagina * this.elementosPagina;
     }
 
     /**
-     * Método que avanza la página
+     * Método que avanza la página.
      */
     public void avanzarPagina() {
         this.numPagina++;
     }
 
     /**
-     * Método que retrocede la página
+     * Método que retrocede la página.
      */
     public void retrocederPagina() {
-        while (this.numPagina > 0) {
+        while (this.numPagina != 0) {
             this.numPagina--;
         }
     }

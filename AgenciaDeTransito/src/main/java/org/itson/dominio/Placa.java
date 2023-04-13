@@ -11,7 +11,7 @@ import java.util.Calendar;
  * Clase que guarda los datos para las consultas personalizadas de placas
  * @author koine
  */
-public class PlacaDTO {
+public class Placa {
 
     private String nombre;
     private String rfc;
@@ -20,10 +20,10 @@ public class PlacaDTO {
     private Calendar fechaInicio;
     private Calendar fechaFin;
     
-    public PlacaDTO() {
+    public Placa() {
     }
 
-    public PlacaDTO(String nombre, String rfc, Integer anioNacimiento, float costo, Calendar fechaInicio, Calendar fechaFin) {
+    public Placa(String nombre, String rfc, Integer anioNacimiento, float costo, Calendar fechaInicio, Calendar fechaFin) {
         this.nombre = nombre;
         this.rfc = rfc;
         this.anioNacimiento = anioNacimiento;

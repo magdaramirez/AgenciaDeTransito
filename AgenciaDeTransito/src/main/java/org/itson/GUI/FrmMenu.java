@@ -198,38 +198,74 @@ public class FrmMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModuloConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModuloConsultasActionPerformed
-        // TODO add your handling code here:
-        mostrarPantallaConsultaTramites();
-    }//GEN-LAST:event_btnModuloConsultasActionPerformed
-
-    private void btnInsercionMasivaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionMasivaActionPerformed
         try {
-            // TODO add your handling code here:
             List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
-            if(personasActivas.isEmpty()){
-                realizarInsercionMasiva();
-                this.btnInsercionMasiva.setEnabled(false);
-            }else{
+            if (!personasActivas.isEmpty()) {
+                mostrarPantallaConsultaTramites();
+            } else {
                 JOptionPane.showMessageDialog(
-                this,
-                "Las personas ya han sido ingresadas anteriormente, borra la base de datos antes de internarlo nuevamente",
-                "INFORMACIÓN",
-                JOptionPane.INFORMATION_MESSAGE);
+                        this,
+                        "Deben haber personas registradas en la base de datos antes de continuar.",
+                        "INFORMACIÓN",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (PersistenciaException ex) {
             Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
+
+    }//GEN-LAST:event_btnModuloConsultasActionPerformed
+
+    private void btnInsercionMasivaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionMasivaActionPerformed
+        try {
+            List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
+            if (personasActivas.isEmpty()) {
+                realizarInsercionMasiva();
+                this.btnInsercionMasiva.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Las personas ya han sido ingresadas anteriormente, borra la base de datos antes de volverlo a intentar.",
+                        "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnInsercionMasivaActionPerformed
 
     private void btnRealizarTramiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarTramiteActionPerformed
-        // TODO add your handling code here:
-        mostrarPantallaRealizarTramite();
+        try {
+            // TODO add your handling code here:
+            List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
+            if (!personasActivas.isEmpty()) {
+                mostrarPantallaRealizarTramite();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Deben haber personas registradas en la base de datos antes de continuar.",
+                        "INFORMACIÓN",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRealizarTramiteActionPerformed
 
     private void btnModuloReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModuloReportesActionPerformed
-        // TODO add your handling code here:
-        mostrarPantallaReporteTramites();
+        try {
+            List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
+            if (!personasActivas.isEmpty()) {
+                mostrarPantallaReporteTramites();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Deben haber personas registradas en la base de datos antes de continuar.",
+                        "INFORMACIÓN",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnModuloReportesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

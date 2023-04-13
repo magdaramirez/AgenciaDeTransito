@@ -26,7 +26,6 @@ import org.itson.interfaces.IPersonasDAO;
 import org.itson.persistencia.ControlPersistencia;
 import org.itson.persistencia.TramiteLicenciaJpaController;
 import org.itson.utils.ConfiguracionPaginado;
-import sun.util.calendar.BaseCalendar.Date;
 
 /**
  *

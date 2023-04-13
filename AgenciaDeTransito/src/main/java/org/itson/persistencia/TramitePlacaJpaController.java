@@ -16,7 +16,7 @@ import javax.persistence.criteria.Root;
 import org.itson.dominio.Vehiculo;
 import org.itson.dominio.Persona;
 import org.itson.dominio.TramitePlaca;
-import org.itson.utils.exceptions.NonexistentEntityException;
+import org.itson.excepciones.NonexistentEntityException;
 
 /**
  *

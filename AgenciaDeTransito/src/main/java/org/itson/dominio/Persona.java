@@ -62,7 +62,7 @@ public class Persona implements Serializable {
 
     /**
      * Método constructor que establece los atributos de la clase Persona a
-     * excepción del id.
+     * excepción del id y la lista de trámites realizados.
      *
      * @param nombre Cadena de texto con el nombre de la persona.
      * @param apellidoPaterno Cadena de texto con el apellido paterno de la
@@ -75,7 +75,7 @@ public class Persona implements Serializable {
      * @param rfc Cadena de texto con el Registro Federal de Contribuyentes de
      * la persona.
      */
-    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono,String rfc) {
+    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono, String rfc) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -84,6 +84,22 @@ public class Persona implements Serializable {
         this.rfc = rfc;
     }
 
+    /**
+     * Método constructor que establece los atributos de la clase Persona a
+     * excepción del id.
+     *
+     * @param nombre Cadena de texto con el nombre de la persona.
+     * @param apellidoPaterno Cadena de texto con el apellido paterno de la
+     * persona.
+     * @param apellidoMaterno Cadena de texto con el apellido materno de la
+     * persona.
+     * @param fechaNacimiento Fecha de nacimiento de la persona con el formato
+     * yyyy-MM-dd.
+     * @param telefono Cadena de texto con el número telefónico de la persona.
+     * @param rfc Cadena de texto con el Registro Federal de Contribuyentes de
+     * la persona.
+     * @param tramites Lista de los trámites realizados por la persona.
+     */
     public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, Calendar fechaNacimiento, String telefono, String rfc, List<Tramite> tramites) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -93,8 +109,6 @@ public class Persona implements Serializable {
         this.rfc = rfc;
         this.tramites = tramites;
     }
-    
-    
 
     /**
      * Método que obtiene el id de la persona.

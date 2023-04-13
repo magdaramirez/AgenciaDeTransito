@@ -17,8 +17,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,10 +34,6 @@ public abstract class Vehiculo implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-//    @ManyToOne()
-//    @JoinColumn(name = "idPlaca", nullable = false) // LLAVE FORÁNEA
-//    private TramitePlaca placa;
 
     @Column(name = "noSerie", nullable = false, length = 7)
     private String noSerie;

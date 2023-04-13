@@ -15,7 +15,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.itson.dominio.Persona;
 import org.itson.dominio.Tramite;
-import org.itson.utils.exceptions.NonexistentEntityException;
+import org.itson.excepciones.NonexistentEntityException;
 
 /**
  *

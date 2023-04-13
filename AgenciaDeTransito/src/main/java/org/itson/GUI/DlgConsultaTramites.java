@@ -26,6 +26,7 @@ import org.itson.utils.Encriptador;
  * @author koine
  */
 public class DlgConsultaTramites extends javax.swing.JDialog {
+
     private static final Logger LOG = Logger.getLogger(DlgConsultaTramites.class.getName());
     IPersonasDAO personas = new PersonasDAO();
     ILicenciasDAO licencias = new LicenciasDAO();
@@ -35,99 +36,108 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
 //    private List<Cuenta> listaCuentas;
     private ConfiguracionPaginado paginadoPlacas;
     private ConfiguracionPaginado paginadoLicencias;
+
     /**
      * Crea el JDialog DlgConsultaTramites.
-     * @param parent
-     * @param modal 
+     *
+     * @param parent Clase padre de la ventana.
+     * @param modal Foco de la aplicación.
      */
     public DlgConsultaTramites(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setTitle("CONSULTAS");
-        this.paginadoPlacas = new ConfiguracionPaginado(0, 3);
-        this.paginadoLicencias = new ConfiguracionPaginado(0, 3);
-        this.llenarTablaPlacas();
-        this.llenarTablaLicencias();
+        this.paginadoPlacas = new ConfiguracionPaginado(0, 5);
+        this.paginadoLicencias = new ConfiguracionPaginado(0, 5);
+        desplegarTablaPlacas();
+        desplegarTablaLicencias();
     }
+
     /**
-     * Metodo que obtiene los datos para la placa de la interfaz grafica para la consutla en caso de haber sido ingresados
-     * @return 
+     * Metodo que obtiene los datos para la placa de la interfaz grafica para la
+     * consutla en caso de haber sido ingresados
+     *
+     * @return
      */
-    private PlacaDTO obtenerDatosTramitePlaca(){
-        PlacaDTO placaD = new PlacaDTO();
+    private Placa obtenerDatosTramitePlaca() {
+        Placa placaD = new Placa();
         String nomEncriptado = encriptador.encriptar(this.txtNombre.getText());
-        
-        if(this.txtAnioNacimiento.getText().equals("")){
+
+        if (this.txtAnioNacimiento.getText().equals("")) {
             placaD.setAnioNacimiento(null);
-        }else{
+        } else {
             placaD.setAnioNacimiento(Integer.parseInt(this.txtAnioNacimiento.getText()));
         }
-        
-        if(this.txtNombre.getText().equals("")){
-            placaD.setNombre(null); 
-        }else{
-            placaD.setNombre(nomEncriptado); 
+
+        if (this.txtNombre.getText().equals("")) {
+            placaD.setNombre(null);
+        } else {
+            placaD.setNombre(nomEncriptado);
+
         }
-        
-        if(this.txtRfc.getText().equals("")){
+
+        if (this.txtRfc.getText().equals("")) {
             placaD.setRfc(null);
-        }else{
+        } else {
             placaD.setRfc(this.txtRfc.getText());
         }
-       
+
         return placaD;
-        
+
     }
+
     /**
-     * Metodo que obtiene los datos para la licencia de la interfaz grafica para la consutla en caso de haber sido ingresados
-     * @return 
+     * Metodo que obtiene los datos para la licencia de la interfaz grafica para
+     * la consutla en caso de haber sido ingresados
+     *
+     * @return
      */
-    private LicenciaDTO obtenerDatosTramiteLicencia(){
+    private LicenciaDTO obtenerDatosTramiteLicencia() {
         LicenciaDTO licenciaD = new LicenciaDTO();
         String nomEncriptado = encriptador.encriptar(this.txtNombre.getText());
-        
-        if(this.txtAnioNacimiento.getText().equals("")){
+
+        if (this.txtAnioNacimiento.getText().equals("")) {
             licenciaD.setAnioNacimiento(null);
-        }else{
+        } else {
             licenciaD.setAnioNacimiento(Integer.parseInt(this.txtAnioNacimiento.getText()));
         }
-        
-        if(this.txtNombre.getText().equals("")){
-            licenciaD.setNombre(null); 
-        }else{
-            licenciaD.setNombre(nomEncriptado); 
+
+        if (this.txtNombre.getText().equals("")) {
+            licenciaD.setNombre(null);
+        } else {
+            licenciaD.setNombre(nomEncriptado);
         }
-        
-        if(this.txtRfc.getText().equals("")){
+
+        if (this.txtRfc.getText().equals("")) {
             licenciaD.setRfc(null);
-        }else{
+        } else {
             licenciaD.setRfc(this.txtRfc.getText());
         }
-       
+
         return licenciaD;
     }
-    
+
     /**
-     * Método que llena la tabla de transferencias
+     * Método que llena la tabla de Placas.
      */
-    private void llenarTablaPlacas() {
+    private void desplegarTablaPlacas() {
         try {
             Calendar cal = new GregorianCalendar();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            Date fecha1,fecha2;
-            String fechaEmision,fechaRecepcion = null;
+            Date fecha1, fecha2;
+            String fechaEmision, fechaRecepcion = null;
             List<TramitePlaca> listaTramitesPlacas = placas.consultarPlacas(paginadoPlacas, obtenerDatosTramitePlaca());
             DefaultTableModel modeloTabla = (DefaultTableModel) this.tblPlacas.getModel();
-            
+
             modeloTabla.setRowCount(0);
             for (TramitePlaca trans : listaTramitesPlacas) {
                 fecha1 = trans.getFechaEmision().getTime();
-                if(trans.getFechaRecepcion()!=null){
+                if (trans.getFechaRecepcion() != null) {
                     fecha2 = trans.getFechaRecepcion().getTime();
                     fechaRecepcion = dateFormat.format(fecha2);
                 }
-                fechaEmision = dateFormat.format(fecha1); 
-                
+                fechaEmision = dateFormat.format(fecha1);
+
                 Object[] fila = {
                     trans.getPersona().getRfc(),
                     trans.getPlaca(),
@@ -143,9 +153,9 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     }
 
     /**
-     * Método que llena la tabla de licencias
+     * Método que llena la tabla de licencias.
      */
-    private void llenarTablaLicencias() {
+    private void desplegarTablaLicencias() {
         try {
             List<TramiteLicencia> listaLicencias = this.licencias.consultarLicencias(paginadoLicencias, obtenerDatosTramiteLicencia());
             DefaultTableModel modeloTabla = (DefaultTableModel) this.tblLicencias.getModel();
@@ -164,39 +174,48 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
             LOG.log(Level.SEVERE, ex.getMessage());
         }
     }
-    
+
     /**
-     * Método que avanza de página de transferencias
+     * Método que avanza de página de Placas.
      */
     private void avanzarPaginaPlacas() {
         this.paginadoPlacas.avanzarPagina();
-        this.llenarTablaPlacas();
+        desplegarTablaPlacas();
     }
 
     /**
-     * Método que retrocede de página de transferencias
+     * Método que retrocede de página de Placas.
      */
     private void retrocederPaginaPlacas() {
         this.paginadoPlacas.retrocederPagina();
-        this.llenarTablaPlacas();
+        desplegarTablaPlacas();
     }
 
     /**
-     * Método que avanza de página de retiros
+     * Método que avanza de página de Licencias.
      */
     private void avanzarPaginaLicencias() {
         this.paginadoLicencias.avanzarPagina();
-        this.llenarTablaLicencias();
+        desplegarTablaLicencias();
     }
 
     /**
-     * Método que retrocede de página de retiros
+     * Método que retrocede de página de Licencias.
      */
     private void retrocederPaginaLicencias() {
         this.paginadoLicencias.retrocederPagina();
-        this.llenarTablaLicencias();
+        desplegarTablaLicencias();
     }
-    
+
+    /**
+     * Método que vacía los datos ingresados al JDialog.
+     */
+    private void vaciarDatos() {
+        this.txtRfc.setText(null);
+        this.txtNombre.setText(null);
+        this.txtAnioNacimiento.setText(null);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -223,13 +242,13 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         lblConsultasTramites = new javax.swing.JLabel();
         lblPlacas = new javax.swing.JLabel();
         lblLicencias = new javax.swing.JLabel();
-        btnConsultlar = new javax.swing.JButton();
-        cbxElementosPagina = new javax.swing.JComboBox<>();
+        btnConsultar = new javax.swing.JButton();
+        cbxElementosPaginaPlacas = new javax.swing.JComboBox<>();
         cbxElementosPaginaRetiros = new javax.swing.JComboBox<>();
-        btnRetroceder = new javax.swing.JButton();
-        btnAvanzar = new javax.swing.JButton();
-        btnRetrocederRetiros = new javax.swing.JButton();
-        btnAvanzarRetiros = new javax.swing.JButton();
+        btnRetrocederPlacas = new javax.swing.JButton();
+        btnAvanzarLicencias = new javax.swing.JButton();
+        btnAvanzarPlacas = new javax.swing.JButton();
+        btnRetrocederLicencias = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -252,7 +271,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
                 btnRegresarActionPerformed(evt);
             }
         });
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 130, 40));
+        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 550, 130, 40));
 
         jPanel3.setBackground(new java.awt.Color(251, 183, 183));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -270,21 +289,21 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         jLabel6.setText("Año nacimiento:");
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 40, -1, -1));
 
-        txtAnioNacimiento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtAnioNacimiento.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(txtAnioNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 30, 200, 40));
 
-        txtRfc.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtRfc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 220, 40));
 
-        txtNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtNombre.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 280, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 1000, 170));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 990, 170));
 
         pnlPlacas.setBackground(new java.awt.Color(255, 255, 255));
         pnlPlacas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        tblPlacas.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tblPlacas.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         tblPlacas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -311,7 +330,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         pnlLicencias.setBackground(new java.awt.Color(255, 255, 255));
         pnlLicencias.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        tblLicencias.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tblLicencias.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         tblLicencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -347,79 +366,79 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         lblLicencias.setText("Licencias:");
         jPanel2.add(lblLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, -1, -1));
 
-        btnConsultlar.setBackground(new java.awt.Color(212, 100, 107));
-        btnConsultlar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnConsultlar.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultlar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
-        btnConsultlar.setText("Consultar");
-        btnConsultlar.addActionListener(new java.awt.event.ActionListener() {
+        btnConsultar.setBackground(new java.awt.Color(212, 100, 107));
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultlarActionPerformed(evt);
+                btnConsultarActionPerformed(evt);
             }
         });
-        jPanel2.add(btnConsultlar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 550, 150, 40));
+        jPanel2.add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 550, 150, 40));
 
-        cbxElementosPagina.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
-        cbxElementosPagina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
-        cbxElementosPagina.addItemListener(new java.awt.event.ItemListener() {
+        cbxElementosPaginaPlacas.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        cbxElementosPaginaPlacas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
+        cbxElementosPaginaPlacas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxElementosPaginaItemStateChanged(evt);
+                cbxElementosPaginaPlacasItemStateChanged(evt);
             }
         });
-        jPanel2.add(cbxElementosPagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 60, 30));
+        jPanel2.add(cbxElementosPaginaPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 60, 30));
 
-        cbxElementosPaginaRetiros.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
+        cbxElementosPaginaRetiros.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         cbxElementosPaginaRetiros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
         cbxElementosPaginaRetiros.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxElementosPaginaRetirosItemStateChanged(evt);
             }
         });
-        jPanel2.add(cbxElementosPaginaRetiros, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 330, 60, 30));
+        jPanel2.add(cbxElementosPaginaRetiros, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 330, 60, 30));
 
-        btnRetroceder.setBackground(new java.awt.Color(212, 100, 107));
-        btnRetroceder.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
-        btnRetroceder.setForeground(new java.awt.Color(255, 255, 255));
-        btnRetroceder.setText("<--");
-        btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
+        btnRetrocederPlacas.setBackground(new java.awt.Color(212, 100, 107));
+        btnRetrocederPlacas.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
+        btnRetrocederPlacas.setForeground(new java.awt.Color(255, 255, 255));
+        btnRetrocederPlacas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/before.png"))); // NOI18N
+        btnRetrocederPlacas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRetrocederActionPerformed(evt);
+                btnRetrocederPlacasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnRetroceder, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 70, -1));
+        jPanel2.add(btnRetrocederPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, 40, 30));
 
-        btnAvanzar.setBackground(new java.awt.Color(212, 100, 107));
-        btnAvanzar.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
-        btnAvanzar.setForeground(new java.awt.Color(255, 255, 255));
-        btnAvanzar.setText("-->");
-        btnAvanzar.addActionListener(new java.awt.event.ActionListener() {
+        btnAvanzarLicencias.setBackground(new java.awt.Color(212, 100, 107));
+        btnAvanzarLicencias.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
+        btnAvanzarLicencias.setForeground(new java.awt.Color(255, 255, 255));
+        btnAvanzarLicencias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/next.png"))); // NOI18N
+        btnAvanzarLicencias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAvanzarActionPerformed(evt);
+                btnAvanzarLicenciasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnAvanzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 330, 70, -1));
+        jPanel2.add(btnAvanzarLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 330, 40, 30));
 
-        btnRetrocederRetiros.setBackground(new java.awt.Color(212, 100, 107));
-        btnRetrocederRetiros.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
-        btnRetrocederRetiros.setForeground(new java.awt.Color(255, 255, 255));
-        btnRetrocederRetiros.setText("<--");
-        btnRetrocederRetiros.addActionListener(new java.awt.event.ActionListener() {
+        btnAvanzarPlacas.setBackground(new java.awt.Color(212, 100, 107));
+        btnAvanzarPlacas.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
+        btnAvanzarPlacas.setForeground(new java.awt.Color(255, 255, 255));
+        btnAvanzarPlacas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/next.png"))); // NOI18N
+        btnAvanzarPlacas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRetrocederRetirosActionPerformed(evt);
+                btnAvanzarPlacasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnRetrocederRetiros, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 330, 70, -1));
+        jPanel2.add(btnAvanzarPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, 40, 30));
 
-        btnAvanzarRetiros.setBackground(new java.awt.Color(212, 100, 107));
-        btnAvanzarRetiros.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
-        btnAvanzarRetiros.setForeground(new java.awt.Color(255, 255, 255));
-        btnAvanzarRetiros.setText("-->");
-        btnAvanzarRetiros.addActionListener(new java.awt.event.ActionListener() {
+        btnRetrocederLicencias.setBackground(new java.awt.Color(212, 100, 107));
+        btnRetrocederLicencias.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
+        btnRetrocederLicencias.setForeground(new java.awt.Color(255, 255, 255));
+        btnRetrocederLicencias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/before.png"))); // NOI18N
+        btnRetrocederLicencias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAvanzarRetirosActionPerformed(evt);
+                btnRetrocederLicenciasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnAvanzarRetiros, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 330, 70, -1));
+        jPanel2.add(btnRetrocederLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 330, 40, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 1060, 600));
 
@@ -430,57 +449,57 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
         this.dispose();
         FrmMenu menu = new FrmMenu();
         menu.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void cbxElementosPaginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaItemStateChanged
-        if(evt.getStateChange() == ItemEvent.SELECTED) {
+    private void cbxElementosPaginaPlacasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaPlacasItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementosMostrados = Integer.parseInt(evt.getItem().toString());
             this.paginadoPlacas.setElementosPagina(elementosMostrados);
-            this.llenarTablaPlacas();
+            desplegarTablaPlacas();
         }
-    }//GEN-LAST:event_cbxElementosPaginaItemStateChanged
+    }//GEN-LAST:event_cbxElementosPaginaPlacasItemStateChanged
 
     private void cbxElementosPaginaRetirosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaRetirosItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            int elementosMostrados = Integer.parseInt(evt.getItem().toString());
-            this.paginadoLicencias.setElementosPagina(elementosMostrados);
-            this.avanzarPaginaLicencias();
+            int elementosPorPagina = Integer.parseInt(evt.getItem().toString());
+            this.paginadoLicencias.setElementosPagina(elementosPorPagina);
+            this.desplegarTablaLicencias();
         }
     }//GEN-LAST:event_cbxElementosPaginaRetirosItemStateChanged
 
-    private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
+    private void btnRetrocederPlacasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederPlacasActionPerformed
         retrocederPaginaPlacas();
-    }//GEN-LAST:event_btnRetrocederActionPerformed
+    }//GEN-LAST:event_btnRetrocederPlacasActionPerformed
 
-    private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
+    private void btnAvanzarPlacasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarPlacasActionPerformed
         avanzarPaginaPlacas();
-    }//GEN-LAST:event_btnAvanzarActionPerformed
+    }//GEN-LAST:event_btnAvanzarPlacasActionPerformed
 
-    private void btnRetrocederRetirosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederRetirosActionPerformed
+    private void btnRetrocederLicenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederLicenciasActionPerformed
         retrocederPaginaLicencias();
-    }//GEN-LAST:event_btnRetrocederRetirosActionPerformed
+    }//GEN-LAST:event_btnRetrocederLicenciasActionPerformed
 
-    private void btnAvanzarRetirosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarRetirosActionPerformed
+    private void btnAvanzarLicenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarLicenciasActionPerformed
         avanzarPaginaLicencias();
-    }//GEN-LAST:event_btnAvanzarRetirosActionPerformed
+    }//GEN-LAST:event_btnAvanzarLicenciasActionPerformed
 
-    private void btnConsultlarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultlarActionPerformed
-       this.llenarTablaPlacas();
-       this.llenarTablaLicencias();
-    }//GEN-LAST:event_btnConsultlarActionPerformed
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        desplegarTablaPlacas();
+        desplegarTablaLicencias();
+        vaciarDatos();
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAvanzar;
-    private javax.swing.JButton btnAvanzarRetiros;
-    private javax.swing.JButton btnConsultlar;
+    private javax.swing.JButton btnAvanzarLicencias;
+    private javax.swing.JButton btnAvanzarPlacas;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton btnRetroceder;
-    private javax.swing.JButton btnRetrocederRetiros;
-    private javax.swing.JComboBox<String> cbxElementosPagina;
+    private javax.swing.JButton btnRetrocederLicencias;
+    private javax.swing.JButton btnRetrocederPlacas;
+    private javax.swing.JComboBox<String> cbxElementosPaginaPlacas;
     private javax.swing.JComboBox<String> cbxElementosPaginaRetiros;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

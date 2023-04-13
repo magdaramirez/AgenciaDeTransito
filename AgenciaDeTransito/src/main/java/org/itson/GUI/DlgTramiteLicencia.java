@@ -5,8 +5,12 @@
  */
 package org.itson.GUI;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +30,6 @@ import org.itson.implementaciones.PersonasDAO;
 import org.itson.interfaces.ILicenciasDAO;
 import org.itson.interfaces.IPagosDAO;
 import org.itson.interfaces.IPersonasDAO;
-import org.itson.utils.Encriptador;
 import org.itson.utils.Validadores;
 
 /**
@@ -34,15 +37,16 @@ import org.itson.utils.Validadores;
  * @author koine
  */
 public class DlgTramiteLicencia extends javax.swing.JDialog {
+
     IPersonasDAO personas = new PersonasDAO();
     ILicenciasDAO licencias = new LicenciasDAO();
     IPagosDAO pagos = new PagosDAO();
-    Encriptador encriptador = new Encriptador();
+
     /**
      * Método que crea el JDialog DlgTramiteLicencia.
      *
-     * @param parent
-     * @param modal
+     * @param parent Clase padre de la ventana.
+     * @param modal Foco de la aplicación.
      */
     public DlgTramiteLicencia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -84,7 +88,7 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         if (Validadores.esTextoVacio(rfc)) {
             erroresValidacion.add("Datos vacíos");
         }
-        if (!Validadores.esRFC(rfc)) {
+        if (!Validadores.esRFC(rfc.toUpperCase())) {
             erroresValidacion.add("Formato de RFC incorrecto");
         }
         if (Validadores.excedeLimite(rfc, 13)) {
@@ -113,34 +117,40 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
      * Método que lleva a cabo el trámite de licencia.
      */
     private void tramitarLicencia() {
-        
+
         HashMap<String, String> datos = this.extraerDatos();
-        
+
         List<String> erroresValidacion = this.validarDatos(datos);
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
         }
-        
+
         TramiteLicencia licencia;
         try {
             licencia = crearTramiteLicencia();
-        
+
             licencias.registrarLicencia(licencia);
             registroPagoRealizado(licencia);
-            JOptionPane.showMessageDialog(
-                this,
-                "El registro de la licencia se ha realizado correctamente",
-                "INFORMACIÓN",
-                JOptionPane.INFORMATION_MESSAGE);
+            int respuesta = JOptionPane.showConfirmDialog(
+                    this,
+                    "El trámite de la licencia se ha realizado correctamente." + "\n¿Desea regresar al menú?",
+                    "INFORMACION",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+                FrmMenu menu = new FrmMenu();
+                menu.setVisible(true);
+                this.dispose();
+            }
+            vaciarDatos();
         } catch (PersistenciaException ex) {
             Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
-                this,
-                "ERROR: El costo o la persona no han sido validados",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
+                    this,
+                    "No se ha podido realizar el trámite de la licencia. \nFavor de proporcionar datos correctos.",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
-        
     }
 
     /**
@@ -148,7 +158,7 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
      * vigencia seleccionada.
      */
     private Float calcularCosto() {
-        Float costo=0f;
+        Float costo = 0f;
         if (cbxTipo.getSelectedIndex() == 1 && cbxVigencia.getSelectedIndex() == 1) {
             costo = 600.00f;
             txtCosto.setText("$" + costo);
@@ -172,26 +182,7 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         }
         return costo;
     }
-    /**
-     * Metodo que desencripte el nombre de la persona ingresada
-     * @param persona1 la persona a desencriptar el nombre
-     * @return el nombre completo de la persona desencriptado
-     */
-    private String DesencriptarNombreCompleto(Persona persona1) {
-        
-        String nombre = persona1.getNombre();
-        String apellidoPat = persona1.getApellidoPaterno();
-        String apellidoMat = persona1.getApellidoMaterno();
-        
-        String nomDes = encriptador.desencriptar(nombre);
-        String apellidoPatDes = encriptador.desencriptar(apellidoPat);
-        String apellidoMatDes = encriptador.desencriptar(apellidoMat);
-        
-        String nombreCompleto = nomDes+" "+apellidoPatDes+" "+apellidoMatDes;
-        
-        return nombreCompleto;
-    }
-    
+
     /**
      * Método que vacía los datos del JDialog.
      */
@@ -202,88 +193,102 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         cbxTipo.setSelectedIndex(0);
         cbxVigencia.setSelectedIndex(0);
     }
+
     /**
      * Metodo que busca la persona por el rfc ingresado en la interfaz grafica
+     *
      * @return la persona registrada en el sistema
-     * @throws PersistenciaException en caso de que no haya sido encontrada la persona
+     * @throws PersistenciaException en caso de que no haya sido encontrada la
+     * persona
      */
-    private Persona buscarPersonaRFC() throws PersistenciaException{
+    private Persona buscarPersonaRFC() throws PersistenciaException {
         HashMap<String, String> datos = extraerDatos();
         String rfc = datos.get("rfc");
-        try{
+        try {
             Persona persona1 = personas.buscarPersona(rfc);
-              
             return persona1;
-        }catch (PersistenciaException ex){
+        } catch (PersistenciaException ex) {
             Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
-            
         }
         return null;
-        
+
     }
+
     /**
      * Metodo que crea el tramite de la licencia a registrar en el sistema
+     *
      * @return un tramite licencia para registrar
-     * @throws PersistenciaException en caso de que no haya sido posible obtener un dato para la creacion
+     * @throws PersistenciaException en caso de que no haya sido posible obtener
+     * un dato para la creacion
      */
-    private TramiteLicencia crearTramiteLicencia() throws PersistenciaException{
+    private TramiteLicencia crearTramiteLicencia() throws PersistenciaException {
         HashMap<String, String> datos = extraerDatos();
         String tipo = datos.get("tipo");
         String vigencia = datos.get("vigencia");
-        
-        TramiteLicencia licencia = new TramiteLicencia();
 
+        TramiteLicencia licencia = new TramiteLicencia();
         Persona persona1 = buscarPersonaRFC();
-        Float costo = calcularCosto();
-        if(!(costo == 0.0f)){
-          licencia.setCosto(costo);
-        }else{
-            throw new PersistenciaException("El costo de la licencia no ha sido calculado");
+        if (Validadores.esMayorDeEdad(persona1)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La persona no cuenta con la edad para tramitar una licencia.",
+                    "ERROR",
+                    JOptionPane.WARNING_MESSAGE);
+            vaciarDatos();
+        } else {
+            Float costo = calcularCosto();
+            if (!(costo == 0.0f)) {
+                licencia.setCosto(costo);
+            } else {
+                throw new PersistenciaException("El costo de la licencia no ha sido calculado");
+
+            }
+            licencia.setEstado(EstadoTramite.ACTIVO);
+            licencia.setPersona(persona1);
+
+            //TIPO
+            if (tipo.equals("Normal")) {
+                licencia.setTipo(TipoLicencia.NORMAL);
+            } else {
+                licencia.setTipo(TipoLicencia.DISCAPACITADO);
+            }
+
+            //VIGENCIA AÑOS
+            switch (vigencia) {
+                case "1 año":
+                    licencia.setVigencia(ConstantesGUI.ANIO1);
+                    break;
+                case "2 años":
+                    licencia.setVigencia(ConstantesGUI.ANIO2);
+                    break;
+                case "3 años":
+                    licencia.setVigencia(ConstantesGUI.ANIO3);
+                    break;
+            }
+            Calendar fechaEmision = Calendar.getInstance();
+            licencia.setFechaEmision(fechaEmision);
+
         }
-        licencia.setEstado(EstadoTramite.ACTIVO);
-        licencia.setPersona(persona1);
-        
-        //TIPO
-        if(tipo.equals("Normal")){
-            licencia.setTipo(TipoLicencia.NORMAL);
-        }else{
-            licencia.setTipo(TipoLicencia.DISCAPACITADO);
-        }
-        
-        //VIGENCIA AÑOS
-        switch (vigencia) {
-            case "1 año":
-                licencia.setVigencia(ConstantesGUI.ANIO1);
-                break;
-            case "2 años":
-                licencia.setVigencia(ConstantesGUI.ANIO2);
-                break;
-            case "3 años":
-                licencia.setVigencia(ConstantesGUI.ANIO3);
-                break;
-        }
-        
-        Calendar fechaEmision = Calendar.getInstance();
-        licencia.setFechaEmision(fechaEmision);
-        
+
         return licencia;
     }
+
     /**
      * Metodo que registra el pago realizado para el tramite de la licencia
+     *
      * @param licencia el tramite a registrar su pago
      */
-    private void registroPagoRealizado(TramiteLicencia licencia){
+    private void registroPagoRealizado(TramiteLicencia licencia) {
         Pago pago = new Pago();
         pago.setMonto(licencia.getCosto());
         pago.setTramite(licencia);
-        
+
         Calendar fecha1 = Calendar.getInstance();
         pago.setFechaRealizacion(fecha1);
-        
+
         pagos.registarPago(pago);
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -359,11 +364,6 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
 
         cbxTipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Normal", "Discapacitado" }));
-        cbxTipo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxTipoActionPerformed(evt);
-            }
-        });
         jPanel3.add(cbxTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, 110, 30));
 
         txtRfc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -375,11 +375,6 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
 
         txtCosto.setEditable(false);
         txtCosto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCosto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCostoActionPerformed(evt);
-            }
-        });
         jPanel3.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 90, 30));
 
         btnCalcularCosto.setBackground(new java.awt.Color(212, 100, 107));
@@ -448,10 +443,7 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
-        // TODO add your handling code here:
         tramitarLicencia();
-        
-        vaciarDatos();
     }//GEN-LAST:event_btnTramitarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -466,42 +458,35 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         vaciarDatos();
     }//GEN-LAST:event_btnVaciarActionPerformed
 
-    private void cbxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTipoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxTipoActionPerformed
-
     private void btnCalcularCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularCostoActionPerformed
         // TODO add your handling code here:
         calcularCosto();
     }//GEN-LAST:event_btnCalcularCostoActionPerformed
 
-    private void txtCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCostoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCostoActionPerformed
-
     private void lblBuscarRFCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarRFCMouseClicked
-
         Persona persona1;
         try {
+            PersonasDAO dao = new PersonasDAO();
             persona1 = buscarPersonaRFC();
-            String nombreCompleto = DesencriptarNombreCompleto(persona1);
+            String nombreCompleto = dao.DesencriptarNombreCompleto(persona1);
             JOptionPane.showMessageDialog(
-                this,
-                "Persona encontrada con el rfc ingresado",
-                "INFORMACIÓN",
-                JOptionPane.INFORMATION_MESSAGE);
+                    this,
+                    "Persona encontrada con el RFC ingresado.",
+                    "INFORMACIÓN",
+                    JOptionPane.INFORMATION_MESSAGE);
+            this.txtRfc.setText(persona1.getRfc());
             this.txtNombreCom.setText(nombreCompleto);
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(
-                this,
-                "ERROR: No se encontro ninguna persona registrada con ese rfc",
-                "ERROR",
-                JOptionPane.ERROR_MESSAGE);
-        }      
-        
-    }//GEN-LAST:event_lblBuscarRFCMouseClicked
 
+        } catch (Exception ex) {
+            Logger.getLogger(DlgTramiteLicencia.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se encontró ninguna persona registrada con ese RFC.",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_lblBuscarRFCMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalcularCosto;
     private javax.swing.JButton btnRegresar;

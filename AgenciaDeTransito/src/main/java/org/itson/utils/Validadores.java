@@ -4,8 +4,13 @@
  */
 package org.itson.utils;
 
+import java.util.Calendar;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.itson.dominio.Persona;
 
 /**
  *
@@ -123,13 +128,15 @@ public class Validadores {
         }
         return false;
     }
-    
+
     /**
-     *  Método que valida que la cadena de texto tenga el formato del npumero de serie de un automóvil.
+     * Método que valida que la cadena de texto tenga el formato del número de
+     * serie de un automóvil.
+     *
      * @param texto Cadena de texto.
      * @return coincidencia entre los validadores y la cadena de texto.
      */
-    public static boolean esNoSerie(String texto){
+    public static boolean esNoSerie(String texto) {
         CharSequence cadena = texto.trim();
         String reCadena = "([A-Z]{3}[-][0-9]{3})";
 
@@ -142,4 +149,24 @@ public class Validadores {
             return false;
         }
     }
+
+    /**
+     * Método que valida si una persona es mayor de edad.
+     * @param persona Persona.
+     * @return Verdadero si es menor de edad, falso si es mayor de edad.
+     */
+    public static boolean esMayorDeEdad(Persona persona) {
+        Calendar nacimiento = Calendar.getInstance();
+        nacimiento.set(persona.getFechaNacimiento().get(YEAR), persona.getFechaNacimiento().get(MONTH), persona.getFechaNacimiento().get(DAY_OF_MONTH));
+
+        Calendar hoy = Calendar.getInstance();
+
+        int edad = hoy.get(YEAR) - nacimiento.get(YEAR);
+        if (edad < 18) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

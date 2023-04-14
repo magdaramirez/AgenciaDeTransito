@@ -7,6 +7,10 @@ package org.itson.GUI;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +35,9 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.itson.dominio.*;
 import org.itson.excepciones.PersistenciaException;
@@ -49,7 +55,6 @@ import org.itson.utils.Encriptador;
  * @author koine
  */
 public class DlgReporteTramites extends javax.swing.JDialog {
-
     private static final Logger LOG = Logger.getLogger(DlgConsultaTramites.class.getName());
     IPersonasDAO personas = new PersonasDAO();
     ILicenciasDAO licencias = new LicenciasDAO();
@@ -70,7 +75,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         initComponents();
         setTitle("REPORTES");
         this.paginado = new ConfiguracionPaginado(0, 3);
-        if (this.cbxTramite.getSelectedItem().toString().equals("Expedición de placa")) {
+        if (this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")) {
             this.llenarTablaPlacas();
         } else {
             this.llenarTablaLicencias();
@@ -80,7 +85,9 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     /**
      * Método que llena la tabla de placas.
      */
-    private void llenarTablaPlacas() {
+    private void llenarTablaPlacas() {  
+        
+
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             Date fecha1;
@@ -89,7 +96,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
             DefaultTableModel modeloTabla = (DefaultTableModel) this.tblTramites.getModel();
 
             String nombDes = null, apellidoPDes = null, apellidoMDes = null, nomCompDes = null;
-            String tipo = "Expedición de placa";
+            String tipo = "Expedicion de placa";
 
             modeloTabla.setRowCount(0);
             for (TramitePlaca trans : listaTramitesPlacas) {
@@ -124,7 +131,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
             List<TramiteLicencia> listaLicencias = this.licencias.consultarLicencias(paginado, obtenerDatosTramiteLicencia());
             DefaultTableModel modeloTabla = (DefaultTableModel) this.tblTramites.getModel();
             String nombDes = null, apellidoPDes = null, apellidoMDes = null, nomCompDes = null;
-            String tipo = "Expedición de licencia";
+            String tipo = "Expedicion de licencia";
 
             modeloTabla.setRowCount(0);
             for (TramiteLicencia licencia : listaLicencias) {
@@ -207,7 +214,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
      */
     private void avanzarPaginaTramites() {
         this.paginado.avanzarPagina();
-        if (this.cbxTramite.getSelectedItem().toString().equals("Expedición de placa")) {
+        if (this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")) {
             this.llenarTablaPlacas();
         } else {
             this.llenarTablaLicencias();
@@ -219,7 +226,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
      */
     private void retrocederPaginaTramites() {
         this.paginado.retrocederPagina();
-        if (this.cbxTramite.getSelectedItem().toString().equals("Expedición de placa")) {
+        if (this.cbxTramite.getSelectedItem().toString().equals("Expedicion de placa")) {
             this.llenarTablaPlacas();
         } else {
             this.llenarTablaLicencias();
@@ -229,38 +236,119 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     /**
      * Método que genera el reporte.
      */
-    private void generarReporte() {
+//    private void generarReporte() {
+//        try {
+//            ArrayList lista = new ArrayList();
+//            for (int i = 0; i < tblTramites.getRowCount(); i++) {
+//                Reporte reporte = new Reporte(
+//                tblTramites.getValueAt(i, 0)+"",
+//                tblTramites.getValueAt(i, 1)+"",
+//                tblTramites.getValueAt(i, 2)+"",
+//                tblTramites.getValueAt(i, 3)+"");
+//                lista.add(reporte);
+//            }
+//
+//            JasperReport jr = null;
+//            jr = (JasperReport) JRLoader.loadObjectFromFile("src\\main\\java\\org\\itson\\utils\\Reporte.jasper");
+//
+//            HashMap parametro = new HashMap();
+//            parametro.put("monto", calcularMontoTotalTramites());
+//
+//            JasperPrint jp = JasperFillManager.fillReport(jr, parametro, new JRBeanCollectionDataSource(lista));
+//            JasperViewer jv = new JasperViewer(jp, false);
+//            jv.setVisible(true);
+//            
+//            
+//            
+//        } catch (JRException ex) {
+//            JOptionPane.showMessageDialog(null,
+//                    "No fue posible descargar el reporte.",
+//                    "ERROR",
+//                    JOptionPane.ERROR_MESSAGE);
+//        }
+//
+//    }
+    
+    private void generarReporteLicencias(List<TramiteLicencia> listaTramites) throws JRException{
+        
+        String outputFile = "src\\main\\resources\\pdfs" + "ReporteTramites.pdf";
+
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(listaTramites);
+        String monto = ""+calcularMontoTotalTramites()+"";
+        
+        Map<String, Object> parameters = new HashMap<>();
+         parameters.put("CollectionBeanParam", itemsJRBean);
+         parameters.put("nombre", this.txtNombre.getText());
+         parameters.put("monto", monto);
+         parameters.put("tipo", "Expedicion de licencia");
+
         try {
-            ArrayList lista = new ArrayList();
-            for (int i = 0; i < tblTramites.getRowCount(); i++) {
-                Reporte reporte = new Reporte(
-                tblTramites.getValueAt(i, 0)+"",
-                tblTramites.getValueAt(i, 1)+"",
-                tblTramites.getValueAt(i, 2)+"",
-                tblTramites.getValueAt(i, 3)+"");
-                lista.add(reporte);
-            }
+            InputStream input = new FileInputStream(new File("src\\main\\java\\org\\itson\\utils\\Reporte.jrxml"));
 
-            JasperReport jr = null;
-            jr = (JasperReport) JRLoader.loadObjectFromFile("src\\main\\java\\org\\itson\\utils\\Reporte.jasper");
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
 
-            HashMap parametro = new HashMap();
-            parametro.put("monto", calcularMontoTotalTramites());
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
-            JasperPrint jp = JasperFillManager.fillReport(jr, parametro, new JRBeanCollectionDataSource(lista));
-            JasperViewer jv = new JasperViewer(jp, false);
-            jv.setVisible(true);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            JasperViewer.viewReport(jasperPrint, false);
+
+            System.out.println("Archivo generado...");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
+        }   
             
-            
-            
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(null,
-                    "No fue posible descargar el reporte.",
-                    "ERROR",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
     }
+    
+    private void generarReportePlacas(List<TramitePlaca> listaTramites) throws JRException{
+        
+        String outputFile = "src\\main\\resources\\pdfs" + "ReporteTramites.pdf";
+
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(listaTramites);
+        String monto = ""+calcularMontoTotalTramites()+"";
+        
+        Map<String, Object> parameters = new HashMap<>();
+         parameters.put("CollectionBeanParam", itemsJRBean);
+         parameters.put("nombre", this.txtNombre.getText());
+         parameters.put("monto", monto);
+         parameters.put("tipo", "Expedicion de placa");
+
+        try {
+            InputStream input = new FileInputStream(new File("src\\main\\java\\org\\itson\\utils\\Reporte.jrxml"));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            JasperViewer.viewReport(jasperPrint, false);
+
+            System.out.println("Archivo generado...");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+            
+    }
+    
+    private void imprimirPDF() throws PersistenciaException{
+        if (this.cbxTramite.getSelectedItem().equals("Expedicion de placa")) {
+                List<TramitePlaca> listaPlacas = placas.consultarPlacas(paginado, obtenerDatosTramitePlaca());
+            try {
+                generarReportePlacas(listaPlacas);
+            } catch (JRException ex) {
+                Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            } else {
+               List<TramiteLicencia> listaLicencias = this.licencias.consultarLicencias(paginado, obtenerDatosTramiteLicencia());
+                try {
+                    generarReporteLicencias(listaLicencias);
+                } catch (JRException ex) {
+                    Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -331,7 +419,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         jPanel3.add(lblTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, -1));
 
         cbxTramite.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cbxTramite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Expedición de licencia", "Expedición de placa" }));
+        cbxTramite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Expedicion de licencia", "Expedicion de placa" }));
         cbxTramite.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxTramiteActionPerformed(evt);
@@ -475,7 +563,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementosMostrados = Integer.parseInt(evt.getItem().toString());
             this.paginado.setElementosPagina(elementosMostrados);
-            if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
+            if (this.cbxTramite.getSelectedItem().equals("Expedicion de placa")) {
                 this.llenarTablaPlacas();
             } else {
                 this.llenarTablaLicencias();
@@ -492,11 +580,15 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAvanzarActionPerformed
 
     private void btnDescargarPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargarPdfActionPerformed
-        generarReporte();
+        try {
+            imprimirPDF();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnDescargarPdfActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
+        if (this.cbxTramite.getSelectedItem().equals("Expedicion de placa")) {
                 this.llenarTablaPlacas();
             } else {
                 this.llenarTablaLicencias();

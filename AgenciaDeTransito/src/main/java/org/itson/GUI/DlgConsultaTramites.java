@@ -47,8 +47,8 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setTitle("CONSULTAS");
-        this.paginadoPlacas = new ConfiguracionPaginado(0, 5);
-        this.paginadoLicencias = new ConfiguracionPaginado(0, 5);
+        this.paginadoPlacas = new ConfiguracionPaginado(0, 3);
+        this.paginadoLicencias = new ConfiguracionPaginado(0, 3);
         desplegarTablaPlacas();
         desplegarTablaLicencias();
     }
@@ -489,7 +489,6 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         desplegarTablaPlacas();
         desplegarTablaLicencias();
-        vaciarDatos();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

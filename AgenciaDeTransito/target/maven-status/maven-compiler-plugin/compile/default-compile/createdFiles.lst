@@ -2,6 +2,7 @@ org\itson\dominio\VehiculoAutomovil.class
 org\itson\implementaciones\ConstantesGUI.class
 org\itson\interfaces\IPersonasDAO.class
 org\itson\GUI\DlgRegistroVehiculo$2.class
+org\itson\dominio\Reporte.class
 org\itson\GUI\DlgPlacaVehiculoNuevo$1.class
 org\itson\interfaces\ILicenciasDAO.class
 org\itson\GUI\DlgPlacaVehiculoNuevo$4.class

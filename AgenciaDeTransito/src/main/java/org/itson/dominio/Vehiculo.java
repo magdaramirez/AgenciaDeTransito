@@ -35,7 +35,7 @@ public abstract class Vehiculo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "noSerie", nullable = false, length = 7)
+    @Column(name = "noSerie", nullable = false, length = 7,unique = true)
     private String noSerie;
 
     @Column(name = "marca", nullable = false, length = 50)

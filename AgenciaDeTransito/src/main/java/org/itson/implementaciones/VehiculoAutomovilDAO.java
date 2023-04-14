@@ -39,7 +39,7 @@ public class VehiculoAutomovilDAO implements IVehiculoDAO {
         } catch (Exception ex) {
             Logger.getLogger(PlacasDAO.class.getName()).log(Level.SEVERE, null, ex);
             LOG.log(Level.SEVERE, ex.getMessage());
-            throw new PersistenciaException("No fue posible registrar el automovil");
+            throw new PersistenciaException("No fue posible registrar el automovil, numero de serie repetido");
         }
     }
 

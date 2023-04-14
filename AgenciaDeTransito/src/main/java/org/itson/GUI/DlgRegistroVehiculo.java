@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.itson.dominio.VehiculoAutomovil;
+import org.itson.dominio.*;
 import org.itson.excepciones.PersistenciaException;
-import org.itson.implementaciones.VehiculoAutomovilDAO;
+import org.itson.implementaciones.*;
 import org.itson.utils.Validadores;
-import org.itson.interfaces.IVehiculoDAO;
+import org.itson.interfaces.*;
 
 /**
  *
@@ -24,6 +24,7 @@ import org.itson.interfaces.IVehiculoDAO;
 public class DlgRegistroVehiculo extends javax.swing.JDialog {
 
     IVehiculoDAO autos = new VehiculoAutomovilDAO();
+    IPlacasDAO placas = new PlacasDAO();
 
     /**
      * Método que crea el JDialog DlgRegistroVehiculo.
@@ -106,7 +107,7 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
      *
      * @return el objeto automovil a registrar
      */
-    private VehiculoAutomovil crearAutomovil() {
+    private VehiculoAutomovil crearAutomovil() throws PersistenciaException {
         HashMap<String, String> datos = extraerDatos();
 
         String noSerie = datos.get("noSerie");
@@ -147,15 +148,15 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
                         "El registro del automovil se ha realizado correctamente",
                         "INFORMACIÓN",
                         JOptionPane.INFORMATION_MESSAGE);
+                mostrarPantallaPlacaVehiculoNuevo();
             } catch (PersistenciaException ex) {
                 Logger.getLogger(DlgTramiteLicencia.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(
                         this,
-                        "Algún dato no ha sido ingresado correctamente",
+                        "Algún dato no ha sido ingresado correctamente, numero de serie repetido",
                         "ERROR",
                         JOptionPane.ERROR_MESSAGE);
-            }
-            mostrarPantallaPlacaVehiculoNuevo();
+            } 
         }
 
     }
@@ -323,8 +324,9 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        try {
-            registrarVehiculo();
+
+        try {        
+                registrarVehiculo();
         } catch (PersistenciaException ex) {
             Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(Level.SEVERE, null, ex);
         }

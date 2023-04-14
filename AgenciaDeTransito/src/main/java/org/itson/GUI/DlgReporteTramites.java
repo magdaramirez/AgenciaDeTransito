@@ -33,14 +33,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import org.itson.dominio.EstadoTramite;
-import org.itson.dominio.LicenciaDTO;
-import org.itson.dominio.Pago;
-import org.itson.dominio.Persona;
-import org.itson.dominio.Placa;
-import org.itson.dominio.Tramite;
-import org.itson.dominio.TramiteLicencia;
-import org.itson.dominio.TramitePlaca;
+import org.itson.dominio.*;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.implementaciones.LicenciasDAO;
 import org.itson.implementaciones.PersonasDAO;
@@ -199,7 +192,16 @@ public class DlgReporteTramites extends javax.swing.JDialog {
 
         return licenciaD;
     }
-
+    
+    private float calcularMontoTotalTramites(){
+        float costoTotal = 0f, costo = 0f;
+        for (int i = 0; i < tblTramites.getRowCount(); i++) {
+                costo = (float) tblTramites.getValueAt(i, 3);
+                costoTotal = costoTotal + costo;
+            }
+        return costoTotal;
+    }
+    
     /**
      * Método que avanza de página de trámites.
      */
@@ -231,24 +233,26 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         try {
             ArrayList lista = new ArrayList();
             for (int i = 0; i < tblTramites.getRowCount(); i++) {
-                tblTramites.getValueAt(i, 1);
-                tblTramites.getValueAt(i, 2);
-                tblTramites.getValueAt(i, 3);
-                tblTramites.getValueAt(i, 4);
+                Reporte reporte = new Reporte(
+                tblTramites.getValueAt(i, 0)+"",
+                tblTramites.getValueAt(i, 1)+"",
+                tblTramites.getValueAt(i, 2)+"",
+                tblTramites.getValueAt(i, 3)+"");
+                lista.add(reporte);
             }
 
             JasperReport jr = null;
-            jr = (JasperReport) JRLoader.loadObjectFromFile("src/main/java/org/itson/utils/reporte.jasper");
+            jr = (JasperReport) JRLoader.loadObjectFromFile("src\\main\\java\\org\\itson\\utils\\Reporte.jasper");
 
             HashMap parametro = new HashMap();
-            parametro.put("fechaRealizacion", tblTramites.getValueAt(1, 1));
-            parametro.put("nombre", tblTramites.getValueAt(1, 2));
-            parametro.put("Tipo", tblTramites.getValueAt(1, 3));
-            parametro.put("Costo", tblTramites.getValueAt(1, 4));
+            parametro.put("monto", calcularMontoTotalTramites());
 
             JasperPrint jp = JasperFillManager.fillReport(jr, parametro, new JRBeanCollectionDataSource(lista));
             JasperViewer jv = new JasperViewer(jp, false);
             jv.setVisible(true);
+            
+            
+            
         } catch (JRException ex) {
             JOptionPane.showMessageDialog(null,
                     "No fue posible descargar el reporte.",
@@ -290,7 +294,6 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         btnAvanzar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -493,7 +496,11 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     }//GEN-LAST:event_btnDescargarPdfActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
+                this.llenarTablaPlacas();
+            } else {
+                this.llenarTablaLicencias();
+            }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

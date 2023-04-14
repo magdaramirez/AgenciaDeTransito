@@ -48,7 +48,7 @@ public class Persona implements Serializable {
     @Column(name = "telefono", nullable = false, length = 10)
     private String telefono;
 
-    @Column(name = "rfc", nullable = false, length = 13)
+    @Column(name = "rfc", nullable = false, length = 13, unique = true)
     private String rfc;
 
     @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE})

@@ -147,8 +147,6 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
         }
-
-        DlgPlacaVehiculoNuevo placaVehiculoNuevo = new DlgPlacaVehiculoNuevo(null, true);
         
         try {
             VehiculoAutomovil auto = new VehiculoAutomovil();
@@ -166,6 +164,7 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
             placaNvo.setCosto(costo);
             placaNvo.setEstado(EstadoTramite.ACTIVO);
             placaNvo.setFechaEmision(this.jdcFechaEmision.getCalendar());
+            placaNvo.setFechaRecepcion(null);
             placaNvo.setPersona(buscarPersonaRFC());
             placaNvo.setPlaca(this.txtPlacaNueva.getText());
             placaNvo.setTipoPlaca(TipoPlaca.USADO);
@@ -676,7 +675,6 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         try {
             cambiarEstadoPlacaAnterior();
             tramitarPlacaVehiculoUsado();
-            vaciarDatos();
         } catch (PersistenciaException ex) {
             Logger.getLogger(DlgPlacaVehiculoUsado.class.getName()).log(Level.SEVERE, null, ex);
         }

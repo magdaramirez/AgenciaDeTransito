@@ -54,7 +54,7 @@ import org.itson.utils.Encriptador;
  *
  * @author koine
  */
-public class DlgReporteTramites extends javax.swing.JDialog {
+public class DlgReporteTramites extends javax.swing.JFrame {
     private static final Logger LOG = Logger.getLogger(DlgConsultaTramites.class.getName());
     IPersonasDAO personas = new PersonasDAO();
     ILicenciasDAO licencias = new LicenciasDAO();
@@ -71,7 +71,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
      * @param modal Foco de la aplicación.
      */
     public DlgReporteTramites(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+//        super(parent, modal);
         initComponents();
         setTitle("REPORTES");
         this.paginado = new ConfiguracionPaginado(0, 3);
@@ -168,11 +168,11 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         placaD.setFechaInicio(this.jdcFechaInicio.getCalendar());
         placaD.setFechaFin(this.jdcFechaFin.getCalendar());
 
-        if (this.txtNombre.getText().equals("")) {
-            placaD.setNombre(null);
-        } else {
-            placaD.setNombre(nomEncriptado);
-        }
+//        if (this.txtNombre.getText().equals("")) {
+//            placaD.setNombre(null);
+//        } else {
+//            placaD.setNombre(nomEncriptado);
+//        }
 
         return placaD;
 
@@ -191,11 +191,11 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         licenciaD.setFechaInicio(this.jdcFechaInicio.getCalendar());
         licenciaD.setFechaFin(this.jdcFechaFin.getCalendar());
 
-        if (this.txtNombre.getText().equals("")) {
-            licenciaD.setNombre(null);
-        } else {
-            licenciaD.setNombre(nomEncriptado);
-        }
+//        if (this.txtNombre.getText().equals("")) {
+//            licenciaD.setNombre(null);
+//        } else {
+//            licenciaD.setNombre(nomEncriptado);
+//        }
 
         return licenciaD;
     }
@@ -272,12 +272,23 @@ public class DlgReporteTramites extends javax.swing.JDialog {
     private void generarReporteLicencias(List<TramiteLicencia> listaTramites) throws JRException{
         
         String outputFile = "src\\main\\resources\\pdfs" + "ReporteTramites.pdf";
-
+        
+        ArrayList lista = new ArrayList();
+            for (int i = 0; i < tblTramites.getRowCount(); i++) {
+                Reporte reporte = new Reporte(
+                tblTramites.getValueAt(i, 0)+"",
+                tblTramites.getValueAt(i, 1)+"",
+                tblTramites.getValueAt(i, 2)+"",
+                tblTramites.getValueAt(i, 3)+"");
+                lista.add(reporte);
+            }
+        List<TramiteLicencia> listaL = lista;
+            
         JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(listaTramites);
         String monto = ""+calcularMontoTotalTramites()+"";
         
         Map<String, Object> parameters = new HashMap<>();
-         parameters.put("CollectionBeanParam", itemsJRBean);
+//         parameters.put("CollectionBeanParam", itemsJRBean);
          parameters.put("nombre", this.txtNombre.getText());
          parameters.put("monto", monto);
          parameters.put("tipo", "Expedicion de licencia");
@@ -289,7 +300,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
 
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, itemsJRBean);
 
             JasperViewer.viewReport(jasperPrint, false);
 
@@ -308,7 +319,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
         String monto = ""+calcularMontoTotalTramites()+"";
         
         Map<String, Object> parameters = new HashMap<>();
-         parameters.put("CollectionBeanParam", itemsJRBean);
+//         parameters.put("CollectionBeanParam", itemsJRBean);
          parameters.put("nombre", this.txtNombre.getText());
          parameters.put("monto", monto);
          parameters.put("tipo", "Expedicion de placa");
@@ -320,7 +331,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
 
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, itemsJRBean);
 
             JasperViewer.viewReport(jasperPrint, false);
 
@@ -340,7 +351,7 @@ public class DlgReporteTramites extends javax.swing.JDialog {
                 Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
             }
             } else {
-               List<TramiteLicencia> listaLicencias = this.licencias.consultarLicencias(paginado, obtenerDatosTramiteLicencia());
+                List<TramiteLicencia> listaLicencias = this.licencias.consultarLicencias(paginado, obtenerDatosTramiteLicencia());
                 try {
                     generarReporteLicencias(listaLicencias);
                 } catch (JRException ex) {

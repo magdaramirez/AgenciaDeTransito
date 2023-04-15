@@ -19,5 +19,6 @@ public interface ILicenciasDAO {
     public TramiteLicencia registrarLicencia(TramiteLicencia licencia) throws PersistenciaException;
     public List<TramiteLicencia> consultarLicenciasPersona(String rfc) throws PersistenciaException;
     public List<TramiteLicencia> consultarLicencias(ConfiguracionPaginado paginado,LicenciaDTO licenciaDTO) throws PersistenciaException;
+    public List<Tramite> consultarTramites(ConfiguracionPaginado paginado, LicenciaDTO licenciaDTO) throws PersistenciaException;
     public void cambiarEstadoLicencia(TramiteLicencia tramLic);
 }

@@ -32,37 +32,15 @@ public class TramiteLicencia extends Tramite implements Serializable {
 
     @Column(name = "vigencia", nullable = false)
     private Integer vigencia;
-    
-    @Column(name = "fechaEmision", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Calendar fechaEmision ;
+   
     
     public TramiteLicencia() {
-    }
-
-    public TramiteLicencia(TipoLicencia tipo, Integer vigencia, EstadoTramite estado, float costo) {
-        super(estado, costo);
-        this.tipo = tipo;
-        this.vigencia = vigencia;
-    }
-
-    public TramiteLicencia(Integer vigencia, EstadoTramite estado, float costo) {
-        super(estado, costo);
-        this.vigencia = vigencia;
     }
 
     public TramiteLicencia(TipoLicencia tipo, Integer vigencia, EstadoTramite estado, float costo, Persona persona) {
         super(estado, costo, persona);
         this.tipo = tipo;
         this.vigencia = vigencia;
-    }
-
-    public Calendar getFechaEmision() {
-        return fechaEmision;
-    }
-
-    public void setFechaEmision(Calendar fechaEmision) {
-        this.fechaEmision = fechaEmision;
     }
     
     public TipoLicencia getTipo() {

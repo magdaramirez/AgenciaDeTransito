@@ -249,8 +249,8 @@ public class PlacasDAO implements IPlacasDAO {
             if (placasDTO.getFechaInicio() != null && placasDTO.getFechaFin() != null) {
                 Calendar nacim1 = placasDTO.getFechaInicio();
                 Calendar nacim2 = placasDTO.getFechaFin();
-                filtros.add(builder.greaterThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"), nacim1));
-                filtros.add(builder.lessThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"), nacim2));
+                filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim1));
+                filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim2));
             }
 
             switch (filtros.size()) {

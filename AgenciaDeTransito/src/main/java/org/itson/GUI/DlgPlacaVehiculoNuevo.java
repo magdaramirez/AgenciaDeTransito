@@ -452,7 +452,7 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
 
         lblFechaRecepcion.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFechaRecepcion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblFechaRecepcion.setText("Fecha de recepción:");
+        lblFechaRecepcion.setText("Fecha de Emision:");
         jPanel4.add(lblFechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 120, 20));
 
         txtPlaca.setEditable(false);

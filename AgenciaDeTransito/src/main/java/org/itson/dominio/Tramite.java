@@ -5,6 +5,7 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -47,6 +50,10 @@ public abstract class Tramite implements Serializable {
     @ManyToOne(cascade={CascadeType.PERSIST})
     @JoinColumn(name = "idPersona", nullable = false)
     private Persona persona;
+    
+    @Column(name = "fechaEmision", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Calendar fechaEmision ;
 
     public Tramite() {
     }
@@ -62,6 +69,16 @@ public abstract class Tramite implements Serializable {
         this.persona = persona;
     }
 
+    public Calendar getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(Calendar fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
+    
+    
+    
     public Long getId() {
         return id;
     }

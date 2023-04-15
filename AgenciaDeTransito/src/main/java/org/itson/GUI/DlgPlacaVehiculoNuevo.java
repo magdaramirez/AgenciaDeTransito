@@ -599,6 +599,11 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método que enfoca el jdcFechaRecepcion.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void jdcFechaRecepcionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jdcFechaRecepcionKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -606,13 +611,22 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jdcFechaRecepcionKeyPressed
 
+    /**
+     * Botón que regresa a la ventana de tramitePlaca.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();
         FrmTramitePlaca tramitePlaca = new FrmTramitePlaca();
         tramitePlaca.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
-
+    /**
+     * Botón que lleva a cabo el trámite de la placa.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
         try {
             // TODO add your handling code here:
@@ -623,12 +637,20 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
             Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTramitarActionPerformed
-
+    /**
+     * Botón que realiza el vaciado de los datos del JDialog.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
         // TODO add your handling code here:
         vaciarDatos();
     }//GEN-LAST:event_btnVaciarActionPerformed
-
+    /**
+     * Método que realiza la búsqueda del no. serie.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void lblBuscarNoSerieMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarNoSerieMouseClicked
         try {
             buscarDatosAutomovil();
@@ -636,7 +658,11 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
             Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblBuscarNoSerieMouseClicked
-
+    /**
+     * Método que realiza la búsqueda del RFC.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void lblBuscarRFCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarRFCMouseClicked
         buscarDatosPersonaLicencia();
     }//GEN-LAST:event_lblBuscarRFCMouseClicked

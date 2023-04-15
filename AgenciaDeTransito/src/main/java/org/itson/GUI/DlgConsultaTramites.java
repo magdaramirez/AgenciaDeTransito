@@ -33,7 +33,6 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     IPlacasDAO placas = new PlacasDAO();
     Encriptador encriptador = new Encriptador();
     private int tamañoLista;
-//    private List<Cuenta> listaCuentas;
     private ConfiguracionPaginado paginadoPlacas;
     private ConfiguracionPaginado paginadoLicencias;
 
@@ -57,7 +56,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
      * Metodo que obtiene los datos para la placa de la interfaz grafica para la
      * consutla en caso de haber sido ingresados
      *
-     * @return
+     * @return los datos de la placa.
      */
     private Placa obtenerDatosTramitePlaca() {
         Placa placaD = new Placa();
@@ -90,7 +89,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
      * Metodo que obtiene los datos para la licencia de la interfaz grafica para
      * la consutla en caso de haber sido ingresados
      *
-     * @return
+     * @return los datos de la licencia.
      */
     private LicenciaDTO obtenerDatosTramiteLicencia() {
         LicenciaDTO licenciaD = new LicenciaDTO();
@@ -244,7 +243,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         lblLicencias = new javax.swing.JLabel();
         btnConsultar = new javax.swing.JButton();
         cbxElementosPaginaPlacas = new javax.swing.JComboBox<>();
-        cbxElementosPaginaRetiros = new javax.swing.JComboBox<>();
+        cbxElementosPaginaLicencias = new javax.swing.JComboBox<>();
         btnRetrocederPlacas = new javax.swing.JButton();
         btnAvanzarLicencias = new javax.swing.JButton();
         btnAvanzarPlacas = new javax.swing.JButton();
@@ -387,14 +386,14 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         });
         jPanel2.add(cbxElementosPaginaPlacas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 60, 30));
 
-        cbxElementosPaginaRetiros.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-        cbxElementosPaginaRetiros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
-        cbxElementosPaginaRetiros.addItemListener(new java.awt.event.ItemListener() {
+        cbxElementosPaginaLicencias.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        cbxElementosPaginaLicencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
+        cbxElementosPaginaLicencias.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxElementosPaginaRetirosItemStateChanged(evt);
+                cbxElementosPaginaLicenciasItemStateChanged(evt);
             }
         });
-        jPanel2.add(cbxElementosPaginaRetiros, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 330, 60, 30));
+        jPanel2.add(cbxElementosPaginaLicencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 330, 60, 30));
 
         btnRetrocederPlacas.setBackground(new java.awt.Color(212, 100, 107));
         btnRetrocederPlacas.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 15)); // NOI18N
@@ -448,12 +447,23 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método que regresa a la ventana de menú.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         this.dispose();
         FrmMenu menu = new FrmMenu();
         menu.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
+    /**
+     * Método que selecciona la cantidad de elementos a mostrar en la tabla de
+     * placas.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void cbxElementosPaginaPlacasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaPlacasItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementosMostrados = Integer.parseInt(evt.getItem().toString());
@@ -462,30 +472,58 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_cbxElementosPaginaPlacasItemStateChanged
 
-    private void cbxElementosPaginaRetirosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaRetirosItemStateChanged
+    /**
+     * Método que selecciona la cantidad de elementos a mostrar en la tabla de
+     * licencias.
+     *
+     * @param evt objeto de evento de acción.
+     */
+    private void cbxElementosPaginaLicenciasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaLicenciasItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementosPorPagina = Integer.parseInt(evt.getItem().toString());
             this.paginadoLicencias.setElementosPagina(elementosPorPagina);
             this.desplegarTablaLicencias();
         }
-    }//GEN-LAST:event_cbxElementosPaginaRetirosItemStateChanged
+    }//GEN-LAST:event_cbxElementosPaginaLicenciasItemStateChanged
 
+    /**
+     * Método que retrocede de página en la tabla de placas.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRetrocederPlacasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederPlacasActionPerformed
         retrocederPaginaPlacas();
     }//GEN-LAST:event_btnRetrocederPlacasActionPerformed
 
+    /**
+     * Método que avanza de página en la tabla de placas.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnAvanzarPlacasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarPlacasActionPerformed
         avanzarPaginaPlacas();
     }//GEN-LAST:event_btnAvanzarPlacasActionPerformed
-
+    /**
+     * Método que retrocede de página en la tabla de licencias.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRetrocederLicenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederLicenciasActionPerformed
         retrocederPaginaLicencias();
     }//GEN-LAST:event_btnRetrocederLicenciasActionPerformed
-
+    /**
+     * Método que avanza de página en la tabla de licencias.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnAvanzarLicenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarLicenciasActionPerformed
         avanzarPaginaLicencias();
     }//GEN-LAST:event_btnAvanzarLicenciasActionPerformed
-
+    /**
+     * Método que despliega las tablas.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         desplegarTablaPlacas();
         desplegarTablaLicencias();
@@ -498,8 +536,8 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnRetrocederLicencias;
     private javax.swing.JButton btnRetrocederPlacas;
+    private javax.swing.JComboBox<String> cbxElementosPaginaLicencias;
     private javax.swing.JComboBox<String> cbxElementosPaginaPlacas;
-    private javax.swing.JComboBox<String> cbxElementosPaginaRetiros;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

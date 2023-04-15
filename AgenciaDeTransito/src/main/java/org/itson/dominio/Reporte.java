@@ -10,24 +10,24 @@ package org.itson.dominio;
  * @author koine
  */
 public class Reporte {
-    private String fechaEmision;
+    private String fecha;
     private String nombre;
     private String tipo;
     private String costo;
 
-    public Reporte(String fechaEmision, String nombre, String tipo, String costo) {
-        this.fechaEmision = fechaEmision;
+    public Reporte(String fecha, String nombre, String tipo, String costo) {
+        this.fecha = fecha;
         this.nombre = nombre;
         this.tipo = tipo;
         this.costo = costo;
     }
 
-    public String getFechaRealizacion() {
-        return fechaEmision;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setFechaRealizacion(String fechaEmision) {
-        this.fechaEmision = fechaEmision;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public String getNombre() {

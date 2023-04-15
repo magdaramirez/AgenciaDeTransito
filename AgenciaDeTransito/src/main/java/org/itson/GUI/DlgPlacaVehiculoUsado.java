@@ -441,7 +441,6 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         txtModelo = new javax.swing.JTextField();
         lblBuscarRFC = new javax.swing.JLabel();
         lblBuscarPlaca = new javax.swing.JLabel();
-        fechaRecepcion = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
@@ -590,9 +589,6 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         });
         jPanel3.add(lblBuscarPlaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 110, -1, -1));
 
-        fechaRecepcion.setText("jTextField1");
-        jPanel3.add(fechaRecepcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 260, 90, 30));
-
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 710, 360));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -647,7 +643,10 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Método que enfoca el jdcFechaEmisión.
+ * @param evt objeto de evento de acción.
+ */
     private void jdcFechaEmisionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jdcFechaEmisionKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -699,7 +698,6 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
     private javax.swing.JButton btnTramitar;
     private javax.swing.JButton btnVaciar;
     private javax.swing.JComboBox<String> cbxVehiculo;
-    private javax.swing.JTextField fechaRecepcion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

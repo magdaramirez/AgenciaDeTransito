@@ -28,63 +28,74 @@ import org.itson.persistencia.TramiteLicenciaJpaController;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
+ * Clase que maneja la lógica de las licencias.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
-public class LicenciasDAO implements ILicenciasDAO{
+public class LicenciasDAO implements ILicenciasDAO {
+
     private static final Logger LOG = Logger.getLogger(LicenciasDAO.class.getName());
     TramiteLicenciaJpaController jpaCont = new TramiteLicenciaJpaController();
     ControlPersistencia controlPersistencia = new ControlPersistencia();
+
     /**
      * Metodo que registra una licencia en el sistema
+     *
      * @param licencia la licencia a registrar
      * @return la licencia registrada
-     * @throws PersistenciaException en caso de que no haya sido posible registrar la licencia ingresada
+     * @throws PersistenciaException en caso de que no haya sido posible
+     * registrar la licencia ingresada
      */
     @Override
-    public TramiteLicencia registrarLicencia(TramiteLicencia licencia) throws PersistenciaException{
-       try {
-        jpaCont.create(licencia);
-        return licencia;
+    public TramiteLicencia registrarLicencia(TramiteLicencia licencia) throws PersistenciaException {
+        try {
+            jpaCont.create(licencia);
+            return licencia;
         } catch (Exception ex) {
             Logger.getLogger(PlacasDAO.class.getName()).log(Level.SEVERE, null, ex);
             LOG.log(Level.SEVERE, ex.getMessage());
             throw new PersistenciaException("No fue posible registrar la licencia");
         }
     }
+
     /**
-     * Metodo que genera una lista con todas las licencias de una persona por su rfc
+     * Metodo que genera una lista con todas las licencias de una persona por su
+     * rfc
+     *
      * @param rfc el rfc de la persona a consultar
      * @return la lista de las licencias
-     * @throws PersistenciaException en caso de que no haya sido posible consultar las licencias
+     * @throws PersistenciaException en caso de que no haya sido posible
+     * consultar las licencias
      */
     @Override
-    public List<TramiteLicencia> consultarLicenciasPersona(String rfc) throws PersistenciaException{   
+    public List<TramiteLicencia> consultarLicenciasPersona(String rfc) throws PersistenciaException {
         try {
-        EntityManager entityManager = jpaCont.getEntityManager();
-        
-        IPersonasDAO persona1 = new PersonasDAO();
-        
-        Persona p1 = persona1.buscarPersona(rfc);
-        
-        String jpqlQuery1 = "SELECT v FROM TramiteLicencia v WHERE v.persona = :idPersona ";
-        TypedQuery<TramiteLicencia> query1 = entityManager.createQuery(jpqlQuery1,TramiteLicencia.class);
-        query1.setParameter("idPersona", p1);
-               
-        List<TramiteLicencia> licencias = query1.getResultList();
-        
-        if(licencias == null){
-            throw new PersistenciaException("No se encontraron licencias de la persona consultada");
-        }
-        
-        return licencias;
+            EntityManager entityManager = jpaCont.getEntityManager();
+
+            IPersonasDAO persona1 = new PersonasDAO();
+
+            Persona p1 = persona1.buscarPersona(rfc);
+
+            String jpqlQuery1 = "SELECT v FROM TramiteLicencia v WHERE v.persona = :idPersona ";
+            TypedQuery<TramiteLicencia> query1 = entityManager.createQuery(jpqlQuery1, TramiteLicencia.class);
+            query1.setParameter("idPersona", p1);
+
+            List<TramiteLicencia> licencias = query1.getResultList();
+
+            if (licencias == null) {
+                throw new PersistenciaException("No se encontraron licencias de la persona consultada");
+            }
+
+            return licencias;
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage());
             throw new PersistenciaException("No fue posible consultar las licencias de la persona consultada");
-        } 
+        }
     }
+
     /**
      * Metodo que cambia los datos de una licencia ya registrada en el sistema
+     *
      * @param tramLic la licencia a actualizar
      */
     @Override
@@ -95,154 +106,165 @@ public class LicenciasDAO implements ILicenciasDAO{
             Logger.getLogger(PlacasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
-     * Metodo que crea una consulta personalizada dependiendo de los datos que se ingresen en la interfaz grafica
-     * @param paginado el numero de los datos que apareceran en la tabla por pagina
+     * Metodo que crea una consulta personalizada dependiendo de los datos que
+     * se ingresen en la interfaz grafica
+     *
+     * @param paginado el numero de los datos que apareceran en la tabla por
+     * pagina
      * @param licenciaDTO los datos que se usaran para los filtros
      * @return una lista de licencias de personas
      * @throws PersistenciaException en caso de no poder realizarse la busqueda
      */
     @Override
     public List<TramiteLicencia> consultarLicencias(ConfiguracionPaginado paginado, LicenciaDTO licenciaDTO) throws PersistenciaException {
-        EntityManager entityManager = jpaCont.getEntityManager();    
+        EntityManager entityManager = jpaCont.getEntityManager();
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<TramiteLicencia> criteria = builder.createQuery(TramiteLicencia.class);
         //ROOT para obtener la entidad videojuego
         Root<TramiteLicencia> root = criteria.from(TramiteLicencia.class);
         //JOIN para hacer una busqueda con inner join a una llame foranea
-        Join<TramiteLicencia,Persona> dept = root.join("persona", JoinType.INNER);
-        
+        Join<TramiteLicencia, Persona> dept = root.join("persona", JoinType.INNER);
+
         List<Predicate> filtros = new LinkedList<>();
-        if(licenciaDTO.getNombre() != null){
-            filtros.add(builder.like(dept.get("nombre"),"%"+licenciaDTO.getNombre()+"%"));
+        if (licenciaDTO.getNombre() != null) {
+            filtros.add(builder.like(dept.get("nombre"), "%" + licenciaDTO.getNombre() + "%"));
         }
-        if(licenciaDTO.getAnioNacimiento()!= null){
+        if (licenciaDTO.getAnioNacimiento() != null) {
             Calendar nacim1 = Calendar.getInstance();
             Calendar nacim2 = Calendar.getInstance();
             nacim1.set(licenciaDTO.getAnioNacimiento(), 0, 0);
             nacim2.set(licenciaDTO.getAnioNacimiento(), 11, 30);
-            filtros.add(builder.greaterThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"),nacim1));
-            filtros.add(builder.lessThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"),nacim2));
+            filtros.add(builder.greaterThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"), nacim1));
+            filtros.add(builder.lessThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"), nacim2));
         }
-        if(licenciaDTO.getRfc() != null){
-            filtros.add(builder.equal(dept.get("rfc"),licenciaDTO.getRfc()));
+        if (licenciaDTO.getRfc() != null) {
+            filtros.add(builder.equal(dept.get("rfc"), licenciaDTO.getRfc()));
         }
-        if(licenciaDTO.getFechaInicio() != null || licenciaDTO.getFechaFin() != null ){
+        if (licenciaDTO.getFechaInicio() != null || licenciaDTO.getFechaFin() != null) {
             Calendar nacim1 = licenciaDTO.getFechaInicio();
             Calendar nacim2 = licenciaDTO.getFechaFin();
-            filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim1));
-            filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim2));
+            filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"), nacim1));
+            filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"), nacim2));
         }
-        
+
         switch (filtros.size()) {
-                case 1:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[1]))
-                    );  break;
-                case 2:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[2]))
-                    );  break;
-                case 3:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[3]))
-                    );  break;
-                case 4:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[4]))
-                    );  break;
-            }
+            case 1:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[1]))
+                );
+                break;
+            case 2:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[2]))
+                );
+                break;
+            case 3:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[3]))
+                );
+                break;
+            case 4:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[4]))
+                );
+                break;
+        }
 
         TypedQuery<TramiteLicencia> query = entityManager.createQuery(criteria);
         query.setMaxResults(paginado.getElementosPagina());
         query.setFirstResult(paginado.getNumPagina());
-       
-        
+
         List<TramiteLicencia> licencias = query.getResultList();
-        
-        
+
         return licencias;
-        
+
     }
-    
-        /**
-     * Metodo que crea una consulta personalizada dependiendo de los datos que se ingresen en la interfaz grafica para los tramites generales
-     * @param paginado el numero de los datos que apareceran en la tabla por pagina
+
+    /**
+     * Metodo que crea una consulta personalizada dependiendo de los datos que
+     * se ingresen en la interfaz grafica para los tramites generales
+     *
+     * @param paginado el numero de los datos que apareceran en la tabla por
+     * pagina
      * @param licenciaDTO los datos que se usaran para los filtros
      * @return una lista de licencias de personas
      * @throws PersistenciaException en caso de no poder realizarse la busqueda
      */
     @Override
     public List<Tramite> consultarTramites(ConfiguracionPaginado paginado, LicenciaDTO licenciaDTO) throws PersistenciaException {
-        EntityManager entityManager = jpaCont.getEntityManager();    
+        EntityManager entityManager = jpaCont.getEntityManager();
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tramite> criteria = builder.createQuery(Tramite.class);
         //ROOT para obtener la entidad videojuego
         Root<Tramite> root = criteria.from(Tramite.class);
         //JOIN para hacer una busqueda con inner join a una llame foranea
-        Join<Tramite,Persona> dept = root.join("persona", JoinType.INNER);
-        
+        Join<Tramite, Persona> dept = root.join("persona", JoinType.INNER);
+
         List<Predicate> filtros = new LinkedList<>();
-        if(licenciaDTO.getNombre() != null){
-            filtros.add(builder.like(dept.get("nombre"),"%"+licenciaDTO.getNombre()+"%"));
+        if (licenciaDTO.getNombre() != null) {
+            filtros.add(builder.like(dept.get("nombre"), "%" + licenciaDTO.getNombre() + "%"));
         }
-        if(licenciaDTO.getAnioNacimiento()!= null){
+        if (licenciaDTO.getAnioNacimiento() != null) {
             Calendar nacim1 = Calendar.getInstance();
             Calendar nacim2 = Calendar.getInstance();
             nacim1.set(licenciaDTO.getAnioNacimiento(), 0, 0);
             nacim2.set(licenciaDTO.getAnioNacimiento(), 11, 30);
-            filtros.add(builder.greaterThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"),nacim1));
-            filtros.add(builder.lessThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"),nacim2));
+            filtros.add(builder.greaterThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"), nacim1));
+            filtros.add(builder.lessThanOrEqualTo(dept.<Calendar>get("fechaNacimiento"), nacim2));
         }
-        if(licenciaDTO.getRfc() != null){
-            filtros.add(builder.equal(dept.get("rfc"),licenciaDTO.getRfc()));
+        if (licenciaDTO.getRfc() != null) {
+            filtros.add(builder.equal(dept.get("rfc"), licenciaDTO.getRfc()));
         }
-        if(licenciaDTO.getFechaInicio() != null || licenciaDTO.getFechaFin() != null ){
+        if (licenciaDTO.getFechaInicio() != null || licenciaDTO.getFechaFin() != null) {
             Calendar nacim1 = licenciaDTO.getFechaInicio();
             Calendar nacim2 = licenciaDTO.getFechaFin();
-            filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim1));
-            filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim2));
+            filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"), nacim1));
+            filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"), nacim2));
         }
-        
+
         switch (filtros.size()) {
-                case 1:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[1]))
-                    );  break;
-                case 2:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[2]))
-                    );  break;
-                case 3:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[3]))
-                    );  break;
-                case 4:
-                    criteria = criteria.select(root).where(
-                            builder.and(
-                                    filtros.toArray(new Predicate[4]))
-                    );  break;
-            }
+            case 1:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[1]))
+                );
+                break;
+            case 2:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[2]))
+                );
+                break;
+            case 3:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[3]))
+                );
+                break;
+            case 4:
+                criteria = criteria.select(root).where(
+                        builder.and(
+                                filtros.toArray(new Predicate[4]))
+                );
+                break;
+        }
 
         TypedQuery<Tramite> query = entityManager.createQuery(criteria);
         query.setMaxResults(paginado.getElementosPagina());
         query.setFirstResult(paginado.getNumPagina());
-       
-        
+
         List<Tramite> tramites = query.getResultList();
-        
-        
+
         return tramites;
-        
+
     }
-    
+
 }

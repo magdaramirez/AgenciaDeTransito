@@ -6,9 +6,10 @@
 package org.itson.dominio;
 
 /**
+ * Clase que asigna los tipos de placa.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public enum TipoPlaca {
-    NUEVO,USADO
+    NUEVO, USADO
 }

@@ -10,7 +10,7 @@ import org.itson.excepciones.PersistenciaException;
 
 /**
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public interface IVehiculoDAO {
     public VehiculoAutomovil registrarAutomovil(VehiculoAutomovil vAutomovil) throws PersistenciaException;

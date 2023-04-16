@@ -13,8 +13,9 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 /**
+ * Clase encargada de la encriptación y desencriptación de cadenas de texto.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class Encriptador {
 

@@ -10,8 +10,9 @@ import org.itson.interfaces.IPagosDAO;
 import org.itson.persistencia.PagoJpaController;
 
 /**
+ * Clase que maneja la lógica de los pagos.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class PagosDAO implements IPagosDAO {
 

@@ -6,6 +6,7 @@ org\itson\dominio\Reporte.class
 org\itson\GUI\DlgPlacaVehiculoNuevo$1.class
 org\itson\interfaces\ILicenciasDAO.class
 org\itson\GUI\DlgPlacaVehiculoNuevo$4.class
+org\itson\GUI\DlgReporteTramites$9.class
 org\itson\GUI\DlgReporteTramites$1.class
 org\itson\dominio\Placa.class
 org\itson\dominio\Pago.class
@@ -35,7 +36,6 @@ org\itson\dominio\TipoLicencia.class
 org\itson\dominio\TramitePlaca.class
 org\itson\GUI\DlgRegistroVehiculo$3.class
 org\itson\implementaciones\Principal.class
-org\itson\GUI\DlgPlacaVehiculoNuevo$5.class
 org\itson\implementaciones\Principal$1.class
 org\itson\excepciones\PersistenciaException.class
 org\itson\GUI\DlgPlacaVehiculoUsado$4.class

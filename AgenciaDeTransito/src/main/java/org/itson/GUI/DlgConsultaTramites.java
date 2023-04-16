@@ -22,8 +22,9 @@ import org.itson.utils.ConfiguracionPaginado;
 import org.itson.utils.Encriptador;
 
 /**
+ * Clase que consulta los trámites realizados.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class DlgConsultaTramites extends javax.swing.JDialog {
 
@@ -527,6 +528,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         desplegarTablaPlacas();
         desplegarTablaLicencias();
+        vaciarDatos();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

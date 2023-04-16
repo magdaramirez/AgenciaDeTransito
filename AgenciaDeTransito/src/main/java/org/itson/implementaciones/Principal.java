@@ -6,8 +6,9 @@ package org.itson.implementaciones;
 import org.itson.GUI.FrmMenu;
 
 /**
+ * Clase principal que despliega el menú.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class Principal {
 

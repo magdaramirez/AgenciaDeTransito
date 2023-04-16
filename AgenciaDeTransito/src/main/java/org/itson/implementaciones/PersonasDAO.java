@@ -4,15 +4,9 @@
  */
 package org.itson.implementaciones;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Calendar;
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.YEAR;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -20,12 +14,14 @@ import org.itson.dominio.Persona;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonasDAO;
 import org.itson.persistencia.ControlPersistencia;
+import org.itson.persistencia.PersonaJpaController;
 import org.itson.persistencia.TramiteLicenciaJpaController;
 import org.itson.utils.Encriptador;
 
 /**
+ * Clase que maneja la lógica de las personas.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class PersonasDAO implements IPersonasDAO {
 
@@ -39,7 +35,7 @@ public class PersonasDAO implements IPersonasDAO {
      */
     @Override
     public void insertarPersonas() {
-        Persona persona1 = new Persona(encriptador.encriptar("Magda Paola"), encriptador.encriptar("Ramirez"), encriptador.encriptar("Escalante"), new GregorianCalendar(2020, Calendar.MARCH, 3), "6688293570", "RAEM0303031L0");
+        Persona persona1 = new Persona(encriptador.encriptar("Magda Paola"), encriptador.encriptar("Ramirez"), encriptador.encriptar("Escalante"), new GregorianCalendar(2003, Calendar.MARCH, 3), "6688293570", "RAEM0303031L0");
         Persona persona2 = new Persona(encriptador.encriptar("Juan"), encriptador.encriptar("Martinez"), encriptador.encriptar("Ramos"), new GregorianCalendar(1987, Calendar.JANUARY, 15), "5546789012", "MARJ870115XYZ");
         Persona persona3 = new Persona(encriptador.encriptar("Karla"), encriptador.encriptar("Lopez"), encriptador.encriptar("Jimenez"), new GregorianCalendar(1995, Calendar.MARCH, 12), "2894561230", "LOJK950312HAJ");
         Persona persona4 = new Persona(encriptador.encriptar("Marco"), encriptador.encriptar("Sanchez"), encriptador.encriptar("Torres"), new GregorianCalendar(1983, Calendar.APRIL, 7), "7778901234", "SATM830407TAS");
@@ -61,7 +57,8 @@ public class PersonasDAO implements IPersonasDAO {
         Persona persona20 = new Persona(encriptador.encriptar("Federico"), encriptador.encriptar("Rivas"), encriptador.encriptar("Chávez"), new GregorianCalendar(1985, Calendar.AUGUST, 14), "6645874562", "RICF850814BFJ");
 
         Persona[] personas = new Persona[]{persona1, persona2, persona3, persona4, persona5, persona6, persona7, persona8, persona9, persona10, persona11, persona12, persona13, persona14, persona15, persona16, persona17, persona18, persona19, persona20};
-
+        PersonaJpaController personaJpa = new PersonaJpaController();
+        
         for (int i = 0; i < personas.length; i++) {
             Persona persona = personas[i];
             controlPersistencia.guardar(persona);
@@ -93,7 +90,7 @@ public class PersonasDAO implements IPersonasDAO {
         return persona;
 
     }
-   
+
     /**
      * Metodo que busca a una persona por su numero de rfc
      *
@@ -117,8 +114,8 @@ public class PersonasDAO implements IPersonasDAO {
         return personas;
 
     }
-    
-     /**
+
+    /**
      * Metodo que desencripta el nombre de la persona para mostrarlo en los
      * campos de apoyo.
      *

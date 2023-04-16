@@ -15,8 +15,9 @@ import org.itson.persistencia.VehiculoJpaController;
 import org.itson.interfaces.IVehiculoDAO;
 
 /**
+ * Clase que maneja la lógica de los automóviles.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class VehiculoAutomovilDAO implements IVehiculoDAO {
 

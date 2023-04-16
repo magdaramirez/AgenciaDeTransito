@@ -5,12 +5,7 @@
  */
 package org.itson.GUI;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Calendar;
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.YEAR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,8 +28,9 @@ import org.itson.interfaces.IPersonasDAO;
 import org.itson.utils.Validadores;
 
 /**
+ * Clase que tramita licencia para persona.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class DlgTramiteLicencia extends javax.swing.JDialog {
 
@@ -441,28 +437,49 @@ public class DlgTramiteLicencia extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Botón que al hacerle clic realiza el trámite de licencia.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
         tramitarLicencia();
     }//GEN-LAST:event_btnTramitarActionPerformed
-
+    /**
+     * Botón que al hacerle clic regresa a la ventana de FrmRealizarTramite.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();
         FrmRealizarTramite realizarTramite = new FrmRealizarTramite();
         realizarTramite.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
-
+    /**
+     * Botón que al hacerle clic vacía los datos del DlgTramiteLicencia.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
         // TODO add your handling code here:
         vaciarDatos();
     }//GEN-LAST:event_btnVaciarActionPerformed
-
+    /**
+     * Botón que al hacerle clic calcula el costo de la licencia.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnCalcularCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularCostoActionPerformed
         // TODO add your handling code here:
         calcularCosto();
     }//GEN-LAST:event_btnCalcularCostoActionPerformed
-
+    /**
+     * Método que al hacerle clic al lblBuscarRFC busca el RFC en la base de
+     * datos.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void lblBuscarRFCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarRFCMouseClicked
         Persona persona1;
         try {

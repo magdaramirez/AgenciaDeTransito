@@ -28,8 +28,9 @@ import org.itson.interfaces.*;
 import org.itson.utils.Validadores;
 
 /**
+ * Clase que tramita placa para vehículo recién registrado.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
 
@@ -343,6 +344,7 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
                 this.txtLinea.setText(auto.getLinea());
                 this.txtMarca.setText(auto.getMarca());
                 this.txtModelo.setText(auto.getModelo());
+                this.txtNoSerie.setText(noSerie);
             } else {
                 JOptionPane.showMessageDialog(
                         this,
@@ -404,7 +406,6 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnTramitar = new javax.swing.JButton();
-        btnRegresar = new javax.swing.JButton();
         btnVaciar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -567,18 +568,6 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         });
         jPanel2.add(btnTramitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 420, 130, 40));
 
-        btnRegresar.setBackground(new java.awt.Color(212, 100, 107));
-        btnRegresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/volver.png"))); // NOI18N
-        btnRegresar.setText("Regresar");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 130, 40));
-
         btnVaciar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnVaciar.setForeground(new java.awt.Color(212, 100, 107));
         btnVaciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vaciar.png"))); // NOI18N
@@ -611,18 +600,7 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jdcFechaRecepcionKeyPressed
 
-    /**
-     * Botón que regresa a la ventana de tramitePlaca.
-     *
-     * @param evt objeto de evento de acción.
-     */
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        FrmTramitePlaca tramitePlaca = new FrmTramitePlaca();
-        tramitePlaca.setVisible(true);
-    }//GEN-LAST:event_btnRegresarActionPerformed
-    /**
+   /**
      * Botón que lleva a cabo el trámite de la placa.
      *
      * @param evt objeto de evento de acción.
@@ -668,7 +646,6 @@ public class DlgPlacaVehiculoNuevo extends javax.swing.JDialog {
     }//GEN-LAST:event_lblBuscarRFCMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnTramitar;
     private javax.swing.JButton btnVaciar;
     private javax.swing.JComboBox<String> cbxVehiculo;

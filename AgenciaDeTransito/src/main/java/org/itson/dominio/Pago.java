@@ -20,8 +20,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
+ * Clase que crea la tabla Pagos y los respectivos métodos para su
+ * implementación.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 @Entity
 @Table(name = "pagos")

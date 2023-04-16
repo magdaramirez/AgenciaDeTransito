@@ -13,8 +13,9 @@ import org.itson.excepciones.PersistenciaException;
 import org.itson.implementaciones.PersonasDAO;
 
 /**
+ * Clase encargada del menú.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class FrmMenu extends javax.swing.JFrame {
 
@@ -196,7 +197,11 @@ public class FrmMenu extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Botón que al hacerle clic abre la ventana DlgConsultaTramites.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnModuloConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModuloConsultasActionPerformed
         try {
             List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
@@ -214,7 +219,11 @@ public class FrmMenu extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnModuloConsultasActionPerformed
-
+    /**
+     * Botón que al hacerle clic registra 20 personas en la base de datos.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnInsercionMasivaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionMasivaActionPerformed
         try {
             List<Persona> personasActivas = personasDAO.buscarPersonasActivas();
@@ -232,7 +241,11 @@ public class FrmMenu extends javax.swing.JFrame {
             Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnInsercionMasivaActionPerformed
-
+    /**
+     * Botón que al hacerle clic abre la ventana FrmRealizarTramite.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRealizarTramiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarTramiteActionPerformed
         try {
             // TODO add your handling code here:
@@ -250,7 +263,11 @@ public class FrmMenu extends javax.swing.JFrame {
             Logger.getLogger(FrmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRealizarTramiteActionPerformed
-
+    /**
+     * Botón que al hacerle clic abre la ventana DlgReporteTramites.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnModuloReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModuloReportesActionPerformed
         try {
             List<Persona> personasActivas = personasDAO.buscarPersonasActivas();

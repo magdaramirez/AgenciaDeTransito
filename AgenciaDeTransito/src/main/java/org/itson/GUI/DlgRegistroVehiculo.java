@@ -18,8 +18,9 @@ import org.itson.utils.Validadores;
 import org.itson.interfaces.*;
 
 /**
+ * Clase que registra vehículo.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class DlgRegistroVehiculo extends javax.swing.JDialog {
 
@@ -74,14 +75,17 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         String color = datos.get("color");
         String modelo = datos.get("modelo");
 
-        if (Validadores.esTextoVacio(noSerie) || Validadores.esTextoVacio(marca) || Validadores.esTextoVacio(linea) || Validadores.esTextoVacio(color) || Validadores.esTextoVacio(modelo)) {
+        if (Validadores.esTextoVacio(noSerie.toUpperCase()) || Validadores.esTextoVacio(marca) || Validadores.esTextoVacio(linea) || Validadores.esTextoVacio(color) || Validadores.esTextoVacio(modelo)) {
             erroresValidacion.add("Datos vacíos");
         }
-        if (!Validadores.esNoSerie(noSerie)) {
+        if (!Validadores.esNoSerie(noSerie.toUpperCase())) {
             erroresValidacion.add("Formato de no. Serie incorrecto");
         }
         if (Validadores.excedeLimite(noSerie, 7)) {
             erroresValidacion.add("El no. Serie excede el límite de caracteres");
+        }
+          if (!Validadores.esModelo(modelo)) {
+            erroresValidacion.add("Formato de modelo incorrecto");
         }
 
         return erroresValidacion;
@@ -142,6 +146,7 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
             try {
                 automovil = crearAutomovil();
 
+                this.txtNoSerie.setText(automovil.getNoSerie().toUpperCase());
                 autos.registrarAutomovil(automovil);
                 JOptionPane.showMessageDialog(
                         this,
@@ -156,7 +161,7 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
                         "Algún dato no ha sido ingresado correctamente, numero de serie repetido",
                         "ERROR",
                         JOptionPane.ERROR_MESSAGE);
-            } 
+            }
         }
 
     }
@@ -322,23 +327,35 @@ public class DlgRegistroVehiculo extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Botón que registra el vehículo al hacerle clic.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-        try {        
-                registrarVehiculo();
+        try {
+            registrarVehiculo();
         } catch (PersistenciaException ex) {
             Logger.getLogger(DlgRegistroVehiculo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
-
+    /**
+     * Botón que al hacerle clic regresa a la ventana FrmTramitePlaca.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();
         FrmTramitePlaca tramitePlaca = new FrmTramitePlaca();
         tramitePlaca.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
-
+    /**
+     * Botón que al hacerle clic vacía los datos del DlgRegistroVehiculo.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
         // TODO add your handling code here:
         vaciarDatos();

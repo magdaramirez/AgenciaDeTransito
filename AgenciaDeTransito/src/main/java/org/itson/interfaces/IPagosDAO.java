@@ -9,7 +9,7 @@ import org.itson.dominio.Pago;
 
 /**
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public interface IPagosDAO {
     public Pago registarPago(Pago pago);

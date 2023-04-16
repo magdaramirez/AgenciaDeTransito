@@ -20,8 +20,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
+ * Clase que crea la tabla Personas y los respectivos métodos para su
+ * implementación.
  *
- * @author Magda Ramírez
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 @Entity
 @Table(name = "personas")

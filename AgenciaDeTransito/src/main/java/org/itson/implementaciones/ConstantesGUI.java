@@ -6,30 +6,29 @@
 package org.itson.implementaciones;
 
 /**
+ * Clase que crea las constantes GUI.
  *
- * @author Magda - Michell
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class ConstantesGUI {
 // Tipos de años de vigencia de licencias ----
-    
-public static int ANIO1 = 1;
-public static int ANIO2 = 2;
-public static int ANIO3 = 3;
+
+    public static int ANIO1 = 1;
+    public static int ANIO2 = 2;
+    public static int ANIO3 = 3;
 
 // Tipos de precios de licencias
-
-public static int COSTOLICENCIA_NORMAL1 = 600;
-public static int COSTOLICENCIA_NORMAL2 = 900;
-public static int COSTOLICENCIA_NORMAL3 = 1100;
-public static int COSTOLICENCIA_DISCAPACITADO1 = 200;
-public static int COSTOLICENCIA_DISCAPACITADO2 = 500;
-public static int COSTOLICENCIA_DISCAPACITADO3 = 700;
+    public static int COSTOLICENCIA_NORMAL1 = 600;
+    public static int COSTOLICENCIA_NORMAL2 = 900;
+    public static int COSTOLICENCIA_NORMAL3 = 1100;
+    public static int COSTOLICENCIA_DISCAPACITADO1 = 200;
+    public static int COSTOLICENCIA_DISCAPACITADO2 = 500;
+    public static int COSTOLICENCIA_DISCAPACITADO3 = 700;
 
 //Vehiculos ----------------------------------
-
 //automoviles nuevos
-public static int COSTOVEHICULO_NUEVO = 1500;
+    public static int COSTOVEHICULO_NUEVO = 1500;
 //automoviles usados
-public static int COSTOVEHICULO_USADO = 1000;
+    public static int COSTOVEHICULO_USADO = 1000;
 
 }

@@ -8,17 +8,11 @@ import org.itson.dominio.Persona;
 
 /**
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class ControlPersistencia {
 
-    PagoJpaController pagoJpa = new PagoJpaController();
     PersonaJpaController personaJpa = new PersonaJpaController();
-    TramiteJpaController tramiteJpa = new TramiteJpaController();
-    TramiteLicenciaJpaController licenciaJpa = new TramiteLicenciaJpaController();
-    TramitePlacaJpaController placaJpa = new TramitePlacaJpaController();
-    VehiculoJpaController vehiculoJpa = new VehiculoJpaController();
-    VehiculoAutomovilJpaController automovilJpa = new VehiculoAutomovilJpaController();
 
     /**
      * Método que guarda personas en la base de datos.

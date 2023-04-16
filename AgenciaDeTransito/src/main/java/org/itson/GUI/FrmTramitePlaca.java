@@ -5,8 +5,9 @@
 package org.itson.GUI;
 
 /**
+ * Clase que muestra las dos opciones de placa: Vehículo Nuevo y Vehículo Usado.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class FrmTramitePlaca extends javax.swing.JFrame {
 
@@ -35,7 +36,7 @@ public class FrmTramitePlaca extends javax.swing.JFrame {
         DlgPlacaVehiculoUsado placaVehiculoUsado = new DlgPlacaVehiculoUsado(this, true);
         placaVehiculoUsado.setVisible(true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -141,17 +142,29 @@ public class FrmTramitePlaca extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Botón que al hacerle clic abre la ventana DlgPlacaVehiculoUsado.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnVehiculoUsadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVehiculoUsadoActionPerformed
         // TODO add your handling code here:
         mostrarPantallaPlacaVehiculoUsado();
     }//GEN-LAST:event_btnVehiculoUsadoActionPerformed
-
+    /**
+     * Botón que al hacerle clic abre la ventana DlgRegistroVehiculo.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnVehiculoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVehiculoNuevoActionPerformed
         // TODO add your handling code here:
         mostrarPantallaRegistroVehiculo();
     }//GEN-LAST:event_btnVehiculoNuevoActionPerformed
-
+    /**
+     * Botón que al hacerle clic regresa a la ventana FrmRealizarTramite.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();

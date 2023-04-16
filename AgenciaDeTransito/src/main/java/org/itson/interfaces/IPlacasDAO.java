@@ -6,14 +6,13 @@ package org.itson.interfaces;
 
 import java.util.List;
 import org.itson.dominio.Placa;
-import org.itson.dominio.Tramite;
 import org.itson.dominio.TramitePlaca;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public interface IPlacasDAO {
     public String generarPlaca();

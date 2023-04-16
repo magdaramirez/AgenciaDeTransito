@@ -13,7 +13,7 @@ import org.itson.utils.ConfiguracionPaginado;
 
 /**
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public interface ILicenciasDAO {
     public TramiteLicencia registrarLicencia(TramiteLicencia licencia) throws PersistenciaException;

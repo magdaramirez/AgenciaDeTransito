@@ -6,8 +6,9 @@
 package org.itson.utils;
 
 /**
+ * Clase encargada de la configuración del paginado.
  *
- * @author lv1013
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class ConfiguracionPaginado {
 

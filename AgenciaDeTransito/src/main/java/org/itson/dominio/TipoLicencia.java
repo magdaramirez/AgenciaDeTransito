@@ -5,8 +5,9 @@
 package org.itson.dominio;
 
 /**
+ * Clase que asigna los tipos de licencia.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public enum TipoLicencia {
     NORMAL, DISCAPACITADO

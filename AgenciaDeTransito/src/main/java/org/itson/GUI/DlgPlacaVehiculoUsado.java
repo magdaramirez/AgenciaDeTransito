@@ -37,8 +37,9 @@ import org.itson.interfaces.IVehiculoDAO;
 import org.itson.utils.Validadores;
 
 /**
+ * Clase que tramita placa para vehículo previamente registrado.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
 
@@ -147,7 +148,7 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         if (!erroresValidacion.isEmpty()) {
             this.mostrarErroresValidacion(erroresValidacion);
         }
-        
+
         try {
             VehiculoAutomovil auto = new VehiculoAutomovil();
             String placa = datos.get("placa");
@@ -644,32 +645,52 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 /**
- * Método que enfoca el jdcFechaEmisión.
- * @param evt objeto de evento de acción.
- */
+     * Método que enfoca el jdcFechaEmisión.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void jdcFechaEmisionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jdcFechaEmisionKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jdcFechaEmision.transferFocus();
         }
     }//GEN-LAST:event_jdcFechaEmisionKeyPressed
-
+    /**
+     * Método que enfoca el jdcFechaRecepción.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void jdcFechaRecepcionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jdcFechaRecepcionKeyPressed
         // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jdcFechaRecepcion.transferFocus();
+        }
     }//GEN-LAST:event_jdcFechaRecepcionKeyPressed
-
+    /**
+     * Botón que al hacerle clic vacía los datos del JDialog.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
         // TODO add your handling code here:
         vaciarDatos();
     }//GEN-LAST:event_btnVaciarActionPerformed
-
+    /**
+     * Botón que al hacerle clic regresa a la ventana FrmTramitePlaca.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();
         FrmTramitePlaca tramitePlaca = new FrmTramitePlaca();
         tramitePlaca.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
-
+    /**
+     * Botón que al hacerle clic realiza el trámite de la placa.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
         try {
             cambiarEstadoPlacaAnterior();
@@ -678,12 +699,20 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
             Logger.getLogger(DlgPlacaVehiculoUsado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTramitarActionPerformed
-
+    /**
+     * Método que al hacerle clic al lblBuscarRFC busca los datos personales de acuerdo al RFC ingresado.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void lblBuscarRFCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarRFCMouseClicked
         // TODO add your handling code here:
         buscarDatosPersonaLicencia();
     }//GEN-LAST:event_lblBuscarRFCMouseClicked
-
+    /**
+     * Método que al hacerle clic al lblBuscarPlaca busca los datos del vehículo de acuerdo a la placa ingresada.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void lblBuscarPlacaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarPlacaMouseClicked
         try {
             // TODO add your handling code here:

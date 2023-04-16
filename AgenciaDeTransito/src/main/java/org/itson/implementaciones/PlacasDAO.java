@@ -29,8 +29,9 @@ import org.itson.persistencia.TramitePlacaJpaController;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
+ * Clase que maneja la lógica de las placas.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class PlacasDAO implements IPlacasDAO {
 
@@ -249,8 +250,8 @@ public class PlacasDAO implements IPlacasDAO {
             if (placasDTO.getFechaInicio() != null && placasDTO.getFechaFin() != null) {
                 Calendar nacim1 = placasDTO.getFechaInicio();
                 Calendar nacim2 = placasDTO.getFechaFin();
-                filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim1));
-                filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"),nacim2));
+                filtros.add(builder.greaterThanOrEqualTo(root.<Calendar>get("fechaEmision"), nacim1));
+                filtros.add(builder.lessThanOrEqualTo(root.<Calendar>get("fechaEmision"), nacim2));
             }
 
             switch (filtros.size()) {

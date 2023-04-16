@@ -10,7 +10,7 @@ import java.util.Calendar;
 /**
  * Clase que guarda los datos para las consultas personalizadas de licencias
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class LicenciaDTO {
 

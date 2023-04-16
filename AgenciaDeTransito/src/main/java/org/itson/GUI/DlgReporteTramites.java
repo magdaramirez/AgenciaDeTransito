@@ -34,26 +34,23 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.itson.dominio.*;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.implementaciones.LicenciasDAO;
-import org.itson.implementaciones.PersonasDAO;
 import org.itson.implementaciones.PlacasDAO;
 import org.itson.interfaces.ILicenciasDAO;
-import org.itson.interfaces.IPersonasDAO;
 import org.itson.interfaces.IPlacasDAO;
 import org.itson.utils.ConfiguracionPaginado;
 import org.itson.utils.Encriptador;
 
 /**
+ * Clase encargada de los reportes de los trámites realizados.
  *
- * @author koine
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class DlgReporteTramites extends javax.swing.JFrame {
 
     private static final Logger LOG = Logger.getLogger(DlgConsultaTramites.class.getName());
-    IPersonasDAO personas = new PersonasDAO();
     ILicenciasDAO licencias = new LicenciasDAO();
     IPlacasDAO placas = new PlacasDAO();
     Encriptador encriptador = new Encriptador();
-    private int tamañoLista;
     private ConfiguracionPaginado paginado;
 
     /**
@@ -68,13 +65,13 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         this.paginado = new ConfiguracionPaginado(0, 3);
         if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
             this.llenarTablaPlacas();
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
+        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             this.llenarTablaLicencias();
-        } else{
+        } else {
             this.llenarTabla();
         }
     }
-    
+
     /**
      * Método que llena la tabla de placas.
      */
@@ -129,7 +126,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
 
             modeloTabla.setRowCount(0);
             for (Tramite trans : listaTramites) {
-            
+
                 fecha1 = trans.getFechaEmision().getTime();
                 fechaEmision = dateFormat.format(fecha1);
                 nombDes = encriptador.desencriptar(trans.getPersona().getNombre());
@@ -148,7 +145,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         } catch (PersistenciaException ex) {
             LOG.log(Level.SEVERE, ex.getMessage());
         }
-        
+
     }
 
     /**
@@ -218,7 +215,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
 
         return licenciaD;
     }
-    
+
     /**
      * Metodo que obtiene los datos para la licencia de la interfaz grafica para
      * la consulta en caso de haber sido ingresados.
@@ -242,9 +239,9 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         this.paginado.avanzarPagina();
         if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
             this.llenarTablaPlacas();
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
+        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             this.llenarTablaLicencias();
-        } else{
+        } else {
             this.llenarTabla();
         }
     }
@@ -256,9 +253,9 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         this.paginado.retrocederPagina();
         if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
             this.llenarTablaPlacas();
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
+        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             this.llenarTablaLicencias();
-        } else{
+        } else {
             this.llenarTabla();
         }
     }
@@ -293,6 +290,18 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.dispose();
+
+    }
+
+    /**
+     * Método que vacía los datos ingresados al JDialog.
+     */
+    private void vaciarDatos() {
+        this.txtNombre.setText(null);
+        this.cbxTramite.setSelectedIndex(0);
+        this.jdcFechaInicio.setCalendar(null);
+        this.jdcFechaFin.setCalendar(null);
 
     }
 
@@ -361,7 +370,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 220, 40));
 
         lblTramite.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblTramite.setText("Tramite:");
+        lblTramite.setText("Trámite:");
         jPanel3.add(lblTramite, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, -1));
 
         cbxTramite.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -446,7 +455,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         });
         jPanel2.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 500, 130, 40));
 
-        cbxElementosPagina.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
+        cbxElementosPagina.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         cbxElementosPagina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
         cbxElementosPagina.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -484,21 +493,33 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Método que enfoca el jdcFechaInicio.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void txtFechaInicioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaInicioKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jdcFechaInicio.transferFocus();
         }
     }//GEN-LAST:event_txtFechaInicioKeyPressed
-
+    /**
+     * Método que enfoca el jdcFechaFin.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void txtFechaFinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaFinKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jdcFechaFin.transferFocus();
         }
     }//GEN-LAST:event_txtFechaFinKeyPressed
-
+    /**
+     * Método que regresa a la ventana FrmMenu.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -509,29 +530,46 @@ public class DlgReporteTramites extends javax.swing.JFrame {
     private void cbxTramiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTramiteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxTramiteActionPerformed
-
+    /**
+     * Método que llena la tabla de trámites con la cantidad de elementos
+     * seleccionados en el cbxElementosPagina.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void cbxElementosPaginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPaginaItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementosMostrados = Integer.parseInt(evt.getItem().toString());
             this.paginado.setElementosPagina(elementosMostrados);
             if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
-            this.llenarTablaPlacas();
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
-            this.llenarTablaLicencias();
-        } else{
-            this.llenarTabla();
-        }
+                this.llenarTablaPlacas();
+            } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
+                this.llenarTablaLicencias();
+            } else {
+                this.llenarTabla();
+            }
         }
     }//GEN-LAST:event_cbxElementosPaginaItemStateChanged
-
+    /**
+     * Botón que al hacerle clic retrocede las páginas de la tabla.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
         retrocederPaginaTramites();
     }//GEN-LAST:event_btnRetrocederActionPerformed
-
+    /**
+     * Botón que al hacerle clic avanza las páginas de la tabla.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
         avanzarPaginaTramites();
     }//GEN-LAST:event_btnAvanzarActionPerformed
-
+    /**
+     * Botón que al hacerle clic descarga el reporte en PDF.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnDescargarPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargarPdfActionPerformed
         List<Reporte> listaReporte = new ArrayList();
 
@@ -556,7 +594,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
                 listaReporte.add(reporte);
             }
 
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
+        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             List<TramiteLicencia> listaLicencias = new ArrayList();
             try {
                 listaLicencias = this.licencias.consultarLicencias(paginado, obtenerDatosTramiteLicencia());
@@ -576,39 +614,51 @@ public class DlgReporteTramites extends javax.swing.JFrame {
 
                 listaReporte.add(reporte);
             }
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(
-                        this,
-                        "Favor de seleccionar un tipo de tramite antes de realizar la descarga del PDF",
-                        "ERROR",
-                        JOptionPane.ERROR_MESSAGE);
+                    this,
+                    "Favor de seleccionar un tipo de trámite antes de realizar la descarga del PDF",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         try {
-            if(!listaReporte.isEmpty()){
+            if (!listaReporte.isEmpty()) {
                 generarPDF(listaReporte);
             }
         } catch (JRException ex) {
             Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnDescargarPdfActionPerformed
-
+    /**
+     * Botón que al hacerle clic busca los datos ingresados para llenar la
+     * tabla.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
             this.llenarTablaPlacas();
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
+        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             this.llenarTablaLicencias();
-        } else{
+        } else {
             this.llenarTabla();
         }
+        vaciarDatos();
     }//GEN-LAST:event_btnBuscarActionPerformed
-
+    /**
+     * Método que busca los trámites realizados del tipo seleccionado en el
+     * cbxTramite.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void cbxTramiteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTramiteItemStateChanged
         if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
             this.llenarTablaPlacas();
-        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")){
+        } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             this.llenarTablaLicencias();
-        } else{
+        } else {
             this.llenarTabla();
         }
     }//GEN-LAST:event_cbxTramiteItemStateChanged

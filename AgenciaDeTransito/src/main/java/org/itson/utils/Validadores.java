@@ -13,8 +13,9 @@ import java.util.regex.Pattern;
 import org.itson.dominio.Persona;
 
 /**
+ * Clase con los validadores.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class Validadores {
 
@@ -152,6 +153,7 @@ public class Validadores {
 
     /**
      * Método que valida si una persona es mayor de edad.
+     *
      * @param persona Persona.
      * @return Verdadero si es menor de edad, falso si es mayor de edad.
      */
@@ -163,6 +165,29 @@ public class Validadores {
 
         int edad = hoy.get(YEAR) - nacimiento.get(YEAR);
         if (edad < 18) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Método que valida que la cadena de texto ingresada en el parámetro
+     * coincida con números enteros.
+     *
+     * @param s Texto a validar.
+     * @return Verdadero si la cadena es válida, falso en caso contrario.
+     */
+    public static boolean esModelo(String s) {
+        CharSequence cadena = s.trim();
+        //Define una expresión regular para una cadena con puros dígitos
+        String reCadena = "^\\d+$";
+        //Compila la expresión regular a un patr+on
+        Pattern pattern = Pattern.compile(reCadena);
+        //Crea un comparador para comparar la cadena contra el patrón
+        Matcher matcher = pattern.matcher(cadena);
+        //Si la cadena se ajusta al patrón
+        if (matcher.matches()) {
             return true;
         } else {
             return false;

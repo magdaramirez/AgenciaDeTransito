@@ -5,8 +5,9 @@
 package org.itson.GUI;
 
 /**
+ * Clase que muestra las dos opciones de trámite: Tramitar Licencia y Tramitar Placa.
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class FrmRealizarTramite extends javax.swing.JFrame {
 
@@ -141,17 +142,29 @@ public class FrmRealizarTramite extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Botón que al hacerle clic abre la ventana FrmTramitePlaca.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnTramitarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarPlacaActionPerformed
         // TODO add your handling code here:
         mostrarPantallaTramitePlaca();
     }//GEN-LAST:event_btnTramitarPlacaActionPerformed
-
+    /**
+     * Botón que al hacerle clic abre la ventana DlgTramiteLicencia.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnTramitarLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarLicenciaActionPerformed
         // TODO add your handling code here:
         mostrarPantallaTramiteLicencia();
     }//GEN-LAST:event_btnTramitarLicenciaActionPerformed
-
+    /**
+     * Botón que al hacerle clic regresa a la ventana FrmMenu.
+     *
+     * @param evt objeto de evento de acción.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         this.dispose();

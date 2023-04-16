@@ -18,7 +18,7 @@ import org.itson.excepciones.NonexistentEntityException;
 
 /**
  *
- * @author magda
+ * @author Michell Cedano - 233230, Magda Ramírez - 233523
  */
 public class PagoJpaController implements Serializable {
 

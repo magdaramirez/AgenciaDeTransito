@@ -1,0 +1,111 @@
+@options
+@packages
+-classpath
+'C:/Users/magda/.m2/repository/com/itextpdf/itextpdf/5.5.13.3/itextpdf-5.5.13.3.jar;C:/Users/magda/.m2/repository/com/itextpdf/itext-pdfa/5.5.13.3/itext-pdfa-5.5.13.3.jar;C:/Users/magda/.m2/repository/net/sf/jasperreports/jasperreports/6.20.1/jasperreports-6.20.1.jar;C:/Users/magda/.m2/repository/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar;C:/Users/magda/.m2/repository/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar;C:/Users/magda/.m2/repository/commons-digester/commons-digester/2.1/commons-digester-2.1.jar;C:/Users/magda/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar;C:/Users/magda/.m2/repository/org/apache/commons/commons-collections4/4.2/commons-collections4-4.2.jar;C:/Users/magda/.m2/repository/com/github/librepdf/openpdf/1.3.30.jaspersoft.1/openpdf-1.3.30.jaspersoft.1.jar;C:/Users/magda/.m2/repository/org/jfree/jcommon/1.0.23/jcommon-1.0.23.jar;C:/Users/magda/.m2/repository/org/jfree/jfreechart/1.0.19/jfreechart-1.0.19.jar;C:/Users/magda/.m2/repository/org/eclipse/jdt/ecj/3.21.0/ecj-3.21.0.jar;C:/Users/magda/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.1/jackson-core-2.14.1.jar;C:/Users/magda/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.1/jackson-databind-2.14.1.jar;C:/Users/magda/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.1/jackson-annotations-2.14.1.jar;C:/Users/magda/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-xml/2.14.1/jackson-dataformat-xml-2.14.1.jar;C:/Users/magda/.m2/repository/org/codehaus/woodstox/stax2-api/4.2.1/stax2-api-4.2.1.jar;C:/Users/magda/.m2/repository/com/fasterxml/woodstox/woodstox-core/6.4.0/woodstox-core-6.4.0.jar;C:/Users/magda/.m2/repository/com/mysql/mysql-connector-j/8.0.32/mysql-connector-j-8.0.32.jar;C:/Users/magda/.m2/repository/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9.jar;C:/Users/magda/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar;C:/Users/magda/.m2/repository/com/toedter/jcalendar/1.4/jcalendar-1.4.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/org.eclipse.persistence.jpa/2.7.10/org.eclipse.persistence.jpa-2.7.10.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/org.eclipse.persistence.core/2.7.10/org.eclipse.persistence.core-2.7.10.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/org.eclipse.persistence.asm/9.2.0/org.eclipse.persistence.asm-9.2.0.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/org.eclipse.persistence.antlr/2.7.10/org.eclipse.persistence.antlr-2.7.10.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/org.eclipse.persistence.jpa.jpql/2.7.10/org.eclipse.persistence.jpa.jpql-2.7.10.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/org.eclipse.persistence.moxy/2.7.10/org.eclipse.persistence.moxy-2.7.10.jar;C:/Users/magda/.m2/repository/org/eclipse/persistence/jakarta.persistence/2.2.3/jakarta.persistence-2.2.3.jar;C:/Users/magda/.m2/repository/org/netbeans/external/AbsoluteLayout/RELEASE122/AbsoluteLayout-RELEASE122.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-all/3.0.17/groovy-all-3.0.17.pom;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy/3.0.17/groovy-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-ant/3.0.17/groovy-ant-3.0.17.jar;C:/Users/magda/.m2/repository/org/apache/ant/ant/1.10.12/ant-1.10.12.jar;C:/Program Files/Java/jdk1.8.0_301/jre/../lib/tools.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-astbuilder/3.0.17/groovy-astbuilder-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-cli-picocli/3.0.17/groovy-cli-picocli-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-console/3.0.17/groovy-console-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-datetime/3.0.17/groovy-datetime-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-docgenerator/3.0.17/groovy-docgenerator-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-groovydoc/3.0.17/groovy-groovydoc-3.0.17.jar;C:/Users/magda/.m2/repository/com/github/javaparser/javaparser-core/3.25.1/javaparser-core-3.25.1.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-groovysh/3.0.17/groovy-groovysh-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-jmx/3.0.17/groovy-jmx-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-json/3.0.17/groovy-json-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-jsr223/3.0.17/groovy-jsr223-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-macro/3.0.17/groovy-macro-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-nio/3.0.17/groovy-nio-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-servlet/3.0.17/groovy-servlet-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-sql/3.0.17/groovy-sql-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-swing/3.0.17/groovy-swing-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-templates/3.0.17/groovy-templates-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-test/3.0.17/groovy-test-3.0.17.jar;C:/Users/magda/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar;C:/Users/magda/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-test-junit5/3.0.17/groovy-test-junit5-3.0.17.jar;C:/Users/magda/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar;C:/Users/magda/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-testng/3.0.17/groovy-testng-3.0.17.jar;C:/Users/magda/.m2/repository/org/codehaus/groovy/groovy-xml/3.0.17/groovy-xml-3.0.17.jar;C:/Users/magda/.m2/repository/net/sf/jasperreports/jasperreports-functions/6.20.1/jasperreports-functions-6.20.1.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'1.8'
+-sourcepath
+'C:/Users/magda/OneDrive/Documentos/GitHub/AgenciaDeTransito/AgenciaDeTransito/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/magda/OneDrive/Documentos/GitHub/AgenciaDeTransito/AgenciaDeTransito/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'AgenciaTransito 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/magda/OneDrive/Documentos/GitHub/AgenciaDeTransito/AgenciaDeTransito/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'AgenciaTransito 1.0-SNAPSHOT API'
+org.itson.dominio
+org.itson.excepciones
+org.itson.GUI
+org.itson.implementaciones
+org.itson.interfaces
+org.itson.persistencia
+org.itson.utils
+C:\Users\magda\.m2\repository\com\itextpdf\itextpdf\5.5.13.3\itextpdf-5.5.13.3.jar = 1681347347337
+C:\Users\magda\.m2\repository\com\itextpdf\itext-pdfa\5.5.13.3\itext-pdfa-5.5.13.3.jar = 1681347429577
+C:\Users\magda\.m2\repository\net\sf\jasperreports\jasperreports\6.20.1\jasperreports-6.20.1.jar = 1681346378937
+C:\Users\magda\.m2\repository\commons-beanutils\commons-beanutils\1.9.4\commons-beanutils-1.9.4.jar = 1681110564581
+C:\Users\magda\.m2\repository\commons-collections\commons-collections\3.2.2\commons-collections-3.2.2.jar = 1676925980382
+C:\Users\magda\.m2\repository\commons-digester\commons-digester\2.1\commons-digester-2.1.jar = 1681110565013
+C:\Users\magda\.m2\repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar = 1681346298396
+C:\Users\magda\.m2\repository\org\apache\commons\commons-collections4\4.2\commons-collections4-4.2.jar = 1681346302551
+C:\Users\magda\.m2\repository\com\github\librepdf\openpdf\1.3.30.jaspersoft.1\openpdf-1.3.30.jaspersoft.1.jar = 1681346382362
+C:\Users\magda\.m2\repository\org\jfree\jcommon\1.0.23\jcommon-1.0.23.jar = 1681346299397
+C:\Users\magda\.m2\repository\org\jfree\jfreechart\1.0.19\jfreechart-1.0.19.jar = 1681346303996
+C:\Users\magda\.m2\repository\org\eclipse\jdt\ecj\3.21.0\ecj-3.21.0.jar = 1681346377120
+C:\Users\magda\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.14.1\jackson-core-2.14.1.jar = 1681110600628
+C:\Users\magda\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.14.1\jackson-databind-2.14.1.jar = 1681346375368
+C:\Users\magda\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.14.1\jackson-annotations-2.14.1.jar = 1681110565084
+C:\Users\magda\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-xml\2.14.1\jackson-dataformat-xml-2.14.1.jar = 1681346303402
+C:\Users\magda\.m2\repository\org\codehaus\woodstox\stax2-api\4.2.1\stax2-api-4.2.1.jar = 1681346304513
+C:\Users\magda\.m2\repository\com\fasterxml\woodstox\woodstox-core\6.4.0\woodstox-core-6.4.0.jar = 1681346372866
+C:\Users\magda\.m2\repository\com\mysql\mysql-connector-j\8.0.32\mysql-connector-j-8.0.32.jar = 1676579659125
+C:\Users\magda\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf-java-3.21.9.jar = 1676579659000
+C:\Users\magda\.m2\repository\commons-codec\commons-codec\1.11\commons-codec-1.11.jar = 1676241618398
+C:\Users\magda\.m2\repository\com\toedter\jcalendar\1.4\jcalendar-1.4.jar = 1676579658951
+C:\Users\magda\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa\2.7.10\org.eclipse.persistence.jpa-2.7.10.jar = 1677005452244
+C:\Users\magda\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.core\2.7.10\org.eclipse.persistence.core-2.7.10.jar = 1677005455183
+C:\Users\magda\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.asm\9.2.0\org.eclipse.persistence.asm-9.2.0.jar = 1677005451197
+C:\Users\magda\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.antlr\2.7.10\org.eclipse.persistence.antlr-2.7.10.jar = 1677005450931
+C:\Users\magda\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.jpql\2.7.10\org.eclipse.persistence.jpa.jpql-2.7.10.jar = 1677005452369
+C:\Users\magda\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.moxy\2.7.10\org.eclipse.persistence.moxy-2.7.10.jar = 1677005452181
+C:\Users\magda\.m2\repository\org\eclipse\persistence\jakarta.persistence\2.2.3\jakarta.persistence-2.2.3.jar = 1677005451884
+C:\Users\magda\.m2\repository\org\netbeans\external\AbsoluteLayout\RELEASE122\AbsoluteLayout-RELEASE122.jar = 1680213740757
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-all\3.0.17\groovy-all-3.0.17.pom = 1681525760618
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy\3.0.17\groovy-3.0.17.jar = 1681525766258
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-ant\3.0.17\groovy-ant-3.0.17.jar = 1681525765531
+C:\Users\magda\.m2\repository\org\apache\ant\ant\1.10.12\ant-1.10.12.jar = 1681525766073
+C:\Program Files\Java\jdk1.8.0_301\jre\..\lib\tools.jar = 1629827948728
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-astbuilder\3.0.17\groovy-astbuilder-3.0.17.jar = 1681525765887
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-cli-picocli\3.0.17\groovy-cli-picocli-3.0.17.jar = 1681525765930
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-console\3.0.17\groovy-console-3.0.17.jar = 1681525766398
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-datetime\3.0.17\groovy-datetime-3.0.17.jar = 1681525766048
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-docgenerator\3.0.17\groovy-docgenerator-3.0.17.jar = 1681525766107
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-groovydoc\3.0.17\groovy-groovydoc-3.0.17.jar = 1681525766171
+C:\Users\magda\.m2\repository\com\github\javaparser\javaparser-core\3.25.1\javaparser-core-3.25.1.jar = 1681525766398
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-groovysh\3.0.17\groovy-groovysh-3.0.17.jar = 1681525766368
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-jmx\3.0.17\groovy-jmx-3.0.17.jar = 1681525766378
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-json\3.0.17\groovy-json-3.0.17.jar = 1681525766478
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-jsr223\3.0.17\groovy-jsr223-3.0.17.jar = 1681525766478
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-macro\3.0.17\groovy-macro-3.0.17.jar = 1681525766528
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-nio\3.0.17\groovy-nio-3.0.17.jar = 1681525766528
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-servlet\3.0.17\groovy-servlet-3.0.17.jar = 1681525766538
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-sql\3.0.17\groovy-sql-3.0.17.jar = 1681525767013
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-swing\3.0.17\groovy-swing-3.0.17.jar = 1681525767067
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-templates\3.0.17\groovy-templates-3.0.17.jar = 1681525767048
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-test\3.0.17\groovy-test-3.0.17.jar = 1681525767062
+C:\Users\magda\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar = 1681525767067
+C:\Users\magda\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar = 1681525767127
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-test-junit5\3.0.17\groovy-test-junit5-3.0.17.jar = 1681525767118
+C:\Users\magda\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar = 1681525767159
+C:\Users\magda\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar = 1681525767157
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-testng\3.0.17\groovy-testng-3.0.17.jar = 1681525767248
+C:\Users\magda\.m2\repository\org\codehaus\groovy\groovy-xml\3.0.17\groovy-xml-3.0.17.jar = 1681525767357
+C:\Users\magda\.m2\repository\net\sf\jasperreports\jasperreports-functions\6.20.1\jasperreports-functions-6.20.1.jar = 1681525767367
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\src\main\java = 1680149662197
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\allclasses-frame.html = 1681683366105
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\allclasses-noframe.html = 1681683366184
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\constant-values.html = 1681683365653
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\deprecated-list.html = 1681683366105
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\help-doc.html = 1681683366184
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\index-all.html = 1681683366090
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\index.html = 1681683366184
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\overview-frame.html = 1681683365509
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\overview-summary.html = 1681683366184
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\overview-tree.html = 1681683366074
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\package-list = 1681683365509
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\script.js = 1681683366184
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\serialized-form.html = 1681683365744
+C:\Users\magda\OneDrive\Documentos\GitHub\AgenciaDeTransito\AgenciaDeTransito\target\site\apidocs\stylesheet.css = 1681683366184

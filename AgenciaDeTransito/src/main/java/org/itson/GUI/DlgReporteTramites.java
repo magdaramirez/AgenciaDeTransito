@@ -366,6 +366,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         lblFinPeriodo.setText("Fin:");
         jPanel3.add(lblFinPeriodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, -1, -1));
 
+        txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 220, 40));
 

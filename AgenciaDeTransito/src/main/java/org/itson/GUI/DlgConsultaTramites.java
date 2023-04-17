@@ -295,6 +295,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         txtRfc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(txtRfc, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 220, 40));
 
+        txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 280, 40));
 

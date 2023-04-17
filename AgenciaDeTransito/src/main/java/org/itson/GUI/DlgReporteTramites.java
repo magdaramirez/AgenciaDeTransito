@@ -290,7 +290,7 @@ public class DlgReporteTramites extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DlgReporteTramites.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
+        
 
     }
 

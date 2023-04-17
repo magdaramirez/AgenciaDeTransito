@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.itson.dominio.*;
 import org.itson.excepciones.PersistenciaException;
@@ -72,7 +73,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         if (this.txtNombre.getText().equals("")) {
             placaD.setNombre(null);
         } else {
-            placaD.setNombre(nomEncriptado);
+            placaD.setNombre(null);
 
         }
 
@@ -105,7 +106,8 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
         if (this.txtNombre.getText().equals("")) {
             licenciaD.setNombre(null);
         } else {
-            licenciaD.setNombre(nomEncriptado);
+            licenciaD.setNombre(null);
+
         }
 
         if (this.txtRfc.getText().equals("")) {
@@ -125,7 +127,7 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
             Calendar cal = new GregorianCalendar();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             Date fecha1, fecha2;
-            String fechaEmision, fechaRecepcion = null;
+            String fechaEmision, fechaRecepcion = "";
             List<TramitePlaca> listaTramitesPlacas = placas.consultarPlacas(paginadoPlacas, obtenerDatosTramitePlaca());
             DefaultTableModel modeloTabla = (DefaultTableModel) this.tblPlacas.getModel();
 
@@ -135,6 +137,8 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
                 if (trans.getFechaRecepcion() != null) {
                     fecha2 = trans.getFechaRecepcion().getTime();
                     fechaRecepcion = dateFormat.format(fecha2);
+                }else{
+                    fechaRecepcion = "-";
                 }
                 fechaEmision = dateFormat.format(fecha1);
 
@@ -213,9 +217,39 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     private void vaciarDatos() {
         this.txtRfc.setText(null);
         this.txtNombre.setText(null);
-        this.txtAnioNacimiento.setText(null);
+//        this.txtAnioNacimiento.setText(null);
     }
+    
+    /**
+     * Metodo que busca una persona por su rfc en el sistema
+     *
+     * @return la persona registrada en el sistema con el rfc ingresado
+     */
+    private Persona buscarPersonaRFC() {
+        String rfc = this.txtRfc.getText();
+        try {
+            Persona persona1 = personas.buscarPersona(rfc);
 
+            return persona1;
+        } catch (Exception ex) {
+            Logger.getLogger(DlgPlacaVehiculoNuevo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha encontrado una persona con el rfc ingresado",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+    
+    private void llenadoDeNombre(){
+        Persona persona;
+        PersonasDAO dao = new PersonasDAO();
+        persona = buscarPersonaRFC();
+        String nombreCompleto = dao.DesencriptarNombreCompleto(persona);
+        this.txtNombre.setText(nombreCompleto);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -527,8 +561,15 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
      * @param evt objeto de evento de acción.
      */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        String rfc = "";
         desplegarTablaPlacas();
         desplegarTablaLicencias();
+        rfc = this.txtRfc.getText();
+        if(!"".equals(rfc)){
+            llenadoDeNombre();
+        }else if("".equals(rfc)){
+            vaciarDatos();
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

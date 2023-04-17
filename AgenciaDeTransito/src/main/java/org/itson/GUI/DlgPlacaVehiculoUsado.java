@@ -170,7 +170,8 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
             placaNvo.setPlaca(this.txtPlacaNueva.getText());
             placaNvo.setTipoPlaca(TipoPlaca.USADO);
             placaNvo.setVehiculo(auto);
-
+            
+            cambiarEstadoPlacaAnterior();
             placas.registrarPlaca(placaNvo);
             registroPagoRealizado(placaNvo);
 
@@ -692,20 +693,15 @@ public class DlgPlacaVehiculoUsado extends javax.swing.JDialog {
      * @param evt objeto de evento de acción.
      */
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
-        try {
-            Calendar fechaR = this.jdcFechaRecepcion.getCalendar();
-            if(fechaR != null){
-                cambiarEstadoPlacaAnterior();
+        Calendar fechaR = this.jdcFechaRecepcion.getCalendar();
+        if(fechaR != null){
                 tramitarPlacaVehiculoUsado();
-            }else{
-                JOptionPane.showMessageDialog(
+        }else{
+            JOptionPane.showMessageDialog(
                     this,
                     "ERROR: Porfavor seleccione una fecha de recepción para la placa",
                     "ERROR",
                     JOptionPane.ERROR_MESSAGE);
-            } 
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(DlgPlacaVehiculoUsado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTramitarActionPerformed
     /**

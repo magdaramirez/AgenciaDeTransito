@@ -638,14 +638,13 @@ public class DlgReporteTramites extends javax.swing.JFrame {
      * @param evt objeto de evento de acción.
      */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        if (this.cbxTramite.getSelectedItem().equals("Expedición de placa")) {
+        if (this.cbxTramite.getSelectedItem().equals("Expedicion de placa")) {
             this.llenarTablaPlacas();
         } else if (this.cbxTramite.getSelectedItem().equals("Expedición de licencia")) {
             this.llenarTablaLicencias();
         } else {
             this.llenarTabla();
         }
-        vaciarDatos();
     }//GEN-LAST:event_btnBuscarActionPerformed
     /**
      * Método que busca los trámites realizados del tipo seleccionado en el

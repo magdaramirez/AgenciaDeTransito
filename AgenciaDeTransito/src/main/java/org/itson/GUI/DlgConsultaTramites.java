@@ -528,7 +528,6 @@ public class DlgConsultaTramites extends javax.swing.JDialog {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         desplegarTablaPlacas();
         desplegarTablaLicencias();
-        vaciarDatos();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
